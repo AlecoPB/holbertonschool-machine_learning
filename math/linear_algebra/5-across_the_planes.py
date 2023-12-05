@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-matrix_shape = __import__('2-size_me_please').matrix_shape
-add_arrays = __import__('4-line_up').add_arrays
 """
 This module only has one method
 """
+matrix_shape = __import__('2-size_me_please').matrix_shape
+add_arrays = __import__('4-line_up').add_arrays
 
 
 def add_matrices2D(mat1, mat2):
