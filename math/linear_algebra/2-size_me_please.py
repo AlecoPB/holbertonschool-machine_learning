@@ -9,8 +9,8 @@ def matrix_shape(matrix):
     Returns the shape of a matrix.
     """
     if not matrix:
-      return []
+        return []
     if isinstance(matrix[0], list):
-      return [len(matrix)] + matrix_shape(matrix[0])
+        return [len(matrix)] + matrix_shape(matrix[0])
     else:
-      return [len(matrix)]
+        return [len(matrix)]
