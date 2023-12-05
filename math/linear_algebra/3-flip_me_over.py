@@ -3,11 +3,12 @@
 This module only has one method
 """
 
+
 def matrix_transpose(matrix):
     """
     Returns the transposed of a matrix.
     """
-  
+
     if not matrix:
         return []
     t_mat = []
