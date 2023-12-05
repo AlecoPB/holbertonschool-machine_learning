@@ -13,7 +13,7 @@ def add_arrays(arr1, arr2):
     for i in range(len(arr1)):
         if not isinstance(arr1[i], int) or not isinstance(arr2[i], int):
             raise TypeError("add_arrays() only accepts arrays of integers.")
-  
+
     arr_Sum = []
     for i in range(len(arr1)):
         arr_Sum.append(arr1[i] + arr2[i])
