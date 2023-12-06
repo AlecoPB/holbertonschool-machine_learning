@@ -8,4 +8,5 @@ def np_shape(matrix):
   """
   This method is literally just renaming np.shape
   """
-  return np.shape(matrix)
+  return matrix.shape
+  
