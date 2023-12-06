@@ -2,7 +2,6 @@
 """
 This module has only one method
 """
-import numpy as np
 
 
 def np_slice(matrix, axes={}):
