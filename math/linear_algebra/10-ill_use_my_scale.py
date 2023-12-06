@@ -2,11 +2,12 @@
 """
 This module serves almost no purpose
 """
-import numpy as np
 
 
 def np_shape(matrix):
   """
   This method is literally just renaming np.shape
   """
-  return np.shape(matrix)
+  row_len = len(matrix)
+  col_len = len(matrix[0])
+  return (row_len, col_len)
