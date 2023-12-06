@@ -10,7 +10,7 @@ def np_slice(matrix, axes={}):
       axes = {Start:Stop, Step)
     """
     lil_slice = []
-    for i in range(len(matrix)):
+    for i in range(len(matrix.shape)):
         if i in axes:
           lil_slice.append(slice(*axes[i]))
         else:
