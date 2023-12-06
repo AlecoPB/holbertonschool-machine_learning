@@ -6,7 +6,7 @@ This module has only one method
 
 def np_slice(matrix, axes={}):
     """
-    This method slices a matrix along the axes that are 
+    This method slices a matrix along the axes that are
     specified following the next structure
       axes = {Start:Stop, Step)
     """
