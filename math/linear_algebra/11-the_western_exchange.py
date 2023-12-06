@@ -9,4 +9,3 @@ def np_transpose(matrix):
     Goofy ahh method
     """
     return matrix.transpose()
-  
