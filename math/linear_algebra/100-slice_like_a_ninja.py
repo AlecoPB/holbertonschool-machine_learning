@@ -6,13 +6,14 @@ This module has only one method
 
 def np_slice(matrix, axes={}):
     """
-    This method slices a matrix along the axes that are specified following the next structure
+    This method slices a matrix along the axes that are 
+    specified following the next structure
       axes = {Start:Stop, Step)
     """
     lil_slice = []
     for i in range(len(matrix.shape)):
         if i in axes:
-          lil_slice.append(slice(*axes[i]))
+            lil_slice.append(slice(*axes[i]))
         else:
-          lil_slice.append(slice(None))
+            lil_slice.append(slice(None))
     return matrix[tuple(lil_slice)]
