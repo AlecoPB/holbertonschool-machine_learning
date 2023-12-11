@@ -14,7 +14,7 @@ y1 = np.exp((r / t1) * x)
 y2 = np.exp((r / t2) * x)
 
 plt.title('Exponential Decay of Radioactive Elements')
-plt.xlim([0, 20.000])
+plt.xlim([0, 20000])
 plt.xlabel('Time (years)')
 plt.ylim([0, 1])
 plt.ylabel('Fraction Remaining')
