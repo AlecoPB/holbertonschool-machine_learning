@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 def poly_derivative(poly):
+  if not isinstance(poly, list):
+    return None
   dev_poly = [0]
   if poly == [0]:
       return dev_poly
