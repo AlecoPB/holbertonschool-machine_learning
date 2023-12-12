@@ -18,7 +18,7 @@ def poly_integral(poly, C=0):
             return None
         api = poly[coeff] / (coeff + 1)
         if api - int(api) == 0:
-          int_poly.append(int(api))
+            int_poly.append(int(api))
         else:
-          int_poly.append(api)
+            int_poly.append(api)
     return int_poly
