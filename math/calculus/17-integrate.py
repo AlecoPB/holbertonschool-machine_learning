@@ -2,7 +2,9 @@
 def poly_integral(poly, C=0):
   int_poly = [C]
   if not isinstance(C, int) or not isinstance(poly, list):
-    return None
+      return None
+  if poly == [0]:
+      return [C]
   for coeff in range(len(poly)):
       api = poly[coeff] / (coeff + 1)
       if api - int(api) == 0:
