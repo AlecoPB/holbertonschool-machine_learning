@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
+"""
+This module has only one method
+"""
+
+
 def poly_derivative(poly):
+    """
+    This method derives polynomial expressions
+    """
     if not isinstance(poly, list) or len(poly) == 0:
         return None
     dev_poly = [0]
