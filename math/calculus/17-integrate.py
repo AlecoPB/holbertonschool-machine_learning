@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 def poly_integral(poly, C=0):
   int_poly = [C]
-  if not isinstance(C, int) or not isinstance(poly, list):
+  if not isinstance(C, int) or not isinstance(poly, list) or len(poly) == 0:
       return None
   if poly == [0]:
       return [C]
