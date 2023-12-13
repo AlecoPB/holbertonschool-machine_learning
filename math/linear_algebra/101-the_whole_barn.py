@@ -5,15 +5,15 @@ This module has only one method, unless they make me use a second method
 
 
 def matrix_shape(matrix):
-  """
-  Returns the shape of a matrix.
-  """
-  if not matrix:
-    return []
-  if isinstance(matrix[0], list):
-    return [len(matrix)] + matrix_shape(matrix[0])
-  else:
-    return [len(matrix)]
+    """
+    Returns the shape of a matrix.
+    """
+    if not matrix:
+       return []
+    if isinstance(matrix[0], list):
+       return [len(matrix)] + matrix_shape(matrix[0])
+    else:
+       return [len(matrix)]
 
 def add_matrices(mat1, mat2):
     """
