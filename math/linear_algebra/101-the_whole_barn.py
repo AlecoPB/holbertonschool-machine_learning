@@ -15,6 +15,7 @@ def matrix_shape(matrix):
     else:
         return [len(matrix)]
 
+
 def add_matrices(mat1, mat2):
     """
     This method adds up two ndmatrices
