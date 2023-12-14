@@ -34,12 +34,12 @@ class Poisson:
         """
         if not isinstance(k, int):
             raise TypeError("the number must be an integer")
-        elif x == 0:
+        elif k == 0:
             return 1
-        if x == 1:
-            return x
+        if k == 1:
+            return k
         else:
-            return x * fact(k-1)
+            return k * fact(k-1)
         
         
     def pmf(self, k):
@@ -50,4 +50,4 @@ class Poisson:
             return 0
         elif not isinstance(k, int):
             k = int(k)
-        return ((self.lambtha**k)*(e**(-1*self.lambtha)))/Poisson.fact(x)
+        return ((self.lambtha**k)*(e**(-1*self.lambtha)))/Poisson.fact(k)
