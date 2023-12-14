@@ -40,12 +40,10 @@ class Exponential:
 
     def pdf(self, k):
         """
-        This calculates de probability Density Function (PDF)
+        This calculates de probability Density Function (PMF)
         """
         if k < 0:
             return 0
-        elif not isinstance(k, int):
-            k = int(k)
         return self.lambtha*(e**(-1*self.lambtha*k))
 
     def cdf(self, k):
@@ -54,6 +52,4 @@ class Exponential:
         """
         if k < 0:
             return 0
-        elif not isinstance(k, int):
-            k = int(k)
         return 1 - e**(-1*self.lambtha*k)
