@@ -2,6 +2,8 @@
 """
 This module defines a class containing Exponential distribution
 """
+pi = 3.1415926536
+e = 2.7182818285
 
 
 class Exponential:
@@ -21,3 +23,37 @@ class Exponential:
                 raise ValueError("data must contain multiple values")
             else:
                 self.lambtha = 1 / (sum(data) / len(data))
+                
+    @staticmethod
+    def fact(k):
+        """
+        Just a factorial method
+        """
+        if not isinstance(k, int):
+            raise TypeError("the number must be an integer")
+        elif k == 0:
+            return 1
+        if k == 1:
+            return k
+        else:
+            return k * Exponential.fact(k-1)
+
+    def pmf(self, k):
+        """
+        This calculates de probability Mass Function (PMF)
+        """
+        if k < 0:
+            return 0
+        elif not isinstance(k, int):
+            k = int(k)
+        return self.lambtha*(e**(-1*self.lambtha*k))
+
+    def cdf(self, k):
+        """
+        This calculates the Cumulative Distribution Function (CDF)
+        """
+        if k < 0:
+            return 0
+        elif not isinstance(k, int):
+            k = int(k)
+        return 1 - e**(-1*self.lambtha*k)
