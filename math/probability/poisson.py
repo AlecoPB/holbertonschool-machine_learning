@@ -39,7 +39,7 @@ class Poisson:
         if k == 1:
             return k
         else:
-            return k * fact(k-1)
+            return k * Poisson.fact(k-1)
         
         
     def pmf(self, k):
