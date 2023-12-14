@@ -23,7 +23,7 @@ class Exponential:
                 raise ValueError("data must contain multiple values")
             else:
                 self.lambtha = 1 / (sum(data) / len(data))
-      
+
     @staticmethod
     def fact(k):
         """
