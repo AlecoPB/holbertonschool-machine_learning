@@ -56,6 +56,6 @@ class Poisson:
             return 0
         elif not isinstance(k, int):
             k = int(k)
-        cdf_value
+        cdf_value = 0
         for i in range(k+1):
             cdf_value += (e**(-1*lambtha)*lambtha**(i))/Poisson.fact(i)
