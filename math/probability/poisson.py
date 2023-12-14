@@ -11,7 +11,7 @@ class Poisson:
     This is the poisson distribution class
     """
     def __init__(self, data=None, lambtha=1.):
-        if data == None:
+        if data is None:
             if lambtha <= 0:
                 raise ValueError("lambtha must be a positive value")
             else:
@@ -23,8 +23,6 @@ class Poisson:
                 raise ValueError("data must contain multiple values")
             else:
                 self.lambtha = float(sum(data)/len(data))
-
-
     @staticmethod
     def fact(k):
         """
@@ -38,8 +36,6 @@ class Poisson:
             return k
         else:
             return k * Poisson.fact(k-1)
-
-
     def pmf(self, k):
         """
         This calculates de probability Mass Function (PMF)
