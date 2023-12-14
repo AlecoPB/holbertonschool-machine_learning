@@ -38,9 +38,9 @@ class Exponential:
         else:
             return k * Exponential.fact(k-1)
 
-    def pmf(self, k):
+    def pdf(self, k):
         """
-        This calculates de probability Mass Function (PMF)
+        This calculates de probability Density Function (PDF)
         """
         if k < 0:
             return 0
