@@ -60,3 +60,4 @@ class Poisson:
         for i in range(k+1):
             cdf_value += (e**(-1*self.lambtha) *
                           self.lambtha**(i))/Poisson.fact(i)
+        return cdf_value
