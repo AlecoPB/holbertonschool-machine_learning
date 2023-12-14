@@ -9,8 +9,8 @@ class Poisson:
     This is the poisson distribution class
     """
     def __init__(self, data=None, lambtha=1.):
-        if data == None:
-            if labtha <= 0:
+        if data is None:
+            if lambtha <= 0:
                 raise ValueError("lambtha must be a positive value")
             else:
                 self.lambtha = float(lambtha)
