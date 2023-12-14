@@ -47,3 +47,15 @@ class Poisson:
         elif not isinstance(k, int):
             k = int(k)
         return ((self.lambtha**k)*(e**(-1*self.lambtha)))/Poisson.fact(k)
+
+    def cdf(self, k):
+        """
+        This calculates the Cumulative Distribution Function (CDF)
+        """
+        if k < 0:
+            return 0
+        elif not isinstance(k, int):
+            k = int(k)
+        cdf_value
+        for i in range(k+1):
+            cdf_value += (e**(-1*lambtha)*lambtha**(i))/Poisson.fact(i)
