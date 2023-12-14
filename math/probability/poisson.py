@@ -2,6 +2,8 @@
 """
 This is a module containing a poisson distribution class
 """
+pi = 3.1415926536
+e = 2.7182818285
 
 
 class Poisson:
@@ -10,13 +12,9 @@ class Poisson:
     """
     
     
-    pi = 3.1415926536
-    e = 2.7182818285
-    
-    
     def __init__(self, data=None, lambtha=1.):
         if data == None:
-            if labtha <= 0:
+            if lambtha <= 0:
                 raise ValueError("lambtha must be a positive value")
             else:
                 self.lambtha = float(lambtha)
@@ -28,7 +26,8 @@ class Poisson:
             else:
                 self.lambtha = float(sum(data)/len(data))
         
-        
+     
+    @staticmethod
     def fact(k):
         """
         Just a factorial method
@@ -51,4 +50,4 @@ class Poisson:
             return 0
         elif not isinstance(k, int):
             k = int(k)
-        return ((self.lambtha**k)*(e**(-1*self.lambtha)))/fact(x)
+        return ((self.lambtha**k)*(e**(-1*self.lambtha)))/Poisson.fact(x)
