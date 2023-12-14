@@ -8,9 +8,15 @@ class Poisson:
     """
     This is the poisson distribution class
     """
+    
+    
+    pi = 3.1415926536
+    e = 2.7182818285
+    
+    
     def __init__(self, data=None, lambtha=1.):
-        if data is None:
-            if lambtha <= 0:
+        if data == None:
+            if labtha <= 0:
                 raise ValueError("lambtha must be a positive value")
             else:
                 self.lambtha = float(lambtha)
@@ -21,3 +27,28 @@ class Poisson:
                 raise ValueError("data must contain multiple values")
             else:
                 self.lambtha = float(sum(data)/len(data))
+        
+        
+    def fact(k):
+        """
+        Just a factorial method
+        """
+        if not isinstance(k, int):
+            raise TypeError("the number must be an integer")
+        elif x == 0:
+            return 1
+        if x == 1:
+            return x
+        else:
+            return x * fact(k-1)
+        
+        
+    def pmf(self, k):
+        """
+        This calculates de probability Mass Function (PMF)
+        """
+        if k < 0:
+            return 0
+        elif not isinstance(k, int):
+            k = int(k)
+        return ((self.lambtha**k)*(e**(-1*self.lambtha)))/fact(x)
