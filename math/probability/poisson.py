@@ -23,6 +23,7 @@ class Poisson:
                 raise ValueError("data must contain multiple values")
             else:
                 self.lambtha = float(sum(data)/len(data))
+
     @staticmethod
     def fact(k):
         """
@@ -36,6 +37,7 @@ class Poisson:
             return k
         else:
             return k * Poisson.fact(k-1)
+
     def pmf(self, k):
         """
         This calculates de probability Mass Function (PMF)
