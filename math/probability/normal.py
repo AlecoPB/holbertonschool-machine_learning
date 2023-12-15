@@ -64,6 +64,6 @@ class Normal:
             sum_terms += term
         return (2.0 / pi) * sum_terms
 
-    def cdf(x):
+    def cdf(self, x):
         """Compute the CDF for a standard normal distribution."""
         return 0.5 * (1 + Normal.erf_taylor(x / (2**0.5)))
