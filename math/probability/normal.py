@@ -59,7 +59,7 @@ class Normal:
         Compute the error function using a Taylor series.
         """
         sum_terms = 0.0
-        for n in range(1000):
+        for n in range(500):
             term = ((-1)**n * x**(2*n+1)) / (Normal.factorial(n) * (2*n+1))
             sum_terms += term
         return (2.0 / pi) * sum_terms
