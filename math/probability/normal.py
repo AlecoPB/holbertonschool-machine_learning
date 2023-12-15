@@ -54,15 +54,16 @@ class Normal:
             return n * Normal.factorial(n-1)
 
     @staticmethod
-    def exp(x, terms=100):
-        return sum((x**i)/Normal.factorial(i) for i in range(terms))
+    def erf_taylor(x):
+    """
+    Compute the error function using a Taylor series.
+    """
+    sum_terms = 0.0
+    for n in range(10):
+        term = ((-1)**n * x**(2*n+1)) / (Normal.factorial(n) * (2*n+1))
+        sum_terms += term
+    return (2.0 / pi) * sum_terms
 
-    @staticmethod
-    def erf(x, terms=100):
-        return (2/Normal.exp(1, terms)**0.5) * sum(((-1)**i * x**(2*i + 1))/(2*i + 1) for i in range(terms))
-
-    def cdf(self, x):
-        """
-        Returns de CDF of a given x value
-        """
-        return 0.5 * (1 + self.erf((x - self.mean) / (self.stddev * (2 ** 0.5))))
+    def cdf(x):
+    """Compute the CDF for a standard normal distribution."""
+    return 0.5 * (1 + Normal.erf_taylor(x / (2**0.5)))
