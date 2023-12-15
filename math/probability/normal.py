@@ -32,7 +32,7 @@ class Normal:
         Returns the z score of a given x value
         """
         return (x - self.mean) / self.stddev
-        
+
     def x_value(self, z):
         """
         Returns the x value of a given z score
