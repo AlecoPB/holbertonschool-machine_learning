@@ -47,6 +47,13 @@ class Normal:
                 * (e ** (-1 * 0.5 * ((x - self.mean) / self.stddev) ** 2)))
 
     @staticmethod
+    def factorial(n):
+        if n == 0:
+            return 1
+        else:
+            return n * Normal.factorial(n-1)
+
+    @staticmethod
     def exp(x, terms=100):
         return sum((x**i)/Normal.factorial(i) for i in range(terms))
 
