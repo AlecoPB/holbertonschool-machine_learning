@@ -47,6 +47,10 @@ class Normal:
                 * (e ** (-1 * 0.5 * ((x - self.mean) / self.stddev) ** 2)))
 
     @staticmethod
+    def exp(x, terms=100):
+        return sum((x**i)/Normal.factorial(i) for i in range(terms))
+
+    @staticmethod
     def erf(x, terms=100):
         return (2/Normal.exp(1, terms)**0.5) * sum(((-1)**i * x**(2*i + 1))/(2*i + 1) for i in range(terms))
 
