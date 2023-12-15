@@ -47,24 +47,8 @@ class Normal:
                 * (e ** (-1 * 0.5 * ((x - self.mean) / self.stddev) ** 2)))
 
     @staticmethod
-    def erf(x):
-        """
-        Error function aproximation
-        """
-        a1 =  0.254829592
-        a2 = -0.284496736
-        a3 =  1.421413741
-        a4 = -1.453152027
-        a5 =  1.061405429
-        a6 =  0.3275911
-
-        sign = 1 if x >= 0 else -1
-        x = abs(x)
-
-        t = 1.0 / (1.0 + a6 * x)
-        y = ((((a5 * t + a4) * t) + a3) * t + a2) * t + a1
-
-        return sign * (1 - y * math.exp(-x * x))
+    def erf(x, terms=100):
+        return (2/Normal.exp(1, terms)**0.5) * sum(((-1)**i * x**(2*i + 1))/(2*i + 1) for i in range(terms))
 
     def cdf(self, x):
         """
