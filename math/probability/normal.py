@@ -41,7 +41,8 @@ class Normal:
 
     def pdf(self, x):
         """
-        Returns the probability density function of a normal distribution on a given x value
+        Returns the probability density function of a
+        normal distribution on a given x value
         """
-        return (1 / (self.stddev * ((2 * pi) ** 0.5))) * (e 
-                                                          ** (-1 * 0.5 * ((x - self.mean) / self.stddev) ** 2))
+        return (1 / (self.stddev * ((2 * pi) ** 0.5)))\
+                * (e ** (-1 * 0.5 * ((x - self.mean) / self.stddev) ** 2))
