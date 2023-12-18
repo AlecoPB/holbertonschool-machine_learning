@@ -58,3 +58,18 @@ class Binomial:
             choose = (Binomial.fact(self.n) /
                       (Binomial.fact(k) * Binomial.fact(self.n - k)))
             return choose * (self.p**k) * (1 - self.p)**(self.n - k)
+
+    def cdf(self, k):
+        """
+        This method is the cumulative distribution
+        function on a Binomial distribution
+        """
+        if not isinstance(k, int):
+            k = int(k)
+        if not 0 <= k <= self.n:
+            return 0
+        else:
+            cdf_value = 0
+            for r in range(k + 1):
+                cdf_value += self.pmf(r)
+            return cdf_value
