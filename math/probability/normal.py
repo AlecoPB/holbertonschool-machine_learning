@@ -55,6 +55,6 @@ class Normal:
                + (x**7) / 42 + (x**9) / 216)
         return (2.0 / (pi)**0.5) * apr 
 
-    def cdf(x):
+    def cdf(self, x):
         """Compute the CDF for a standard normal distribution."""
         return 0.5 * (1 + Normal.erf_taylor(x / (2**0.5)))
