@@ -16,6 +16,10 @@ class Binomial:
             elif len(data) < 2:
                 raise ValueError("data must contain multiple values")
             else:
-                self.p = sum(data) / len(data)
-                self.n = max(data)
+                mean = sum(data) / len(data)
+                squares = [(x - mean) ** 2 for x in data]
+                var = sum(squared_diffs) / len(squared_diffs)
+                
+                self.p = 1 - (variance / mean)
+                self.n = mean / self.p
                 self.p = self.p / self.n
