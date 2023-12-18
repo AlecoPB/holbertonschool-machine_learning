@@ -52,7 +52,7 @@ class Normal:
         I DIDN'T SEE THE APPROXIMATION AT THE BEGGINING :C
         """
         apr = (x - (x**3) / 3 + (x**5) / 10
-               + (x**7) / 42 + (x**9) / 216)
+               - (x**7) / 42 + (x**9) / 216)
         return (2.0 / (pi)**0.5) * apr 
 
     def cdf(self, x):
