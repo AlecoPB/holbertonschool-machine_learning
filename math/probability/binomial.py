@@ -24,8 +24,8 @@ class Binomial:
                 squares = [(x - mean) ** 2 for x in data]
                 var = sum(squares) / len(squares)
                 self.p = 1 - (var / mean)
-                self.n = mean / self.p
-                self.p = self.p / self.n
+                self.n = round(mean / self.p)
+                self.p = mean / self.n
         if self.n <= 0:
             raise ValueError("n must be a positive value")
         elif not 0 <= self.p <= 1:
