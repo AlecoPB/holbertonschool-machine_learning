@@ -22,4 +22,4 @@ class Binomial:
                 
                 self.p = 1 - (var / mean)
                 self.n = round(mean / self.p)
-                self.p = 1 - self.p / self.n
+                self.p = mean / self.n
