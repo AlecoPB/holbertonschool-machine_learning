@@ -22,11 +22,11 @@ class Binomial:
             else:
                 mean = sum(data) / len(data)
                 squares = [(x - mean) ** 2 for x in data]
-                var = sum(squared_diffs) / len(squared_diffs)
-                self.p = 1 - (variance / mean)
+                var = sum(squares) / len(squares)
+                self.p = 1 - (var / mean)
                 self.n = mean / self.p
                 self.p = self.p / self.n
         if self.n <= 0:
-            raise ValueError("n must be a non-negative value")
+            raise ValueError("n must be a positive value")
         elif not 0 <= self.p <= 1:
             raise ValueError("p must be greater than or equal to 0 and less than or equal to 1")
