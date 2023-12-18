@@ -21,5 +21,5 @@ class Binomial:
                 var = sum(squares) / len(squares)
                 
                 self.p = 1 - (var / mean)
-                self.n = mean / self.p
+                self.n = round(mean / self.p)
                 self.p = self.p / self.n
