@@ -47,24 +47,14 @@ class Normal:
                 * (e ** (-1 * 0.5 * ((x - self.mean) / self.stddev) ** 2)))
 
     @staticmethod
-    def factorial(n):
-        if n == 0:
-            return 1
-        else:
-            return n * Normal.factorial(n-1)
-
-    @staticmethod
-    def erf_taylor(x):
+    def erf(x):
         """
-        Compute the error function using a Taylor series.
+        I DIDN'T SEE THE APPROXIMATION AT THE BEGGINING :C
         """
-        sum_terms = 0.0
-        for n in range(100):
-            term = ((-1)**n * x**(2*n+1)) / (Normal.factorial(n) * (2*n+1))
-            sum_terms += term
-        return (2.0 / pi) * sum_terms
+        apr = (x - (x**3) / 3 + (x**5) / 10
+               + (x**7) / 42 + (x**9) / 216)
+        return (2.0 / (pi)**0.5) * apr 
 
-    def cdf(self, x):
+    def cdf(x):
         """Compute the CDF for a standard normal distribution."""
-        z = self.z_score(x)
-        return 0.5 * (1 + Normal.erf_taylor(z / (2**0.5)))
+        return 0.5 * (1 + Normal.erf_taylor(x / (2**0.5)))
