@@ -30,3 +30,25 @@ class Binomial:
             raise ValueError("n must be a positive value")
         if not 0 < self.p < 1:
             raise ValueError("p must be greater than 0 and less than 1")
+
+    @staticmethod
+    def fact(k):
+        """
+        Just a factorial method
+        """
+        if not isinstance(k, int):
+            raise TypeError("the number must be an integer")
+        elif k == 0:
+            return 1
+        if k == 1:
+            return k
+        else:
+            return k * Exponential.fact(k-1)
+
+    def pmf(self, k):
+        """
+        This method is the probability mass
+        function on a Binomial distribution
+        """
+        choose = Binomial.fact(self.n) / (Binomial.fact(k) * Binomial.fact(self.n - k))
+        return choose * (self.p**k) * (1 - self.p)**self.n
