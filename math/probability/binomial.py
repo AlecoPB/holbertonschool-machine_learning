@@ -43,12 +43,17 @@ class Binomial:
         if k == 1:
             return k
         else:
-            return k * Exponential.fact(k-1)
+            return k * Binomial.fact(k-1)
 
     def pmf(self, k):
         """
         This method is the probability mass
         function on a Binomial distribution
         """
-        choose = Binomial.fact(self.n) / (Binomial.fact(k) * Binomial.fact(self.n - k))
-        return choose * (self.p**k) * (1 - self.p)**self.n
+        if not isinstance(k, int):
+            k = int(k)
+        if not 0 <= k <= self.n:
+            return 0
+        else:
+            choose = Binomial.fact(self.n) / (Binomial.fact(k) * Binomial.fact(self.n - k))
+            return choose * (self.p**k) * (1 - self.p)**self.n
