@@ -18,8 +18,8 @@ class Binomial:
             else:
                 mean = sum(data) / len(data)
                 squares = [(x - mean) ** 2 for x in data]
-                var = sum(squared_diffs) / len(squared_diffs)
+                var = sum(squares) / len(squares)
                 
-                self.p = 1 - (variance / mean)
+                self.p = 1 - (var / mean)
                 self.n = mean / self.p
                 self.p = self.p / self.n
