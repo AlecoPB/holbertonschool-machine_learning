@@ -29,4 +29,4 @@ class Binomial:
         if self.n <= 0:
             raise ValueError("n must be a positive value")
         if not 0 < self.p < 1:
-            raise ValueError("p must be greater than or equal to 0 and less than or equal to 1")
+            raise ValueError("p must be greater than 0 and less than 1")
