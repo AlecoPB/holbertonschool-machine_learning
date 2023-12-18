@@ -55,5 +55,6 @@ class Binomial:
         if not 0 <= k <= self.n:
             return 0
         else:
-            choose = Binomial.fact(self.n) / (Binomial.fact(k) * Binomial.fact(self.n - k))
-            return choose * (self.p**k) * (1 - self.p)**self.n
+            choose = (Binomial.fact(self.n) / 
+                      (Binomial.fact(k) * Binomial.fact(self.n - k)))
+            return choose * (self.p**k) * (1 - self.p)**(self.n - k)
