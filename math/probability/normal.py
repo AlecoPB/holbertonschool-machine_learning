@@ -57,5 +57,4 @@ class Normal:
 
     def cdf(self, x):
         """Compute the CDF for a standard normal distribution."""
-        return 0.5 * (1 + Normal.erf((self.z_score(x) - self.mean) /
-                                     (self.stddev * (2**0.5))))
+        return 0.5 * (1 + Normal.erf(self.z_score(x) / 2 ** 0.5))
