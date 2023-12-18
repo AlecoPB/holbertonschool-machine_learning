@@ -17,5 +17,5 @@ class Binomial:
                 raise ValueError("data must contain multiple values")
             else:
                 self.p = sum(data) / len(data)
-                self.n = len(data)
+                self.n = max(data)
                 self.p = self.p / self.n
