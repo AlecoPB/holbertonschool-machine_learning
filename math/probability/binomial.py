@@ -20,15 +20,13 @@ class Binomial:
             elif len(data) < 2:
                 raise ValueError("data must contain multiple values")
             else:
-                if n < 0:
-                    raise ValueError("n must be a positive value")
-                elif not 0 < p < 1:
-                    raise ValueError("p must be greater than 0 and less than 1")
-                else:
-                    mean = sum(data) / len(data)
-                    squares = [(x - mean) ** 2 for x in data]
-                    var = sum(squares) / len(squares)
-
-                    self.p = 1 - (var / mean)
-                    self.n = round(mean / self.p)
-                    self.p = mean / self.n
+                mean = sum(data) / len(data)
+                squares = [(x - mean) ** 2 for x in data]
+                var = sum(squares) / len(squares)
+                self.p = 1 - (var / mean)
+                self.n = round(mean / self.p)
+                self.p = mean / self.n
+                if self.n < 0:
+                    raise ValueError("n must be a non-negative value")
+                elif not 0 <= self.p <= 1:
+                    raise ValueError("p must be greater than or equal to 0 and less than or equal to 1")
