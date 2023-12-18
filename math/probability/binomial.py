@@ -28,5 +28,5 @@ class Binomial:
                 self.p = mean / self.n
         if self.n <= 0:
             raise ValueError("n must be a positive value")
-        if not 0 <= self.p <= 1:
+        if not 0 < self.p < 1:
             raise ValueError("p must be greater than or equal to 0 and less than or equal to 1")
