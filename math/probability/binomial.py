@@ -20,9 +20,9 @@ class Binomial:
             elif len(data) < 2:
                 raise ValueError("data must contain multiple values")
             else:
-                if self.n < 0:
+                if n < 0:
                     raise ValueError("n must be a positive value")
-                elif not 0 < self.p < 1:
+                elif not 0 < p < 1:
                     raise ValueError("p must be greater than 0 and less than 1")
                 else:
                     mean = sum(data) / len(data)
