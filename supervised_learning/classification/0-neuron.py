@@ -16,6 +16,6 @@ class Neuron:
             raise TypeError("nx must be an integer")
         elif nx < 1:
             raise ValueError("nx must be a positive integer")
-        self.W = np.random.normal(loc=0.0, scale=1.0, size=1000)
+        self.W = np.random.normal(loc=0.0, scale=1.0, size=750)
         self.b = 0
         self.A = 0
