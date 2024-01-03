@@ -11,7 +11,7 @@ class Neuron:
     The __init__ function initializes attributes
     and checks for errors
     """
-    def __innit__(self, nx):
+    def __init__(self, nx):
         if not isinstance(int, nx):
             raise TypeError("nx must be an integer")
         elif nx < 1:
