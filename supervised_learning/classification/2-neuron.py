@@ -19,7 +19,7 @@ class Neuron:
         self.__W = np.random.normal(loc=0.0, scale=1.0, size=(1, nx))
         self.__b = 0
         self.__A = 0
-    
+
     @property
     def W(self):
         return self.__W
@@ -27,7 +27,7 @@ class Neuron:
     @property
     def b(self):
         return self.__b
-    
+
     @property
     def A(self):
         return self.__A
