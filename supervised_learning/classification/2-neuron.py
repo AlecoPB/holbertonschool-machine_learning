@@ -40,13 +40,6 @@ class Neuron:
         Returns:
             The private attribute A as an array
         """
-        for n_ex in range(len(X)):
-            sum = 0
-            for i in range(nx):
-                sum += self.__W[i, 0] * X[i, n_ex]
-            sum += self.__b
-            if n_ex == 1:
-                self.__A = [sum]
-            else:
-                self.__A.append[sum]
-            return self.__A
+        Z = np.matmul(self.__W, X) + self.__b
+        self.__A = 1 / (1 + np.exp(-Z))
+        return self.__A
