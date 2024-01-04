@@ -59,6 +59,16 @@ class Neuron:
         return (-1 / m) * sum
 
     def evaluate(self, X, Y):
+        """
+
+        Args:
+            X (np.array): Input set
+            Y (np.array): Correct labes for the data
+
+        Returns:
+            np.array: Evaluated predictions
+            np.array: Cost
+        """
         act_X = self.forward_prop(X)
         cost = self.cost(Y, act_X)
         act_X = (act_X > 0.5).astype(int)
