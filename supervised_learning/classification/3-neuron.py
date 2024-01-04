@@ -52,7 +52,7 @@ class Neuron:
             A (np.array): Activated outputs
 
         Returns:
-            Cost 
+            Cost
         """
         m = np.shape(Y)[1]
         sum = np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
