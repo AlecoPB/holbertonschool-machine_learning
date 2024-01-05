@@ -87,6 +87,6 @@ class Neuron:
         m = np.shape(X)[1]
         dw = np.dot(X, error.T) / m
         db = np.sum(error) / m
-        self.__W = self.__W - alpha * dw
-        self.__b = self.__b - alpha * db
+        self.__W = self.__W - (alpha * dw)
+        self.__b = self.__b - (alpha * db)
         # f_cst = self.cost(Y, self.forward_prop(X))
