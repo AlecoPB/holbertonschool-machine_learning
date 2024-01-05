@@ -111,4 +111,4 @@ class Neuron:
         for n_itr in range(iterations):
             self.__A = self.forward_prop(X)
             self.gradient_descent(X, Y, self.__A, alpha)
-
+        return self.__A, self.cost(Y, self.__A)
