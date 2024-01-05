@@ -3,6 +3,7 @@
 This module defines the Neuron class
 """
 import numpy as np
+import matplotlib as plt
 
 
 class Neuron:
