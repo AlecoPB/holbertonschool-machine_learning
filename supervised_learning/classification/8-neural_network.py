@@ -19,7 +19,7 @@ class NeuralNetwork:
 
         #Attributes
         W1 = np.random.normal(loc=0.0, scale=1.0, size=(1, nx)) #Weights vector for the hidden layer
-        b1 = [0 for _ in range(nodes)] #Bias for the hidden layer
+        b1 = [0] * nodes #Bias for the hidden layer
         A1 = 0 #Activated output for the hidden layer
         W2 = np.random.normal(loc=0.0, scale=1.0, size=(1, nx)) #Weights vector for the output neuron
         b2 = 0 #Bias for the output neuron
