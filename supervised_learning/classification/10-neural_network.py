@@ -58,3 +58,16 @@ class NeuralNetwork:
         self.__A2 = 1 / (1 + np.exp(-(np.dot(self.W2, self.__A1) + self.b2)))
 
         return self.__A1, self.__A2
+
+    def cost(self, Y, A):
+        """
+        Args:
+            Y (np.array): Correct labels for the data
+            A (np.array): Activated outputs
+
+        Returns:
+            Cost
+        """
+        m = np.shape(Y)[1]
+        sum = np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
+        return (-1 / m) * sum
