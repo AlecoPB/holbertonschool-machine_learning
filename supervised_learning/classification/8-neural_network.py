@@ -2,9 +2,9 @@
 """
 This module contains a class defining a Neural Network
 """
-
-
 import numpy as np
+
+
 class NeuralNetwork:
     """
     A Neural Network class
@@ -19,7 +19,6 @@ class NeuralNetwork:
         elif nodes < 1:
             raise ValueError("nodes must be a positive integer")
 
-        #Attributes
         self.W1 = np.random.normal(loc=0.0, scale=1.0, size=(nodes, nx))
         self.b1 = np.zeros((nodes, 1))
         self.A1 = 0
