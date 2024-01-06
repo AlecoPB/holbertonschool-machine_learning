@@ -21,7 +21,7 @@ class NeuralNetwork:
 
         #Attributes
         self.W1 = np.random.normal(loc=0.0, scale=1.0, size=(nodes, nx))
-        self.b1 = [0.0] * nodes
+        self.b1 = [[0.] * nodes, nodes]
         self.A1 = 0
         self.W2 = np.random.normal(loc=0.0, scale=1.0, size=(1, nodes))
         self.b2 = 0
