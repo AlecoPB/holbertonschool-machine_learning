@@ -93,17 +93,24 @@ class NeuralNetwork:
         Args:
             X (np.array): Input set
             Y (np.array): Correct labels for data
-            A (np.array): Activated outputs
+            A1 (np.array): Activated outputs of the hidden layer
+            A2 (np.array): Activated outputs of the output layer
             alpha (float, optional): Neuron learning rate. Defaults to 0.05.
         """
-        error1 = A1 - Y
-        error2 = A2 - Y
         m = np.shape(X)[1]
-        dw = np.dot(X, error1.T) / m
-        db = np.sum(error1) / m
-        self.__W1 = self.__W1 - (alpha * dw.T)
-        self.__b1 = self.__b1 - (alpha * db)
-        dw = np.dot(X, error2.T) / m
-        db = np.sum(error2) / m
-        self.__W2 = self.__W2 - (alpha * dw.T)
-        self.__b2 = self.__b2 - (alpha * db)
+
+        # Output layer error
+        error2 = A2 - Y
+        dw2 = np.dot(A1, error2.T) / m
+        db2 = np.sum(error2, axis=1, keepdims=True) / m
+
+        # Hidden layer error
+        error1 = np.dot(self.__W2.T, error2) * A1 * (1 - A1)
+        dw1 = np.dot(X, error1.T) / m
+        db1 = np.sum(error1, axis=1, keepdims=True) / m
+
+        # Update weights and biases
+        self.__W1 -= alpha * dw1.T
+        self.__b1 -= alpha * db1
+        self.__W2 -= alpha * dw2.T
+        self.__b2 -= alpha * db2
