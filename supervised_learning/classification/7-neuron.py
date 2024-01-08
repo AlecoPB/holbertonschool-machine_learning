@@ -3,7 +3,7 @@
 This module defines the Neuron class
 """
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 
 class Neuron:
@@ -90,7 +90,8 @@ class Neuron:
         self.__W = self.__W - (alpha * dw.T)
         self.__b = self.__b - (alpha * db)
 
-    def train(self, X, Y, iterations=5000, alpha=0.05):
+    def train(self, X, Y, iterations=5000, alpha=0.05,
+              verbose=True, graph=True, step=100):
         """
         Args:
             iterations (int, optional): Times to iterate. Defaults to 5000.
@@ -105,54 +106,40 @@ class Neuron:
             raise TypeError("iterations must be an integer")
         elif iterations < 0:
             raise ValueError("iterations must be a positive integer")
+
         if not isinstance(alpha, float):
             raise TypeError("alpha must be a float")
         elif alpha < 0.0:
             raise ValueError("alpha must be positive")
+
+        costs = []
+
         for n_itr in range(iterations):
+
+            true_itr = n_itr + 1
+            val_step = n_itr % step == 0 or true_itr == iterations
+
             self.__A = self.forward_prop(X)
             self.gradient_descent(X, Y, self.__A, alpha)
-        return self.evaluate(X, Y)
 
-def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True, graph=True, step=100):
-        """
-        Args:
-            iterations (int, optional): Times to iterate. Defaults to 5000.
-
-        Raises:
-            TypeError: iterations is not an int
-            ValueError: iterations is negative
-            TypeError: alpha is not a float
-            ValueError: alpha is negative
-        """
-        if not isinstance(iterations, int):
-            raise TypeError("iterations must be an integer")
-        elif iterations < 0:
-            raise ValueError("iterations must be a positive integer")
-
-        if not isinstance(alpha, float):
-            raise TypeError("alpha must be a float")
-        elif alpha < 0.0:
-            raise ValueError("alpha must be positive")
-
-        for n_itr in range(iterations):
-            true_itr = n_itr + 1
-            val_step = true_itr % step == 0 or true_itr == 0 or true_itr == iterations
-
-            if verbose == True or graph == True:
+            if verbose or graph:
                 if not isinstance(step, int):
                     raise TypeError("step must be an integer")
                 elif step < 0 or step > iterations:
                     raise ValueError("step must be positive and <= iterations")
 
-                if verbose == True and val_step:
-                    print("Cost after ", n_itr, " iterations: ", self.cost(Y, self.__A))
+                if verbose and val_step:
+                    print("Cost after", n_itr, "iterations:",
+                          self.cost(Y, self.__A))
 
-                elif graph == True and val_step:
-                    plt.plot(n_itr, self.cost(Y, self.__A), "b-")
-                    plt.show()
+                if graph and val_step:
+                    costs.append(self.cost(Y, self.__A))
 
-            self.__A = self.forward_prop(X)
-            self.gradient_descent(X, Y, self.__A, alpha)
+        if graph:
+            plt.plot(range(0, iterations + 1, step), costs)
+            plt.xlabel("iteration")
+            plt.ylabel("cost")
+            plt.title("Training cost")
+            plt.show()
 
         return self.evaluate(X, Y)
