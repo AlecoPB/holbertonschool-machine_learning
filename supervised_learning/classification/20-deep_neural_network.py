@@ -78,13 +78,14 @@ class DeepNeuralNetwork:
 
         Args:
             X (np.array): Input set
-            Y (np.array): Correct labes for the data
+            Y (np.array): Correct lables for the data
 
         Returns:
             np.array: Evaluated predictions
             np.array: Cost
         """
-        act_X = self.forward_prop(X)
-        cost = self.cost(Y, act_X)
-        act_X = (act_X > 0.5).astype(int)
-        return act_X, cost
+        self.forward_prop(X)
+
+        cost = self.cost(Y, self.__cache('A' + str(self.__L)))
+        A2 = np.where(self.__cache('A' + str(self.__L) >= 0.5, 1, 0))
+        return A2, cost
