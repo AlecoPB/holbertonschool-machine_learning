@@ -5,7 +5,7 @@ This module contains a class defining a Neural Network
 import numpy as np
 
 
-class NeuralNetwork:
+class DeepNeuralNetwork:
     """
     A Neural Network class
     """
