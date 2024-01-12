@@ -92,6 +92,7 @@ class DeepNeuralNetwork:
 
     def gradient_descent(self, Y, cache, alpha=0.05):
         """
+        Calculates one pass of gradient descent on the neural network
         Args:
             Y (np.array): Correct labels for data
             cache (dict): Activated outputs of each layer
