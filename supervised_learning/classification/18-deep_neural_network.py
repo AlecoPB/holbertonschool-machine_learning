@@ -43,8 +43,17 @@ class DeepNeuralNetwork:
         return self.__weights
 
     def forward_prop(self, X):
+        """0
+
+        Args:
+            X (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         self.__cache['A0'] = X
         for i in range(self.L):
-            Z = np.matmul(self.weights['W' + str(i + 1)], self.__cache['A' + str(i)]) + self.weights['b' + str(i + 1)]
+            Z = np.matmul(self.weights['W' + str(i + 1)],
+                          self.__cache['A' + str(i)]) + self.weights['b' + str(i + 1)]
             self.__cache['A' + str(i + 1)] = 1.0 / (1.0 + np.exp(-Z))
         return self.__cache['A' + str(self.L)], self.__cache
