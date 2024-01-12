@@ -20,8 +20,8 @@ class DeepNeuralNetwork:
             raise ValueError("nodes must be a positive integer")
 
         self.L = len(layers)
-        cache = {}
-        weights = {}
+        self.cache = {}
+        self.weights = {}
         for i in range(self.L):
             if i == 0:
                 self.weights['W' + str(i + 1)] = np.random.randn(layers[i], nx) * np.sqrt(2 / nx)
