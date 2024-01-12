@@ -90,7 +90,7 @@ class DeepNeuralNetwork:
         A = np.where(self.__cache['A' + str(self.__L)] >= 0.5, 1, 0)
         return A, cost
 
-    def gradient_descent(self, X, Y, A1, A2, alpha=0.05):
+    def gradient_descent(self, Y, cache, alpha=0.05):
         """
         Args:
             X (np.array): Input set
@@ -102,10 +102,10 @@ class DeepNeuralNetwork:
         m = Y.shape[1]
         for i in reversed(range(self.L)):
             if i == self.L - 1:
-                dz = self.cache['A' + str(i + 1)] - Y
+                dz = cache['A' + str(i + 1)] - Y
             else:
-                dz = np.matmul(self.weights['W' + str(i + 2)].T, dz_prev) * (self.cache['A' + str(i + 1)] * (1 - self.cache['A' + str(i + 1)]))
-            dw = np.matmul(dz, self.cache['A' + str(i)].T) / m
+                dz = np.matmul(self.weights['W' + str(i + 2)].T, dz_prev) * (cache['A' + str(i + 1)] * (1 - cache['A' + str(i + 1)]))
+            dw = np.matmul(dz, cache['A' + str(i)].T) / m
             db = np.sum(dz, axis=1, keepdims=True) / m
             dz_prev = dz
             self.weights['W' + str(i + 1)] -= alpha * dw
