@@ -86,6 +86,6 @@ class DeepNeuralNetwork:
         """
         self.forward_prop(X)
 
-        cost = self.cost(Y, self.__cache('A' + str(self.__L)))
-        A2 = np.where(self.__cache('A' + str(self.__L) >= 0.5, 1, 0))
-        return A2, cost
+        cost = self.cost(Y, self.__cache['A' + str(self.__L)])
+        A = np.where(self.__cache['A' + str(self.__L)] >= 0.5, 1, 0)
+        return A, cost
