@@ -3,7 +3,6 @@
 This module contains a class defining a Neural Network
 """
 import numpy as np
-# import matplotlib.pyplot as plt
 
 
 class NeuralNetwork:
