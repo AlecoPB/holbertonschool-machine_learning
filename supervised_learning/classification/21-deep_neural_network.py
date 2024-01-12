@@ -93,20 +93,18 @@ class DeepNeuralNetwork:
     def gradient_descent(self, Y, cache, alpha=0.05):
         """
         Args:
-            X (np.array): Input set
             Y (np.array): Correct labels for data
-            A1 (np.array): Activated outputs of the hidden layer
-            A2 (np.array): Activated outputs of the output layer
+            cache (dict): Activated outputs of each layer
             alpha (float, optional): Neuron learning rate. Defaults to 0.05.
         """
         m = Y.shape[1]
-        for i in reversed(range(self.L)):
-            if i == self.L - 1:
-                dz = cache['A' + str(i + 1)] - Y
+        for layer in reversed(range(self.L)):
+            if layer == self.L - 1:
+                dz = cache['A' + str(layer + 1)] - Y
             else:
-                dz = np.matmul(self.weights['W' + str(i + 1)].T, dz_prev) * (cache['A' + str(i + 1)] * (1 - cache['A' + str(i + 1)]))
-            dw = np.matmul(dz, cache['A' + str(i)].T) / m
+                dz = np.matmul(self.weights['W' + str(layer + 2)].T, dz_prev) * (cache['A' + str(layer + 1)] * (1 - cache['A' + str(layer + 1)]))
+            dw = np.matmul(dz, cache['A' + str(layer)].T) / m
             db = np.sum(dz, axis=1, keepdims=True) / m
             dz_prev = dz
-            self.weights['W' + str(i + 1)] -= alpha * dw
-            self.weights['b' + str(i + 1)] -= alpha * db
+            self.weights['W' + str(layer + 1)] -= alpha * dw
+            self.weights['b' + str(layer + 1)] -= alpha * db
