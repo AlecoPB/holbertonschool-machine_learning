@@ -125,7 +125,7 @@ class DeepNeuralNetwork:
     #         alpha (float, optional): Neuron learning rate. Defaults to 0.05.
     #     """
     #     m = Y.shape[1]
-    #     for layer in reversed(range(self.L)):
+    #     fr layer in reversed(range(self.L)):
     #         if layer == self.L - 1:
     #             dz = cache['A' + str(layer + 1)] - Y
     #         else:
