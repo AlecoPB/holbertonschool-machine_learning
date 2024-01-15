@@ -108,4 +108,4 @@ class DeepNeuralNetwork:
             db = np.sum(dz, axis=1, keepdims=True) / m
             dz_prev = dz
             self.weights['W' + str(layer + 1)] -= alpha * dw.T
-            self.weights['b' + str(layer + 1)] -= alpha * db
+            self.weights['b1'] -= alpha * db
