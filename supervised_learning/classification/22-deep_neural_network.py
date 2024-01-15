@@ -119,6 +119,23 @@ class DeepNeuralNetwork:
         return self.__weights
 
     def train(self, X, Y, iterations=5000, alpha=0.05):
+        """_summary_
+
+        Args:
+            X (_type_): _description_
+            Y (_type_): _description_
+            iterations (int, optional): _description_. Defaults to 5000.
+            alpha (float, optional): _description_. Defaults to 0.05.
+
+        Raises:
+            TypeError: _description_
+            ValueError: _description_
+            TypeError: _description_
+            ValueError: _description_
+
+        Returns:
+            _type_: _description_
+        """
         if not type(iterations) is int:
             raise TypeError("iterations must be an integer")
         elif iterations < 0:
