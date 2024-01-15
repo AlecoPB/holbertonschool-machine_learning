@@ -103,8 +103,8 @@ class DeepNeuralNetwork:
             if layer == self.L - 1:
                 dz = cache['A' + str(layer + 1)] - Y
             else:
-                dz = np.matmul(self.weights['W' + str(layer + 2)].T, dz_prev) * (cache['A' + str(layer + 1)] * (1 - cache['A' + str(layer + 1)]))
-            dw = np.matmul(dz, cache['A' + str(layer)].T) / m
+                dz = np.dot(self.weights['W' + str(layer + 2)].T, dz) * (cache['A' + str(layer + 1)] * (1 - cache['A' + str(layer + 1)]))
+            dw = np.dot(dz, cache['A' + str(layer)].T) / m
             db = np.sum(dz, axis=1, keepdims=True) / m
             #rint ("AQUI {}".format, db)
             dz_prev = dz
