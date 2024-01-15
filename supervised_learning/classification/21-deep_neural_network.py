@@ -117,25 +117,3 @@ class DeepNeuralNetwork:
             self.__weights['b' + str(i)] -= alpha * db
 
         return self.__weights
-
-    # def gradient_descent(self, Y, cache, alpha=0.05):
-    #     """
-    #     Calculates one pass of gradient descent on the neural network
-    #     Args:
-    #         Y (np.array): Correct labels for data
-    #         cache (dict): Activated outputs of each layer
-    #         alpha (float, optional): Neuron learning rate. Defaults to 0.05.
-    #     """
-    #     m = Y.shape[1]
-    #     fr layer in reversed(range(self.L)):
-    #         if layer == self.L - 1:
-    #             dz = cache['A' + str(layer + 1)] - Y
-    #         else:
-    #             dz = np.dot(self.weights['W' + str(layer + 2)].T, dz) *
-    # (cache['A' + str(layer + 1)] * (1 - cache['A' + str(layer + 1)]))
-    #         dw = np.dot(dz, cache['A' + str(layer)].T) / m
-    #         db = np.sum(dz, axis=1, keepdims=True) / m
-    #         #rint ("AQUI {}".format, db)
-    #         dz_prev = dz
-    #         self.weights['W' + str(layer + 1)] -= alpha * dw
-    #         self.weights['b' + str(layer + 1)] -= alpha * db
