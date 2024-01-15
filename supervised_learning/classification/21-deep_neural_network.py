@@ -109,7 +109,8 @@ class DeepNeuralNetwork:
         for i in range(self.__L, 0, -1):
             dw = np.matmul(cache['A' + str(i - 1)], dz.T) / m
             db = np.sum(dz, axis=1, keepdims=True) / m
-            dz = np.matmul(weights_copy['W' + str(i)].T, dz) * (cache['A' + str(i - 1)] * (1 - cache['A' + str(i - 1)]))
+            dz = np.matmul(weights_copy['W' + str(i)].T,
+                           dz) * (cache['A' + str(i - 1)] * (1 - cache['A' + str(i - 1)]))
 
             self.__weights['W' + str(i)] -= alpha * dw.T
             self.__weights['b' + str(i)] -= alpha * db
@@ -129,7 +130,8 @@ class DeepNeuralNetwork:
     #         if layer == self.L - 1:
     #             dz = cache['A' + str(layer + 1)] - Y
     #         else:
-    #             dz = np.dot(self.weights['W' + str(layer + 2)].T, dz) * (cache['A' + str(layer + 1)] * (1 - cache['A' + str(layer + 1)]))
+    #             dz = np.dot(self.weights['W' + str(layer + 2)].T, dz) * 
+    # (cache['A' + str(layer + 1)] * (1 - cache['A' + str(layer + 1)]))
     #         dw = np.dot(dz, cache['A' + str(layer)].T) / m
     #         db = np.sum(dz, axis=1, keepdims=True) / m
     #         #rint ("AQUI {}".format, db)
