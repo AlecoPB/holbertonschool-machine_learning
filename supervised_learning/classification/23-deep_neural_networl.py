@@ -119,7 +119,8 @@ class DeepNeuralNetwork:
 
         return self.__weights
 
-    def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True, graph=True, step=100):
+    def train(self, X, Y, iterations=5000, alpha=0.05,
+              verbose=True, graph=True, step=100):
         """_summary_
 
         Args:
@@ -146,9 +147,9 @@ class DeepNeuralNetwork:
         elif alpha < 0:
             raise ValueError("alpha must be positive")
         costs = []
-        for i in range(iterations):
+        for i in range(iterations + 1):
             self.forward_prop(X)
-            cost = self.cost(Y, self.cache(len(self.cache - 1)))
+            cost = self.cost(Y, self.cache['A' + str(self.L)])
             if i % step == 0 or i == iterations:
                 costs.append(cost)
                 if verbose:
