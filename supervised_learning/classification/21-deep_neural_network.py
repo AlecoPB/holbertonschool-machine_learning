@@ -105,7 +105,7 @@ class DeepNeuralNetwork:
             else:
                 dz = np.dot(self.weights['W' + str(layer + 2)].T, dz) * (cache['A' + str(layer + 1)] * (1 - cache['A' + str(layer + 1)]))
             dw = np.dot(dz, cache['A' + str(layer)].T) / m
-            db = np.sum(dz, axis=1) / m
+            db = np.sum(dz, axis=1, keepdims=True) / m
             #rint ("AQUI {}".format, db)
             dz_prev = dz
             self.weights['W' + str(layer + 1)] -= alpha * dw
