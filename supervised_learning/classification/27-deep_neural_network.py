@@ -5,7 +5,7 @@ This module contains a class defining a Neural Network
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
-one_hot_decode = __import__('27-one_hot_decode').one_hot_decode
+one_hot_decode = __import__('25-one_hot_decode').one_hot_decode
 
 
 class DeepNeuralNetwork:
