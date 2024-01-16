@@ -18,6 +18,9 @@ def one_hot_decode(one_hot):
     if not isinstance(one_hot, np.ndarray) or one_hot.ndim < 2:
         return None
 
+    if np.any(one_hot < 0):
+        return None
+
     if np.any(one_hot.sum(axis=1) > 1):
         return None
 
@@ -25,4 +28,5 @@ def one_hot_decode(one_hot):
         labels = np.argmax(one_hot, axis=0)
         return labels
     except Exception as e:
+        print(f"Error: {e}")
         return None
