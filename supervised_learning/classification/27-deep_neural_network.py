@@ -44,7 +44,7 @@ class DeepNeuralNetwork:
     def weights(self):
         return self.__weights
 
-    def sigmoid(Z):
+    def sigmoid(self, Z):
         """
         Sigmoid activation function
         Args:
@@ -52,7 +52,7 @@ class DeepNeuralNetwork:
         """
         return 1 / (1 + np.exp(-Z))
 
-    def softmax(Z):
+    def softmax(self, Z):
         """
         Softmax activation function
         """
