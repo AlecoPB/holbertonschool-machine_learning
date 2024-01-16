@@ -17,7 +17,7 @@ def one_hot_decode(one_hot):
         return None
     try:
         t_one_hot = one_hot.T
-        print(t_one_hot)
+        print("Primera: {} Segunda: {}".format(one_hot, t_one_hot))
         return np.argmax(one_hot, axis=0)
     except Exception as e:
         return None
