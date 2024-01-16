@@ -5,6 +5,7 @@ Method to decode a one_hot matrix
 """
 import numpy as np
 
+
 def one_hot_decode(one_hot):
     """_summary_
 
@@ -21,5 +22,4 @@ def one_hot_decode(one_hot):
         labels = np.argmax(one_hot, axis=0)
         return labels
     except Exception as e:
-        print(f"Error: {e}")
         return None
