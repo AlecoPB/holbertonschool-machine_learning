@@ -5,6 +5,7 @@ This module contains a class defining a Neural Network
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
+one_hot_decode = __import__('one_hot_decode').one_hot_decode
 
 
 class DeepNeuralNetwork:
@@ -106,7 +107,7 @@ class DeepNeuralNetwork:
         self.forward_prop(X)
 
         cost = self.cost(Y, self.__cache['A' + str(self.__L)])
-        A = np.argmax(self.__cache['A' + str(self.__L)], axis=0)
+        A = one_hot_decode(self.__cache['A' + str(self.__L)], axis=0)
         return A, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
