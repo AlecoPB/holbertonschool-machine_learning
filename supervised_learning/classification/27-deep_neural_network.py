@@ -107,7 +107,7 @@ class DeepNeuralNetwork:
         self.forward_prop(X)
 
         cost = self.cost(Y, self.__cache['A' + str(self.__L)])
-        A = one_hot_decode(self.__cache['A' + str(self.__L)], axis=0)
+        A = one_hot_decode(self.__cache['A' + str(self.__L)])
         return A, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
