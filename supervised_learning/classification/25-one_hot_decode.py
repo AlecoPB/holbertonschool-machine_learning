@@ -16,6 +16,8 @@ def one_hot_decode(one_hot):
     if not isinstance(one_hot, np.ndarray) or len(one_hot) == 0:
         return None
     try:
+        t_one_hot = one_hot.T
+        print(t_one_hot)
         return np.argmax(one_hot, axis=0)
     except Exception as e:
         return None
