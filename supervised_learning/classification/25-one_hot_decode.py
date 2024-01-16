@@ -5,17 +5,21 @@ Method to decode a one_hot matrix
 """
 import numpy as np
 
-
 def one_hot_decode(one_hot):
     """_summary_
 
     Args:
-        one_hot (np.ndarray): One_hot encoded matrix
-        with shape (classes, m)
+        one_hot (_type_): _description_
+
+    Returns:
+        _type_: _description_
     """
-    if not isinstance(one_hot, np.ndarray) or len(one_hot) == 0:
+    if not isinstance(one_hot, np.ndarray) or one_hot.ndim < 2:
         return None
+
     try:
-        return np.argmax(one_hot, axis=0)
+        labels = np.argmax(one_hot, axis=0)
+        return labels
     except Exception as e:
+        print(f"Error: {e}")
         return None
