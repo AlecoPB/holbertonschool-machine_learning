@@ -90,7 +90,7 @@ class DeepNeuralNetwork:
         Returns:
             Cost
         """
-        m = np.shape(Y)[1]
+        m = Y.shape[1]
         return -1 / m * np.sum(Y * np.log(A))
 
     def evaluate(self, X, Y):
@@ -105,7 +105,6 @@ class DeepNeuralNetwork:
             np.array: Cost
         """
         self.forward_prop(X)
-
         cost = self.cost(Y, self.__cache['A' + str(self.__L)])
         A = np.argmax(self.__cache['A' + str(self.__L)], axis=0)
         return A, cost
