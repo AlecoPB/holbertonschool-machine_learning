@@ -67,7 +67,10 @@ class DeepNeuralNetwork:
                               + self.weights['b' + str(i + 1)]
             if i != self.L - 1:
                 if self.__activation == 'sig':
-                    self.__cache['A' + str(i + 1)] = 1.0 / (1.0 + np.exp(-Z))  # sigmoid
+                    if Z >= 0:
+                        self.__cache['A' + str(i + 1)] = 1.0 / (1.0 + np.exp(-Z))
+                    else:
+                        self.__cache['A' + str(i + 1)] = np.exp(Z) / (1.0 + np.exp(Z)) # sigmoid
                 elif self.__activation == 'tanh':
                     self.__cache['A' + str(i + 1)] = np.tanh(Z)  # tanh
             else:
@@ -125,9 +128,7 @@ class DeepNeuralNetwork:
             db = np.sum(dz, axis=1, keepdims=True) / m
             if i > 1:
                 if self.__activation == 'sig':
-                    dz = np.matmul(weights_copy['W' + str(i)].T,
-                                dz) * (cache['A' + str(i - 1)]
-                                        * (1 - cache['A' + str(i - 1)]))  # sigmoid derivative
+                    dz = np.matmul(weights_copy['W' + str(i)].T, dz) * (cache['A' + str(i - 1)] * (1 - cache['A' + str(i - 1)]))  # sigmoid derivative  # sigmoid derivative
                 elif self.__activation == 'tanh':
                     dz = np.matmul(weights_copy['W' + str(i)].T,
                                 dz) * (1 - cache['A' + str(i - 1)]**2)  # tanh derivative
