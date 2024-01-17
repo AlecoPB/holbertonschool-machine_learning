@@ -15,8 +15,7 @@ def one_hot_decode(one_hot):
     Returns:
         _type_: _description_
     """
-    cond = not isinstance(one_hot, np.ndarray) or one_hot.ndim < 2\
-        or np.any(one_hot < 0) or np.any(one_hot.sum(axis=1) != 1)
+    cond = not isinstance(one_hot, np.ndarray) or one_hot.ndim < 2
         
     if cond:
         return None
