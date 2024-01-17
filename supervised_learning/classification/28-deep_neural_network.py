@@ -11,7 +11,7 @@ class DeepNeuralNetwork:
     """
     A Neural Network class
     """
-    def __init__(self, nx, layers):
+    def __init__(self, nx, layers, activation='sig'):
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
         elif nx < 1:
@@ -19,7 +19,10 @@ class DeepNeuralNetwork:
         if not isinstance(layers, list) or len(layers) == 0:
             raise TypeError("layers must be a list of positive integers")
         elif not all(map(lambda x: x > 0 and isinstance(x, int), layers)):
-            raise TypeError("layers must be a list of positive integers")
+            raise TypeError("layers must be a list of positive integers") 
+        if activation not in ['sig', 'tanh']:
+            raise ValueError("activation must be 'sig' or 'tanh'")
+        self.__activation = activation
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
@@ -43,6 +46,10 @@ class DeepNeuralNetwork:
     @property
     def weights(self):
         return self.__weights
+
+    @property
+    def activation(self):
+        return self.__activation
 
     def forward_prop(self, X):
         """0
