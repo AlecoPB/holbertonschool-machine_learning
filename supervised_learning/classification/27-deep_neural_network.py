@@ -61,7 +61,8 @@ class DeepNeuralNetwork:
             if i != self.L - 1:
                 self.__cache['A' + str(i + 1)] = 1.0 / (1.0 + np.exp(-Z))
             else:
-                self.__cache['A' + str(i + 1)] = np.exp(Z) / np.sum(np.exp(Z), axis=0)
+                self.__cache['A' + str(i + 1)] =\
+                    np.exp(Z) / np.sum(np.exp(Z), axis=0)
         return self.__cache['A' + str(self.L)], self.__cache
 
     def cost(self, Y, A):
