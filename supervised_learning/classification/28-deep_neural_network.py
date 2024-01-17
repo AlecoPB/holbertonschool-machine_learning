@@ -123,13 +123,14 @@ class DeepNeuralNetwork:
         for i in range(self.__L, 0, -1):
             dw = np.matmul(cache['A' + str(i - 1)], dz.T) / m
             db = np.sum(dz, axis=1, keepdims=True) / m
-            if self.__activation == 'sig':
-                dz = np.matmul(weights_copy['W' + str(i)].T,
-                               dz) * (cache['A' + str(i - 1)]
-                                      * (1 - cache['A' + str(i - 1)]))  # sigmoid derivative
-            elif self.__activation == 'tanh':
-                dz = np.matmul(weights_copy['W' + str(i)].T,
-                               dz) * (1 - cache['A' + str(i - 1)]**2)  # tanh derivative
+            if i > 1:
+                if self.__activation == 'sig':
+                    dz = np.matmul(weights_copy['W' + str(i)].T,
+                                dz) * (cache['A' + str(i - 1)]
+                                        * (1 - cache['A' + str(i - 1)]))  # sigmoid derivative
+                elif self.__activation == 'tanh':
+                    dz = np.matmul(weights_copy['W' + str(i)].T,
+                                dz) * (1 - cache['A' + str(i - 1)]**2)  # tanh derivative
 
             self.__weights['W' + str(i)] -= alpha * dw.T
             self.__weights['b' + str(i)] -= alpha * db
