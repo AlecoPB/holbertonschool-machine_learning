@@ -5,7 +5,6 @@ This module contains a class defining a Neural Network
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
-one_hot_decode = __import__('25-one_hot_decode').one_hot_decode
 
 
 class DeepNeuralNetwork:
@@ -45,20 +44,6 @@ class DeepNeuralNetwork:
     def weights(self):
         return self.__weights
 
-    def sigmoid(self, Z):
-        """
-        Sigmoid activation function
-        Args:
-            Z (float)
-        """
-        return 1 / (1 + np.exp(-Z))
-
-    def softmax(self, Z):
-        """
-        Softmax activation function
-        """
-        return np.exp(Z) / np.sum(np.exp(Z), axis=0)
-
     def forward_prop(self, X):
         """0
 
@@ -73,11 +58,10 @@ class DeepNeuralNetwork:
             Z = np.matmul(self.weights['W' + str(i + 1)],
                           self.__cache['A' + str(i)])\
                               + self.weights['b' + str(i + 1)]
-            if i == self.L - 1:
-                self.__cache['A' + str(i + 1)] = self.softmax(Z)
+            if i != self.L - 1:
+                self.__cache['A' + str(i + 1)] = 1.0 / (1.0 + np.exp(-Z))
             else:
-                self.__cache['A' + str(i + 1)] = self.sigmoid(Z)
-
+                self.__cache['A' + str(i + 1)] = np.exp(Z) / np.sum(np.exp(Z), axis=0)
         return self.__cache['A' + str(self.L)], self.__cache
 
     def cost(self, Y, A):
@@ -90,8 +74,9 @@ class DeepNeuralNetwork:
         Returns:
             Cost
         """
-        m = Y.shape[1]
-        return -1 / m * np.sum(Y * np.log(A))
+        m = np.shape(Y)[1]
+        sum = np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
+        return (-1 / m) * sum
 
     def evaluate(self, X, Y):
         """
@@ -105,8 +90,9 @@ class DeepNeuralNetwork:
             np.array: Cost
         """
         self.forward_prop(X)
+
         cost = self.cost(Y, self.__cache['A' + str(self.__L)])
-        A = one_hot_decode(Y)
+        A = np.where(self.__cache['A' + str(self.__L)] == np.max(self.__cache['A' + str(self.__L)], axis=0), 1, 0)
         return A, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
