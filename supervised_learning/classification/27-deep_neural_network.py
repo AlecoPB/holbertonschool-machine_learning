@@ -75,8 +75,7 @@ class DeepNeuralNetwork:
             Cost
         """
         m = np.shape(Y)[1]
-        sum = np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
-        return (-1 / m) * sum
+        return -1 / m * np.sum(Y * np.log(A))
 
     def evaluate(self, X, Y):
         """
@@ -92,7 +91,7 @@ class DeepNeuralNetwork:
         self.forward_prop(X)
 
         cost = self.cost(Y, self.__cache['A' + str(self.__L)])
-        A = np.where(self.__cache['A' + str(self.__L)] == np.max(self.__cache['A' + str(self.__L)], axis=0), 1, 0)
+        A = np.where(self.__cache['A' + str(self.__L)] >= 0.5, 1, 0)
         return A, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
