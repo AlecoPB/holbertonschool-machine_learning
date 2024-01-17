@@ -15,14 +15,15 @@ def one_hot_decode(one_hot):
     Returns:
         _type_: _description_
     """
-    cond = not isinstance(one_hot, np.ndarray) or one_hot.ndim < 2 or np.any(one_hot.sum(axis=0) != 1)
-        
+    cond = not isinstance(one_hot, np.ndarray) or\
+        one_hot.ndim < 2 or np.any(one_hot.sum(axis=0) != 1)
+
     if cond:
         return None
 
     try:
         labels = np.argmax(one_hot, axis=0)
         return labels
-    
+
     except Exception as e:
         return None
