@@ -67,10 +67,7 @@ class DeepNeuralNetwork:
                               + self.weights['b' + str(i + 1)]
             if i != self.L - 1:
                 if self.__activation == 'sig':
-                    if Z >= 0:
-                        self.__cache['A' + str(i + 1)] = 1.0 / (1.0 + np.exp(-Z))
-                    else:
-                        self.__cache['A' + str(i + 1)] = np.exp(Z) / (1.0 + np.exp(Z)) # sigmoid
+                    self.__cache['A' + str(i + 1)] = 1.0 / (1.0 + np.exp(-Z))  # sigmoid
                 elif self.__activation == 'tanh':
                     self.__cache['A' + str(i + 1)] = np.tanh(Z)  # tanh
             else:
