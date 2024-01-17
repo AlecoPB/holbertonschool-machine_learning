@@ -50,7 +50,7 @@ class DeepNeuralNetwork:
     @property
     def activation(self):
         return self.__activation
-
+    
     def forward_prop(self, X):
         """0
 
@@ -133,7 +133,6 @@ class DeepNeuralNetwork:
 
             self.__weights['W' + str(i)] -= alpha * dw.T
             self.__weights['b' + str(i)] -= alpha * db
-
 
         return self.__weights
 
