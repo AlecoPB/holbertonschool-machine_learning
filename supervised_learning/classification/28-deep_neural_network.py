@@ -101,11 +101,10 @@ class DeepNeuralNetwork:
         """
         self.forward_prop(X)
         cost = self.cost(Y, self.__cache['A' + str(self.__L)])
-        print("ESTA ES A ANTES DE SER EVALUADA {}".format(self.__cache['A' + str(self.__L)]))
         if self.activation == 'sig':
-            A = np.where(self.__cache['A' + str(self.__L)] >= 0.5, 1, 0)
+            A = np.where(self.__cache['A' + str(self.__L)] >= np.mean(self.__cache['A' + str(self.__L)]), 1, 0)
         elif self.activation == 'tanh':
-            A = np.where((self.__cache['A' + str(self.__L)] + 1) / 2 >= 0.5, 1, 0)
+            A = np.where((self.__cache['A' + str(self.__L)] + 1) / 2 >= np.mean((self.__cache['A' + str(self.__L)] + 1) / 2), 1, 0)
         return A, cost
     
     def gradient_descent(self, Y, cache, alpha=0.05):
