@@ -11,7 +11,7 @@ class DeepNeuralNetwork:
     """
     A Neural Network class
     """
-    def __init__(self, nx, layers):
+    def __init__(self, nx, layers, activation='sig'):
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
         elif nx < 1:
@@ -19,7 +19,10 @@ class DeepNeuralNetwork:
         if not isinstance(layers, list) or len(layers) == 0:
             raise TypeError("layers must be a list of positive integers")
         elif not all(map(lambda x: x > 0 and isinstance(x, int), layers)):
-            raise TypeError("layers must be a list of positive integers")
+            raise TypeError("layers must be a list of positive integers") 
+        if activation not in ['sig', 'tanh']:
+            raise ValueError("activation must be 'sig' or 'tanh'")
+        self.__activation = activation
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
@@ -44,6 +47,10 @@ class DeepNeuralNetwork:
     def weights(self):
         return self.__weights
 
+    @property
+    def activation(self):
+        return self.__activation
+    
     def forward_prop(self, X):
         """0
 
@@ -59,10 +66,12 @@ class DeepNeuralNetwork:
                           self.__cache['A' + str(i)])\
                               + self.weights['b' + str(i + 1)]
             if i != self.L - 1:
-                self.__cache['A' + str(i + 1)] = 1.0 / (1.0 + np.exp(-Z))
+                if self.__activation == 'sig':
+                    self.__cache['A' + str(i + 1)] = 1.0 / (1.0 + np.exp(-Z))  # sigmoid
+                elif self.__activation == 'tanh':
+                    self.__cache['A' + str(i + 1)] = np.tanh(Z)  # tanh
             else:
-                self.__cache['A' + str(i + 1)] =\
-                    np.exp(Z) / np.sum(np.exp(Z), axis=0)
+                self.__cache['A' + str(i + 1)] = np.exp(Z) / np.sum(np.exp(Z), axis=0)  # softmax for output layer
         return self.__cache['A' + str(self.L)], self.__cache
 
     def cost(self, Y, A):
@@ -114,9 +123,12 @@ class DeepNeuralNetwork:
         for i in range(self.__L, 0, -1):
             dw = np.matmul(cache['A' + str(i - 1)], dz.T) / m
             db = np.sum(dz, axis=1, keepdims=True) / m
-            dz = np.matmul(weights_copy['W' + str(i)].T,
-                           dz) * (cache['A' + str(i - 1)]
-                                  * (1 - cache['A' + str(i - 1)]))
+            if i > 1:
+                if self.__activation == 'sig':
+                    dz = np.matmul(weights_copy['W' + str(i)].T, dz) * (cache['A' + str(i - 1)] * (1 - cache['A' + str(i - 1)]))  # sigmoid derivative  # sigmoid derivative
+                elif self.__activation == 'tanh':
+                    dz = np.matmul(weights_copy['W' + str(i)].T,
+                                dz) * (1 - cache['A' + str(i - 1)]**2)  # tanh derivative
 
             self.__weights['W' + str(i)] -= alpha * dw.T
             self.__weights['b' + str(i)] -= alpha * db
