@@ -19,10 +19,7 @@ class DeepNeuralNetwork:
         if not isinstance(layers, list) or len(layers) == 0:
             raise TypeError("layers must be a list of positive integers")
         elif not all(map(lambda x: x > 0 and isinstance(x, int), layers)):
-            raise TypeError("layers must be a list of positive integers") 
-        if activation not in ['sig', 'tanh']:
-            raise ValueError("activation must be 'sig' or 'tanh'")
-        self.__activation = activation
+            raise TypeError("layers must be a list of positive integers")
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
@@ -34,6 +31,13 @@ class DeepNeuralNetwork:
                 self.__weights['W' + str(i + 1)] = np.random.randn(
                     layers[i], layers[i - 1]) * np.sqrt(2 / layers[i - 1])
             self.__weights['b' + str(i + 1)] = np.zeros((layers[i], 1))
+        if activation not in ['sig', 'tanh']:
+            raise ValueError("activation must be 'sig' or 'tanh'")
+        self.__activation = activation
+
+    @property
+    def activation(self):
+        return self.__activation
 
     @property
     def L(self):
@@ -47,10 +51,6 @@ class DeepNeuralNetwork:
     def weights(self):
         return self.__weights
 
-    @property
-    def activation(self):
-        return self.__activation
-    
     def forward_prop(self, X):
         """0
 
@@ -67,11 +67,12 @@ class DeepNeuralNetwork:
                               + self.weights['b' + str(i + 1)]
             if i != self.L - 1:
                 if self.__activation == 'sig':
-                    self.__cache['A' + str(i + 1)] = 1.0 / (1.0 + np.exp(-Z))  # sigmoid
+                    self.__cache['A' + str(i + 1)] = 1.0 / (1.0 + np.exp(-Z))
                 elif self.__activation == 'tanh':
-                    self.__cache['A' + str(i + 1)] = np.tanh(Z)  # tanh
+                    self.__cache['A' + str(i + 1)] = np.tanh(Z)
             else:
-                self.__cache['A' + str(i + 1)] = np.exp(Z) / np.sum(np.exp(Z), axis=0)  # softmax for output layer
+                self.__cache['A' + str(i + 1)] =\
+                    np.exp(Z) / np.sum(np.exp(Z), axis=0)
         return self.__cache['A' + str(self.L)], self.__cache
 
     def cost(self, Y, A):
@@ -99,11 +100,14 @@ class DeepNeuralNetwork:
             np.array: Cost
         """
         self.forward_prop(X)
-
         cost = self.cost(Y, self.__cache['A' + str(self.__L)])
-        A = np.where(self.__cache['A' + str(self.__L)] >= 0.5, 1, 0)
+        print("ESTA ES A ANTES DE SER EVALUADA {}".format(self.__cache['A' + str(self.__L)]))
+        if self.activation == 'sig':
+            A = np.where(self.__cache['A' + str(self.__L)] >= 0.5, 1, 0)
+        elif self.activation == 'tanh':
+            A = np.where((self.__cache['A' + str(self.__L)] + 1) / 2 >= 0.5, 1, 0)
         return A, cost
-
+    
     def gradient_descent(self, Y, cache, alpha=0.05):
         """
         Calculate one pass of gradient descent on the neural network
@@ -123,12 +127,13 @@ class DeepNeuralNetwork:
         for i in range(self.__L, 0, -1):
             dw = np.matmul(cache['A' + str(i - 1)], dz.T) / m
             db = np.sum(dz, axis=1, keepdims=True) / m
-            if i > 1:
-                if self.__activation == 'sig':
-                    dz = np.matmul(weights_copy['W' + str(i)].T, dz) * (cache['A' + str(i - 1)] * (1 - cache['A' + str(i - 1)]))  # sigmoid derivative  # sigmoid derivative
-                elif self.__activation == 'tanh':
-                    dz = np.matmul(weights_copy['W' + str(i)].T,
-                                dz) * (1 - cache['A' + str(i - 1)]**2)  # tanh derivative
+            if self.__activation == 'sig':
+                dz = np.matmul(weights_copy['W' + str(i)].T,
+                               dz) * (cache['A' + str(i - 1)]
+                                      * (1 - cache['A' + str(i - 1)]))
+            elif self.__activation == 'tanh':
+                dz = np.matmul(weights_copy['W' + str(i)].T,
+                               dz) * (1 - cache['A' + str(i - 1)] ** 2)
 
             self.__weights['W' + str(i)] -= alpha * dw.T
             self.__weights['b' + str(i)] -= alpha * db
