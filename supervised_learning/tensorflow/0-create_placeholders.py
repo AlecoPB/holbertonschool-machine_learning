@@ -14,7 +14,7 @@ def create_placeholders(nx, classes):
         classes (int): number of classes in our classifier
 
     Returns:
-        _type_: placeholders 
+        _type_: placeholders
     """
     x = tf.placeholder(dtype=tf.float32, shape=[None, nx], name='x')
     y = tf.placeholder(dtype=tf.float32, shape=[None, classes], name='y')
