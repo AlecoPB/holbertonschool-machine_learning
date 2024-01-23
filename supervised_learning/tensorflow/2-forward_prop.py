@@ -15,7 +15,8 @@ def forward_prop(x, layer_sizes=[], activations=[]):
     """
     layer_input = x
     for i in range(len(layer_sizes)):
-        layer_output = create_layer(layer_input, layer_sizes[i], activations[i])
+        layer_output = create_layer(layer_input,
+                                    layer_sizes[i], activations[i])
         layer_input = layer_output
     prediction = layer_output
     return prediction
