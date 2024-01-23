@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 """
 This is some documentation
 """
