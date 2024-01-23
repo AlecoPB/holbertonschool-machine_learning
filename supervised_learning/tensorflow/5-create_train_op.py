@@ -2,7 +2,7 @@
 """
 This is some documentation
 """
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 
 def create_train_op(loss, alpha):
