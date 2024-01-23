@@ -15,6 +15,6 @@ def calculate_loss(y, y_pred):
     """
     # Compute softmax cross-entropy loss
 
-    loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(\
+    loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
         labels=y, logits=y_pred))
     return loss
