@@ -14,7 +14,7 @@ def forward_prop(x, layer_sizes=[], activations=[]):
         activations (list, optional): _description_. Defaults to [].
     """
     layers = []
-    for i in range(len(layers)):
+    for i in range(len(activations)):
         if i == 0:
             layers.append(create_layer(x, layer_sizes[i], activations[i]))
         else:
