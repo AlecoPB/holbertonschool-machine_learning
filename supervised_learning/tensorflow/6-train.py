@@ -55,4 +55,4 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
     saver.save(sess, save_path)
     sess.close()
 
-    return 0
+    return save_path
