@@ -23,7 +23,7 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
         activations (_type_): _description_
         alpha (_type_): _description_
         iterations (_type_): _description_
-        save_path (str, optional): _description_. Defaults to "/tmp/model.ckpt".
+        save_path (str, optional): _description_.
 
     Returns:
         _type_: _description_
@@ -48,7 +48,7 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
         for i in range(iterations):
 
             _, train_loss, train_accuracy =\
-                sess.run([train_op, loss, accuracy], feed_dict={x: X_train, 
+                sess.run([train_op, loss, accuracy], feed_dict={x: X_train,
                                                                 y: Y_train})
             # Every 100 iterations, validate the model
             if i % 100 == 0 or i == iterations:
