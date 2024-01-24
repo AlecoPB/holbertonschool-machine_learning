@@ -39,21 +39,17 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
     tf.add_to_collection('accuracy', accuracy)
     tf.add_to_collection('loss', loss)
     tf.add_to_collection('train_op', train_op)
-
+    print("first print")
     init = tf.global_variables_initializer()
-
-    # Start a session
     with tf.Session() as sess:
         sess.run(init)
+        print("Second print")
         for i in range(iterations):
 
             _, train_loss, train_accuracy =\
                 sess.run([train_op, loss, accuracy], feed_dict={x: X_train,
                                                                 y: Y_train})
-            # Every 100 iterations, validate the model
             if i % 100 == 0 or i == iterations:
-                # Calculate the validation loss and accuracy
-
                 valid_loss, valid_accuracy =\
                     sess.run([loss, accuracy], feed_dict={x: X_valid,
                                                           y: Y_valid})
@@ -62,8 +58,7 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
                 print("\tTraining Accuracy: {}".format(train_accuracy))
                 print("\tValidation Cost: {}".format(valid_loss))
                 print("\tValidation Accuracy: {}".format(valid_accuracy))
-
-        # Save the model
+            print("Third print")
         saver = tf.train.Saver()
         save_path = saver.save(sess, save_path)
 
