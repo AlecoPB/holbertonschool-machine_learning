@@ -30,9 +30,13 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
     """
     print("first print")
     x, y = create_placeholders(X_train.shape[1], Y_train.shape[1])
+    print("placehol")
     y_pred = forward_prop(X_train, layer_sizes, activations)
+    print("forpro")
     accuracy = calculate_accuracy(y_pred, Y_train)
+    print("accu")
     loss = calculate_loss(y_pred, Y_train)
+    print("loss")
     train_op = create_train_op(loss, alpha)
     # tf.add_to_collection('x', x)
     # tf.add_to_collection('y', y)
