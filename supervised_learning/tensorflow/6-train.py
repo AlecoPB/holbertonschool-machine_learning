@@ -33,22 +33,23 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
     accuracy = calculate_accuracy(y_pred, Y_train)
     loss = calculate_loss(y_pred, Y_train)
     train_op = create_train_op(loss, alpha)
-    # tf.add_to_collection('x', x)
-    # tf.add_to_collection('y', y)
-    # tf.add_to_collection('y_pred', y_pred)
-    # tf.add_to_collection('accuracy', accuracy)
-    # tf.add_to_collection('loss', loss)
-    with tf.Session() as sess:
-        sess.run(tf.global_variables_initializer())
-        for i in range(iterations):
-            sess.run(train_op)
-            if i % 100 == 0 or i == iterations:
-                print("After {} iterations:".format(i))
-                print("\tTraining Cost: {}".format(train_loss))
-                print("\tTraining Accuracy: {}".format(train_accuracy))
-                print("\tValidation Cost: {}".format(valid_loss))
-                print("\tValidation Accuracy: {}".format(valid_accuracy))
-            print("Third print")
+    tf.add_to_collection('x', x)
+    tf.add_to_collection('y', y)
+    tf.add_to_collection('y_pred', y_pred)
+    tf.add_to_collection('accuracy', accuracy)
+    tf.add_to_collection('loss', loss)
+    sess = tf.Session()
+    sess.run(tf.global_variables_initializer())
+    for i in range(iterations):
+        sess.run(train_op)
+        if i % 100 == 0 or i == iterations:
+            print("After {} iterations:".format(i))
+            print("\tTraining Cost: {}".format(train_loss))
+            print("\tTraining Accuracy: {}".format(train_accuracy))
+            print("\tValidation Cost: {}".format(valid_loss))
+            print("\tValidation Accuracy: {}".format(valid_accuracy))
+        print("Third print")
+    sess.close()
     # saver = tf.train.Saver()
 
     return 0
