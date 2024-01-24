@@ -50,7 +50,7 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
             _, train_loss, train_accuracy =\
                 sess.run([train_op, loss, accuracy], feed_dict={x: X_train,
                                                                 y: Y_train})
-            # Every 100 iterations, validate the model
+            print("IN")
             if i % 100 == 0 or i == iterations:
                 # Calculate the validation loss and accuracy
 
@@ -62,7 +62,7 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
                 print("\tTraining Accuracy: {}".format(train_accuracy))
                 print("\tValidation Cost: {}".format(valid_loss))
                 print("\tValidation Accuracy: {}".format(valid_accuracy))
-
+            print("OUT")
         # Save the model
         saver = tf.train.Saver()
         save_path = saver.save(sess, save_path)
