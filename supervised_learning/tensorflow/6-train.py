@@ -36,7 +36,7 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
     accuracy = calculate_accuracy(y_pred, Y_train)
     print("accu")
     loss = calculate_loss(y_pred, Y_train)
-    print("loss")
+    print(loss, alpha)
     train_op = create_train_op(loss, alpha)
     print("trainop")
     # tf.add_to_collection('x', x)
