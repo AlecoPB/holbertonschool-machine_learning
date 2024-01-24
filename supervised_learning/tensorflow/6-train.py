@@ -28,6 +28,7 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
     Returns:
         _type_: _description_
     """
+    print("first print")
     x, y = create_placeholders(X_train.shape[1], Y_train.shape[1])
     y_pred = forward_prop(X_train, layer_sizes, activations)
     accuracy = calculate_accuracy(y_pred, Y_train)
@@ -39,7 +40,7 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
     tf.add_to_collection('accuracy', accuracy)
     tf.add_to_collection('loss', loss)
     tf.add_to_collection('train_op', train_op)
-    print("first print")
+    
     # init = tf.global_variables_initializer()
     # with tf.Session() as sess:
     #     sess.run(init)
