@@ -46,7 +46,7 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
         sess.run(init)
         print("Second print")
         for i in range(iterations):
-            train_op = create_train_op(loss, alpha)
+            # train_op = create_train_op(loss, alpha)
 
             _, train_loss, train_accuracy =\
                 sess.run([train_op, loss, accuracy], feed_dict={x: X_train,
