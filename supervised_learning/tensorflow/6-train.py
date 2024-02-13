@@ -39,7 +39,8 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
     
     with tf.Session() as sess:
         sess.run(init)
-        for i in range(iterations + 1):
+        for i in range(iterations):
+            print(i)
             t_cost, t_acc, _ = sess.run([loss, accuracy, train_op], feed_dict={x: X_train, y: Y_train})
             if i % 100 == 0 or i == iterations:
                 v_cost, v_acc = sess.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
