@@ -36,11 +36,10 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
     
     init = tf.global_variables_initializer()
     saver = tf.train.Saver()
-    
+
     with tf.Session() as sess:
         sess.run(init)
         for i in range(iterations):
-            print(i)
             t_cost, t_acc, _ = sess.run([loss, accuracy, train_op], feed_dict={x: X_train, y: Y_train})
             if i % 100 == 0 or i == iterations:
                 v_cost, v_acc = sess.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
@@ -49,33 +48,6 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
                 print("\tTraining Accuracy: {}".format(t_acc))
                 print("\tValidation Cost: {}".format(v_cost))
                 print("\tValidation Accuracy: {}".format(v_acc))
-                
+
         save_path = saver.save(sess, save_path)
     return save_path
-    # x, y = create_placeholders(X_train.shape[1], Y_train.shape[1])
-    # y_pred = forward_prop(x, layer_sizes, activations)
-    # accuracy = calculate_accuracy(y_pred, y)
-    # loss = calculate_loss(y_pred, y)
-    # train_op = create_train_op(loss, alpha)
-    # tf.add_to_collection('x', x)
-    # tf.add_to_collection('y', y)
-    # tf.add_to_collection('y_pred', y_pred)
-    # tf.add_to_collection('accuracy', accuracy)
-    # tf.add_to_collection('loss', loss)
-    # with tf.Session() as sess:
-    #     sess.run(tf.global_variables_initializer())
-    #     for i in range(iterations):
-    #         sess.run(train_op, feed_dict={x: X_train, y: Y_train})
-    #         if i % 100 == 0 or i == iterations:
-    #             train_accuracy, train_loss = sess.run([accuracy, loss], feed_dict={x: X_train, y: Y_train})
-    #             valid_accuracy, valid_loss = sess.run([accuracy, loss], feed_dict={x: X_valid, y: Y_valid})
-    #             print("After {} iterations:".format(i))
-    #             print("\tTraining Cost: {}".format(train_loss))
-    #             print("\tTraining Accuracy: {}".format(train_accuracy))
-    #             print("\tValidation Cost: {}".format(valid_loss))
-    #             print("\tValidation Accuracy: {}".format(valid_accuracy))
-
-    #     saver = tf.train.Saver()
-    #     save_path = saver.save(sess, save_path)
-
-    # return save_path
