@@ -36,6 +36,7 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
     
     init = tf.global_variables_initializer()
     saver = tf.train.Saver()
+    print("print")
 
     with tf.Session() as sess:
         sess.run(init)
