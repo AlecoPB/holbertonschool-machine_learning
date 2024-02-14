@@ -31,8 +31,8 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes,
     x, y = create_placeholders(X_train.shape[1], Y_train.shape[1])
     y_pred = forward_prop(x, layer_sizes, activations)
     loss = calculate_loss(y, y_pred)
-    accuracy = calculate_accuracy(y, y_pred)
     print("print")
+    accuracy = calculate_accuracy(y, y_pred)
     train_op = create_train_op(loss, alpha)
     
     init = tf.global_variables_initializer()
