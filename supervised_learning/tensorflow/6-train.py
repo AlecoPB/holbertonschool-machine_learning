@@ -16,16 +16,16 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes, activations, alpha, i
     
     init = tf.global_variables_initializer()
     saver = tf.train.Saver()
-    # with tf.Session() as sess:
-    #     sess.run(init)
-    #     for i in range(iterations):
-    #         t_cost, t_acc, _ = sess.run([loss, accuracy, train_op], feed_dict={x: X_train, y: Y_train})
-    #         if i % 100 == 0 or i == iterations:
-    #             v_cost, v_acc = sess.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
-    #             print("After {} iterations:".format(i))
-    #             print("\tTraining Cost: {}".format(t_cost))
-    #             print("\tTraining Accuracy: {}".format(t_acc))
-    #             print("\tValidation Cost: {}".format(v_cost))
-    #             print("\tValidation Accuracy: {}".format(v_acc))
+    with tf.Session() as sess:
+        sess.run(init)
+        for i in range(iterations):
+            t_cost, t_acc, _ = sess.run([loss, accuracy, train_op], feed_dict={x: X_train, y: Y_train})
+            if i % 100 == 0 or i == iterations:
+                v_cost, v_acc = sess.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
+                print("After {} iterations:".format(i))
+                print("\tTraining Cost: {}".format(t_cost))
+                print("\tTraining Accuracy: {}".format(t_acc))
+                print("\tValidation Cost: {}".format(v_cost))
+                print("\tValidation Accuracy: {}".format(v_acc))
                 
-    return 1
+    return saver.save(sess, save_path)
