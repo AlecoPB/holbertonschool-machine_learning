@@ -8,10 +8,10 @@ import tensorflow.compat.v1 as tf
 def create_train_op(loss, alpha):
     """
     Args:
-        y (_type_): Placeholder for the labels of the input data
-        y_pred (_type_): Tensor containing the network’s predictions
+        loss (_type_): Tensor containing the loss of the prediction
+        alpha (_type_): Learning rate for the gradient descent optimizer
     Returns:
-        A tensor containing the loss of the prediction
+        A tensor containing the operation to minimize the loss
     """
     optimizer = tf.train.GradientDescentOptimizer(alpha)
     train_op = optimizer.minimize(loss)
