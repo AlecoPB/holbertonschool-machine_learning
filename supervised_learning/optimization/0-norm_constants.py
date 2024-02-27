@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
+"""
+
+Returns:
+    _type_: _description_
+"""
 import numpy as np
-"""
-This is some documentation
-"""
 
 
 def normalization_constants(X):
