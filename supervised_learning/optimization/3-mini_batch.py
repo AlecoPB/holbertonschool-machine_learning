@@ -2,9 +2,7 @@
 """_summary_
 This is some documentation
 """
-import numpy as np
-import tensorflow as tf
-from tqdm import tqdm
+import tensorflow.compat.v1 as tf
 
 
 def train_mini_batch(X_train, Y_train, X_valid, Y_valid, batch_size=32, epochs=5, load_path="/tmp/model.ckpt", save_path="/tmp/model.ckpt"):
