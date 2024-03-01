@@ -18,7 +18,7 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid, batch_size=32, epochs=5
         
         for c_epoch in range(epochs):
             train_cost, train_accuracy = sess.run([loss, accuracy], feed_dict={x : X_train, y : Y_train} )
-            print("After {} epochs:\tTraining Cost: {}\tTraining Accuracy: {}".format(c_epoch, X_train, Y_train))
+            print("After {} epochs:\tTraining Cost: {}\tTraining Accuracy: {}".format(c_epoch, train_cost, train_accuracy))
             X_shuffled, Y_shuffled = shuffle_data(X_train, Y_train)
             
             m = X_shuffled.shape[0]
