@@ -17,8 +17,9 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid, batch_size=32, epochs=5
         train_op = tf.get_colletcion('train_op')[0]
         
         for c_epoch in range(epochs):
-            train_cost, train_accuracy = sess.run([loss, accuracy], feed_dict={x : X_train, y : Y_train} )
-            print("After {} epochs:\tTraining Cost: {}\tTraining Accuracy: {}".format(c_epoch, train_cost, train_accuracy))
+            train_cost, train_accuracy = sess.run([loss, accuracy], feed_dict={x: X_train, y: Y_train})
+            valid_cost, valid_accuracy = sess.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
+            print(f"After {c_epoch} epochs:\n\tTraining Cost: {train_cost}\n\tTraining Accuracy: {train_accuracy}\n\tValidation Cost: {valid_cost}\n\tValidation Accuracy: {valid_accuracy}")
             X_shuffled, Y_shuffled = shuffle_data(X_train, Y_train)
             
             m = X_shuffled.shape[0]
