@@ -8,8 +8,8 @@ import tensorflow.compat.v1 as tf
 def train_mini_batch(X_train, Y_train, X_valid, Y_valid, batch_size=32, epochs=5, load_path="/tmp/model.ckpt", save_path="/tmp/model.ckpt"):
     shuffle_data = __import__('2-shuffle_data').shuffle_data
 
+    saver = tf.train.import_meta_graph(load_path + '.meta')
     with tf.Session() as sess:
-        saver = tf.train.import_meta_graph(load_path + '.meta')
         saver.restore(sess, load_path)
 
         x = tf.get_collection('x')[0]
