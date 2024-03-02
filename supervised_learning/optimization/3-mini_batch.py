@@ -14,7 +14,7 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid, batch_size=32, epochs=5
         y = tf.get_collection('y')[0]
         accuracy = tf.get_collection('accuracy')[0]
         loss = tf.get_collection('loss')[0]
-        train_op = tf.get_colletcion('train_op')[0]
+        train_op = tf.get_collection('train_op')[0]
         
         for c_epoch in range(epochs):
             X_shuffled, Y_shuffled = shuffle_data(X_train, Y_train)
