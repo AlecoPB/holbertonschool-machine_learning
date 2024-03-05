@@ -61,7 +61,7 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid, batch_size=32,
                         sess.run([loss, accuracy], feed_dict={x: X_batch, y: Y_batch})
                     if i != 0:
                         print(f"\tStep {(i // batch_size) + 1}:"
-                              f"\n\t\tCost: {step_cost}\n\t\tAccuracy: {step_accuracy}")
+                              f"n\t\tCost: {step_cost}\n\t\tAccuracy: {step_accuracy}")
         train_cost, train_accuracy = sess.run([loss, accuracy], feed_dict={x: X_train, y: Y_train})
         valid_cost, valid_accuracy = sess.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
         print(f"After {c_epoch + 1} epochs:\n\tTraining Cost: {train_cost}"
