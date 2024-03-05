@@ -18,7 +18,7 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid, batch_size=32, epochs=5
         train_op = tf.get_collection('train_op')[0]
         
         m = X_train.shape[0]
-        for c_epoch in range(epochs + 1):
+        for c_epoch in range(epochs):
             X_shuffled, Y_shuffled = shuffle_data(X_train, Y_train)
            
             train_cost, train_accuracy = sess.run([loss, accuracy], feed_dict={x: X_train, y: Y_train})
@@ -32,4 +32,7 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid, batch_size=32, epochs=5
                     step_cost, step_accuracy = sess.run([loss, accuracy], feed_dict={x: X_batch, y: Y_batch})
                     print("Step {}, and batch size is {}".format(i, batch_size))
                     print(f"\tStep {i // batch_size}:\n\t\tCost: {step_cost}\n\t\tAccuracy: {step_accuracy}")
+        train_cost, train_accuracy = sess.run([loss, accuracy], feed_dict={x: X_train, y: Y_train})
+        valid_cost, valid_accuracy = sess.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
+        print(f"After {c_epoch} epochs:\n\tTraining Cost: {train_cost}\n\tTraining Accuracy: {train_accuracy}\n\tValidation Cost: {valid_cost}\n\tValidation Accuracy: {valid_accuracy}")
     return save_path
