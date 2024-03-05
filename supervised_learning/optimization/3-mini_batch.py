@@ -60,10 +60,15 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid, batch_size=32,
                     step_cost, step_accuracy =\
                         sess.run([loss, accuracy], feed_dict={x: X_batch, y: Y_batch})
                     if i != 0:
-                        print(f"\tStep {(i // batch_size) + 1}:\n\t\tCost:"
-                              f"{step_cost}\n\t\tAccuracy: {step_accuracy}")
+                        print(f"\tStep {(i // batch_size) + 1}:"
+                        f"\n\t\tCost: {step_cost}"
+                        f"\n\t\tAccuracy: {step_accuracy}")
         train_cost, train_accuracy = sess.run([loss, accuracy], feed_dict={x: X_train, y: Y_train})
         valid_cost, valid_accuracy = sess.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
-        print(f"After {c_epoch + 1} epochs:\n\tTraining Cost: {train_cost}\n\tTraining Accuracy: {train_accuracy}\n\tValidation Cost: {valid_cost}\n\tValidation Accuracy: {valid_accuracy}")
+        print(f"After {c_epoch + 1} epochs:"
+              f"\n\tTraining Cost: {train_cost}"
+              f"\n\tTraining Accuracy: {train_accuracy}"
+              f"\n\tValidation Cost: {valid_cost}"
+              f"\n\tValidation Accuracy: {valid_accuracy}")
         save_path = saver.save(sess, save_path)
     return save_path
