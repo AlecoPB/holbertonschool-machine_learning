@@ -6,7 +6,21 @@ import tensorflow.compat.v1 as tf
 shuffle_data = __import__('2-shuffle_data').shuffle_data
 
 def train_mini_batch(X_train, Y_train, X_valid, Y_valid, batch_size=32, epochs=5, load_path="/tmp/model.ckpt", save_path="/tmp/model.ckpt"):
+    """_summary_
 
+    Args:
+        X_train (_type_): _description_
+        Y_train (_type_): _description_
+        X_valid (_type_): _description_
+        Y_valid (_type_): _description_
+        batch_size (int, optional): _description_. Defaults to 32.
+        epochs (int, optional): _description_. Defaults to 5.
+        load_path (str, optional): _description_. Defaults to "/tmp/model.ckpt".
+        save_path (str, optional): _description_. Defaults to "/tmp/model.ckpt".
+
+    Returns:
+        _type_: _description_
+    """
     with tf.Session() as sess:
         saver = tf.train.import_meta_graph(load_path + '.meta')
         saver.restore(sess, load_path)
