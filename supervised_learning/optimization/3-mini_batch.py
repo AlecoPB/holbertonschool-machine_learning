@@ -55,5 +55,5 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid, batch_size=32, epochs=5
                                               feed_dict={x: X_valid, y: Y_valid})
         print(f"After {c_epoch + 1} epochs:\n\tTraining Cost: {train_cost}\n\tTraining Accuracy: 
               {train_accuracy}\n\tValidation Cost: {valid_cost}\n\tValidation Accuracy: {valid_accuracy}")
-        save_path = saver.save(sess, save_path)
+    save_path = saver.save(sess, save_path)
     return save_path
