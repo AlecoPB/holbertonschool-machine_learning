@@ -30,6 +30,6 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid, batch_size=32, epochs=5
                 sess.run(train_op, feed_dict = {x : X_batch, y : Y_batch})
                 if (i // batch_size) % 100 == 0 and i != 0:
                     step_cost, step_accuracy = sess.run([loss, accuracy], feed_dict={x: X_batch, y: Y_batch})
-                    print("Step {}".format(i))
+                    print("Step {}, and batch size is {}".format(i, batch_size))
                     print(f"\tStep {i // batch_size}:\n\t\tCost: {step_cost}\n\t\tAccuracy: {step_accuracy}")
     return save_path
