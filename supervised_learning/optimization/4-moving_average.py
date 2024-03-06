@@ -10,7 +10,7 @@ def moving_average(data, beta):
 
     Args:
         data (_type_): _description_
-        
+
         beta (_type_): _description_
     """
     temp_v = 0
