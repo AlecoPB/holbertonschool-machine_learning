@@ -2,7 +2,7 @@
 """_summary_
     This is some documentation
 """
-import tensorflow.compat.V1 as tf
+import numpy as np
 
 
 def moving_average(data, beta):
