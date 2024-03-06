@@ -4,6 +4,7 @@ This is some documentation
 """
 import tensorflow.compat.v1 as tf
 
+
 def create_momentum_op(loss, alpha, beta1):
     """_summary_
 
