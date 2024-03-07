@@ -22,8 +22,8 @@ def update_variables_RMSProp(alpha, beta2, epsilon, var, grad, s):
     """
     # Compute the squared gradient (element-wise)
     s_new = beta2 * s + (1 - beta2) * grad**2
-    
+
     # Update the variable
     var_new = var - alpha * grad / (np.sqrt(s_new) + epsilon)
-    
+
     return var_new, s_new
