@@ -21,5 +21,5 @@ def create_RMSProp_op(loss, alpha, beta2, epsilon):
         The RMSProp optimization operation.
     """
     optimizer = tf.keras.optimizers.RMSprop(learning_rate=alpha, rho=beta2, epsilon=epsilon)
-    #train_op = optimizer.minimize(loss)
-    return optimizer
+    train_op = optimizer.minimize(loss)
+    return train_op
