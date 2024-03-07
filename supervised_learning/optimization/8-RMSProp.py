@@ -4,24 +4,22 @@
 Returns:
     _type_: _description_
 """
-import tensorflow.compat.v1 as tf
+import tensorflow as tf
 
 
 def create_RMSProp_op(loss, alpha, beta2, epsilon):
     """
-    Creates the RMSProp optimization operation for a neural network.
+    Creates the RMSProp optimization operation.
 
     Args:
-        loss (tf.Tensor): Loss of the network.
-        alpha (float): Learning rate.
-        beta2 (float): RMSProp weight.
-        epsilon (float): Small number to avoid division by zero.
+        loss: The loss of the network.
+        alpha: The learning rate.
+        beta2: The RMSProp weight.
+        epsilon: A small number to avoid division by zero.
 
     Returns:
-        tf.Operation: The RMSProp optimization operation.
+        The RMSProp optimization operation.
     """
-    optimizer = tf.keras.optimizers.RMSprop(learning_rate=alpha,
-                                            rho=beta2, epsilon=epsilon)
+    optimizer = tf.keras.optimizers.RMSprop(learning_rate=alpha, rho=beta2, epsilon=epsilon)
     train_op = optimizer.minimize(loss)
-
     return train_op
