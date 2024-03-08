@@ -2,7 +2,7 @@
 """_summary_
 This is some documentation
 """
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 import numpy as np
 
 
