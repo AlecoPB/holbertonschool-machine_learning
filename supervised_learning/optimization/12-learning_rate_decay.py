@@ -14,7 +14,7 @@ def learning_rate_decay(alpha, decay_rate, global_step, decay_step):
         global_step (_type_): _description_
         decay_step (_type_): _description_
     """
-    alpha_decay = tf.train.exponential_decay(learning_rate=alpha,
+    alpha_decay = tf.train.inverse_time_decay(learning_rate=alpha,
                                              global_step=global_step,
                                              decay_steps=decay_step,
                                              decay_rate=decay_rate)
