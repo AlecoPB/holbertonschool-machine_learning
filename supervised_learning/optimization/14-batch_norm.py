@@ -19,11 +19,9 @@ def create_batch_norm_layer(prev, n, activation):
     tensor: The activated output for the layer.
     """
     # Create a dense layer
-    dense =\
-        tf.keras.layers.Dense(units=n,
-                              kernel_initializer=
-                              tf.keras.initializers.VarianceScaling(mode=
-                                                                    'fan_avg'))
+    dense = tf.keras.layers.Dense(
+        units=n, 
+        kernel_initializer=tf.keras.initializers.VarianceScaling(mode='fan_avg'))
 
     # Apply the dense layer to the inputs
     Z = dense(prev)
