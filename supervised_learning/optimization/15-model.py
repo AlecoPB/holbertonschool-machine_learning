@@ -72,10 +72,13 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
 
         for i in range(epochs):
             # print training and validation cost and accuracy
-            train_loss, train_accuracy = sess.run([loss, accuracy], feed_dict={x: X_train, y: Y_train})
-            valid_loss, valid_accuracy = sess.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
-            print('Epoch', i, 'Training Loss:', train_loss, 'Training Accuracy:', train_accuracy,
-                  'Validation Loss:', valid_loss, 'Validation Accuracy:', valid_accuracy)
+            train_cost, train_accuracy = sess.run([loss, accuracy], feed_dict={x: X_train, y: Y_train})
+            valid_cost, valid_accuracy = sess.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
+            print(f'After {i} epochs:'
+                  f'\tTraining Cost: {train_cost}'
+                  f'\tTraining Accuracy: {train_accuracy}'
+                  f'\tValidation Cost: {valid_cost}'
+                  f'\tValidation Accuracy: {valid_accuracy}')
 
             # shuffle data
             X_train_shuffled, Y_train_shuffled = shuffle_data(X_train, Y_train)
@@ -94,10 +97,10 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
                     print('Batch', j, 'Loss:', batch_loss, 'Accuracy:', batch_accuracy)
 
         # print training and validation cost and accuracy again
-        train_loss, train_accuracy = sess.run([loss, accuracy], feed_dict={x: X_train, y: Y_train})
-        valid_loss, valid_accuracy = sess.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
-        print('Final Training Loss:', train_loss, 'Final Training Accuracy:', train_accuracy,
-              'Final Validation Loss:', valid_loss, 'Final Validation Accuracy:', valid_accuracy)
+        train_cost, train_accuracy = sess.run([loss, accuracy], feed_dict={x: X_train, y: Y_train})
+        valid_cost, valid_accuracy = sess.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
+        print('Final Training Loss:', train_cost, 'Final Training Accuracy:', train_accuracy,
+              'Final Validation Loss:', valid_cost, 'Final Validation Accuracy:', valid_accuracy)
 
         # save and return the path to where the model was saved
         save_path = saver.save(sess, save_path)
