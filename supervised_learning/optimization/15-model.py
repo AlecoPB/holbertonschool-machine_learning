@@ -92,9 +92,9 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
                 sess.run(train_op, feed_dict={x: X_batch, y: Y_batch})
 
                 # print batch cost and accuracy
-                if j % 1000 == 0:
+                if j // 1000 == 0:
                     step_cost, step_accuracy = sess.run([loss, accuracy], feed_dict={x: X_batch, y: Y_batch})
-                    print(f'\tAfter {j} steps:'
+                    print(f'\tStep {j}:'
                           f'\n\t\tCost {step_cost}'
                           f'\n\t\tAccuracy: {step_accuracy}')
 
