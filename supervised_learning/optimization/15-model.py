@@ -94,10 +94,10 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
                 # print batch cost and accuracy
                 if j % 1000 == 0:
                     step_cost, step_accuracy = sess.run([loss, accuracy], feed_dict={x: X_batch, y: Y_batch})
-                    if i != 0:
-                        print(f"\tStep {(j // batch_size) + 1}:"
-                              f"\n\t\tCost: {step_cost}"
-                              f"\n\t\tAccuracy: {step_accuracy}")
+                    # if i != 0:
+                    print(f"\tStep {(j // batch_size) + 1}:"
+                            f"\n\t\tCost: {step_cost}"
+                            f"\n\t\tAccuracy: {step_accuracy}")
 
         # print training and validation cost and accuracy again
         train_cost, train_accuracy = sess.run([loss, accuracy], feed_dict={x: X_train, y: Y_train})
