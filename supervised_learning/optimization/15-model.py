@@ -89,7 +89,7 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
                 Y_batch = Y_train_shuffled[j:j+batch_size]
 
                 # run training operation
-                sess.run(train_op, feed_dict={x: X_batch, y: Y_batch})
+                #sess.run(train_op, feed_dict={x: X_batch, y: Y_batch})
                 m = X_train.shape[0]
                 # print batch cost and accuracy
                 for j in range(0, m, batch_size):
