@@ -93,14 +93,19 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
 
                 # print batch cost and accuracy
                 if j % 1000 == 0:
-                    batch_loss, batch_accuracy = sess.run([loss, accuracy], feed_dict={x: X_batch, y: Y_batch})
-                    print('Batch', j, 'Loss:', batch_loss, 'Accuracy:', batch_accuracy)
+                    step_cost, step_accuracy = sess.run([loss, accuracy], feed_dict={x: X_batch, y: Y_batch})
+                    print(f'\tAfter {j} steps:'
+                          f'\n\t\tCost {step_cost}'
+                          f'\n\t\tAccuracy: {step_accuracy}')
 
         # print training and validation cost and accuracy again
         train_cost, train_accuracy = sess.run([loss, accuracy], feed_dict={x: X_train, y: Y_train})
         valid_cost, valid_accuracy = sess.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
-        print('Final Training Loss:', train_cost, 'Final Training Accuracy:', train_accuracy,
-              'Final Validation Loss:', valid_cost, 'Final Validation Accuracy:', valid_accuracy)
+        print(f'After {epochs} epochs:'
+              f'\n\tTraining Cost: {train_cost}'
+              f'\n\tTraining Accuracy: {train_accuracy}'
+              f'\n\tValidation Cost: {valid_cost}'
+              f'\n\tValidation Accuracy: {valid_accuracy}')
 
         # save and return the path to where the model was saved
         save_path = saver.save(sess, save_path)
