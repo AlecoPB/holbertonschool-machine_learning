@@ -76,9 +76,9 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
             valid_cost, valid_accuracy = sess.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
             print(f'After {i} epochs:'
                   f'\n\tTraining Cost: {train_cost}'
-                  f'\tTraining Accuracy: {train_accuracy}'
-                  f'\tValidation Cost: {valid_cost}'
-                  f'\tValidation Accuracy: {valid_accuracy}')
+                  f'\n\tTraining Accuracy: {train_accuracy}'
+                  f'\n\tValidation Cost: {valid_cost}'
+                  f'\n\tValidation Accuracy: {valid_accuracy}')
 
             # shuffle data
             X_train_shuffled, Y_train_shuffled = shuffle_data(X_train, Y_train)
