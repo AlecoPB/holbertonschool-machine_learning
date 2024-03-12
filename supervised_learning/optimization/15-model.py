@@ -93,15 +93,15 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
                 m = X_train.shape[0]
                 # print batch cost and accuracy
                 for j in range(0, m, batch_size):
-                    X_batch = X_train_shuffled[i: i + batch_size]
-                    Y_batch = Y_train_shuffled[i: i + batch_size]
+                    X_batch = X_train_shuffled[j: j + batch_size]
+                    Y_batch = Y_train_shuffled[j: j + batch_size]
                     sess.run(train_op, feed_dict={x: X_batch, y: Y_batch})
-                    if ((i // batch_size) + 1) % 100 == 0:
+                    if ((j // batch_size) + 1) % 100 == 0:
                         step_cost, step_accuracy =\
                             sess.run([loss, accuracy],
                                     feed_dict={x: X_batch, y: Y_batch})
-                        if i != 0:
-                            print(f"\tStep {(i // batch_size) + 1}:"
+                        if j != 0:
+                            print(f"\tStep {(j // batch_size) + 1}:"
                                 f"\n\t\tCost: {step_cost}"
                                 f"\n\t\tAccuracy: {step_accuracy}")
                 # if j % 1000 == 0:
