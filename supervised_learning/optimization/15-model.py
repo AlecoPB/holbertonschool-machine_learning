@@ -29,19 +29,31 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
     X_train, Y_train = Data_train
     X_valid, Y_valid = Data_valid
 
-    x = tf.placeholder(tf.float32, shape=(None, X_train.shape[1]))
-    y = tf.placeholder(tf.float32, shape=(None, Y_train.shape[1]))
+    x = tf.placeholder(tf.float32, [None, X_train.shape[1]], name='x')
+    y = tf.placeholder(tf.float32, [None, Y_train.shape[1]], name='y')
+    tf.add_to_collection('inputs', x)
+    tf.add_to_collection('inputs', y)
 
-    y_pred = forward_prop(x, layers, activations, epsilon)
+    y_pred = x
+    for i, (layer_size, activation) in enumerate(zip(layers, activations)):
+        y_pred = tf.layers.dense(y_pred, units=layer_size, activation=activation, name=f'layer_{i}')
+    tf.add_to_collection('outputs', y_pred)
 
-    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y_pred, labels=y))
-    accuracy = tf.reduce_mean(tf.cast(tf.equal(tf.argmax(y_pred, 1), tf.argmax(y, 1)), tf.float32))
+    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y_pred, labels=y), name='cost')
+    tf.add_to_collection('cost', cost)
+
+    correct_prediction = tf.equal(tf.argmax(y_pred, 1), tf.argmax(y, 1))
+    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32), name='accuracy')
+    tf.add_to_collection('accuracy', accuracy)
 
     global_step = tf.Variable(0, trainable=False)
-    decay_steps = 1
-    alpha = tf.train.inverse_time_decay(alpha, global_step, decay_steps, decay_rate)
+    decay_steps = len(X_train) // batch_size * epochs
+    alpha_decay = tf.train.exponential_decay(alpha, global_step, decay_steps, decay_rate, staircase=True)
+    tf.add_to_collection('learning_rate', alpha_decay)
 
-    train_op = tf.train.AdamOptimizer(alpha, beta1, beta2, epsilon).minimize(cost, global_step=global_step)
+    optimizer = tf.train.AdamOptimizer(learning_rate=alpha_decay, beta1=beta1, beta2=beta2, epsilon=epsilon)
+    train_op = optimizer.minimize(loss, global_step=global_step)
+    tf.add_to_collection('train_op', train_op)
 
     init = tf.global_variables_initializer()
     saver = tf.train.Saver()
