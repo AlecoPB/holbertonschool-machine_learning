@@ -76,12 +76,11 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
                     print("Step {}:".format(j))
                     print("\tCost: {}".format(step_cost))
                     print("\tAccuracy: {}".format(step_accuracy))
-            final_epoch = i
 
         train_cost, train_accuracy = sess.run([cost, accuracy], feed_dict={x: X_train, y: Y_train})
         valid_cost, valid_accuracy = sess.run([cost, accuracy], feed_dict={x: X_valid, y: Y_valid})
 
-        print("After {} epochs:".format(final_epoch))
+        print("After {} epochs:".format(epochs))
         print("\tTraining Cost: {}".format(train_cost))
         print("\tTraining Accuracy: {}".format(train_accuracy))
         print("\tValidation Cost: {}".format(valid_cost))
