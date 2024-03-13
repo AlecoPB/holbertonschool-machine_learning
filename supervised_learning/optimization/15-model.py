@@ -50,7 +50,7 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
         sess.run(init)
 
         for i in range(epochs):
-            X_train, Y_train = shuffle_data(X_train, Y_train)
+            X_shuffled, Y_shuffled = shuffle_data(X_train, Y_train)
             train_cost, train_accuracy =\
                 sess.run([cost, accuracy],
                          feed_dict={x: X_train, y: Y_train})
@@ -64,12 +64,12 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
             print("\tValidation Cost: {}".format(valid_cost))
             print("\tValidation Accuracy: {}".format(valid_accuracy))
             for j in range(0, X_train.shape[0], batch_size):
-                X_batch = X_train[j:j+batch_size]
-                Y_batch = Y_train[j:j+batch_size]
+                X_batch = X_shuffled[j:j+batch_size]
+                Y_batch = Y_shuffled[j:j+batch_size]
 
                 sess.run(train_op, feed_dict={x: X_batch, y: Y_batch})
 
-                if j % 100 == 0:
+                if ((j // batch_size) + 1) % 100 == 0:
                     step_cost, step_accuracy =\
                         sess.run([cost, accuracy],
                                  feed_dict={x: X_batch, y: Y_batch})
