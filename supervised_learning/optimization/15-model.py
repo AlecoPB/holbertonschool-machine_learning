@@ -51,8 +51,12 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
 
         for i in range(epochs):
             X_train, Y_train = shuffle_data(X_train, Y_train)
-            train_cost, train_accuracy = sess.run([cost, accuracy], feed_dict={x: X_train, y: Y_train})
-            valid_cost, valid_accuracy = sess.run([cost, accuracy], feed_dict={x: X_valid, y: Y_valid})
+            train_cost, train_accuracy =\
+                sess.run([cost, accuracy],
+                         feed_dict={x: X_train, y: Y_train})
+            valid_cost, valid_accuracy =\
+                sess.run([cost, accuracy],
+                         feed_dict={x: X_valid, y: Y_valid})
 
             print("After {} epochs:".format(i))
             print("\tTraining Cost: {}".format(train_cost))
@@ -66,15 +70,18 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
                 sess.run(train_op, feed_dict={x: X_batch, y: Y_batch})
 
                 if j % 100 == 0:
-                    step_cost, step_accuracy = sess.run([cost, accuracy], feed_dict={x: X_batch, y: Y_batch})
+                    step_cost, step_accuracy =\
+                        sess.run([cost, accuracy],
+                                 feed_dict={x: X_batch, y: Y_batch})
                     print("Step {}:".format(j))
                     print("\tCost: {}".format(step_cost))
                     print("\tAccuracy: {}".format(step_accuracy))
+                final_epoch = i
 
         train_cost, train_accuracy = sess.run([cost, accuracy], feed_dict={x: X_train, y: Y_train})
         valid_cost, valid_accuracy = sess.run([cost, accuracy], feed_dict={x: X_valid, y: Y_valid})
 
-        print("After {} epochs:".format(i))
+        print("After {} epochs:".format(final_epoch))
         print("\tTraining Cost: {}".format(train_cost))
         print("\tTraining Accuracy: {}".format(train_accuracy))
         print("\tValidation Cost: {}".format(valid_cost))
