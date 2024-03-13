@@ -51,7 +51,14 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
 
         for i in range(epochs):
             X_train, Y_train = shuffle_data(X_train, Y_train)
+            train_cost, train_accuracy = sess.run([cost, accuracy], feed_dict={x: X_train, y: Y_train})
+            valid_cost, valid_accuracy = sess.run([cost, accuracy], feed_dict={x: X_valid, y: Y_valid})
 
+            print("After {} epochs:".format(i))
+            print("\tTraining Cost: {}".format(train_cost))
+            print("\tTraining Accuracy: {}".format(train_accuracy))
+            print("\tValidation Cost: {}".format(valid_cost))
+            print("\tValidation Accuracy: {}".format(valid_accuracy))
             for j in range(0, X_train.shape[0], batch_size):
                 X_batch = X_train[j:j+batch_size]
                 Y_batch = Y_train[j:j+batch_size]
@@ -64,13 +71,13 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
                     print("\tCost: {}".format(step_cost))
                     print("\tAccuracy: {}".format(step_accuracy))
 
-            train_cost, train_accuracy = sess.run([cost, accuracy], feed_dict={x: X_train, y: Y_train})
-            valid_cost, valid_accuracy = sess.run([cost, accuracy], feed_dict={x: X_valid, y: Y_valid})
+        train_cost, train_accuracy = sess.run([cost, accuracy], feed_dict={x: X_train, y: Y_train})
+        valid_cost, valid_accuracy = sess.run([cost, accuracy], feed_dict={x: X_valid, y: Y_valid})
 
-            print("After {} epochs:".format(i))
-            print("\tTraining Cost: {}".format(train_cost))
-            print("\tTraining Accuracy: {}".format(train_accuracy))
-            print("\tValidation Cost: {}".format(valid_cost))
-            print("\tValidation Accuracy: {}".format(valid_accuracy))
+        print("After {} epochs:".format(i))
+        print("\tTraining Cost: {}".format(train_cost))
+        print("\tTraining Accuracy: {}".format(train_accuracy))
+        print("\tValidation Cost: {}".format(valid_cost))
+        print("\tValidation Accuracy: {}".format(valid_accuracy))
 
         return saver.save(sess, save_path)
