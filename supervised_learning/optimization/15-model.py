@@ -86,7 +86,7 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
                         sess.run([cost, accuracy],
                                  feed_dict={x: X_batch, y: Y_batch})
 
-                if ((j // batch_size) + 1) % 100 == 0:
+                if ((j // batch_size)) % 100 == 0:
                     
                     # if j != 0:
                     print("\tSteps {}:".format(j))
