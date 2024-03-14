@@ -31,8 +31,8 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
 
     x = tf.placeholder(tf.float32, [None, X_train.shape[1]], name='x')
     y = tf.placeholder(tf.float32, [None, Y_train.shape[1]], name='y')
-    # tf.add_to_collection('inputs', x)
-    # tf.add_to_collection('inputs', y)
+    tf.add_to_collection('inputs', x)
+    tf.add_to_collection('inputs', y)
 
     y_pred = x
     for i, (layer_size, activation) in enumerate(zip(layers, activations)):
