@@ -51,7 +51,7 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
     alpha_decay = tf.train.exponential_decay(alpha, global_step, decay_steps, decay_rate, staircase=True)
     tf.add_to_collection('learning_rate', alpha_decay)
 
-    optimizer = tf.train.AdamOptimizer(learning_rate=alpha, beta1=beta1, beta2=beta2, epsilon=epsilon)
+    optimizer = tf.train.AdamOptimizer(learning_rate=alpha_decay, beta1=beta1, beta2=beta2, epsilon=epsilon)
     train_op = optimizer.minimize(cost, global_step=global_step)
     tf.add_to_collection('train_op', train_op)
 
@@ -81,14 +81,14 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
 
                 sess.run(train_op, feed_dict={x: X_batch, y: Y_batch})
 
-                if j % 100 == 0:
+                if j % 100 == 0 and j != 0:
                     step_cost, step_accuracy =\
                         sess.run([cost, accuracy],
                                  feed_dict={x: X_batch, y: Y_batch})
-                    if j != 0:
-                        print("\tStep {}:".format(j))
-                        print("\t\tCost: {}".format(step_cost))
-                        print("\t\tAccuracy: {}".format(step_accuracy))
+                    # if j != 0:
+                    print("\tStep {}:".format(j))
+                    print("\t\tCost: {}".format(step_cost))
+                    print("\t\tAccuracy: {}".format(step_accuracy))
 
         train_cost, train_accuracy = sess.run([cost, accuracy], feed_dict={x: X_train, y: Y_train})
         valid_cost, valid_accuracy = sess.run([cost, accuracy], feed_dict={x: X_valid, y: Y_valid})
