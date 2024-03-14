@@ -37,7 +37,7 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
     y_pred = forward_prop(x, layers, activations, epsilon)
     tf.add_to_collection('outputs', y_pred)
 
-    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y_pred, labels=y), name='cost')
+    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=y_pred, labels=y), name='cost')
     tf.add_to_collection('cost', cost)
 
     correct_prediction = tf.equal(tf.argmax(y_pred, 1), tf.argmax(y, 1))
