@@ -60,8 +60,8 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
 
     with tf.Session() as sess:
         sess.run(init)
-        # m = X_train.shape[0]
-        m = (X_train.shape[0] // (batch_size)) + 1
+        m = X_train.shape[0]
+        # m = (X_train.shape[0] // (batch_size)) + 1
         for i in range(epochs):
             X_shuffled, Y_shuffled = shuffle_data(X_train, Y_train)
             train_cost, train_accuracy =\
