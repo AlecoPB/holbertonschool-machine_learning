@@ -86,9 +86,9 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
                         sess.run([cost, accuracy],
                                  feed_dict={x: X_batch, y: Y_batch})
                     if j != 0:
-                        print("Step {}:".format(j))
-                        print("\tCost: {}".format(step_cost))
-                        print("\tAccuracy: {}".format(step_accuracy))
+                        print("\tStep {}:".format(j))
+                        print("\t\tCost: {}".format(step_cost))
+                        print("\t\tAccuracy: {}".format(step_accuracy))
 
         train_cost, train_accuracy = sess.run([cost, accuracy], feed_dict={x: X_train, y: Y_train})
         valid_cost, valid_accuracy = sess.run([cost, accuracy], feed_dict={x: X_valid, y: Y_valid})
