@@ -45,15 +45,13 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
     tf.add_to_collection('accuracy', accuracy)
 
     global_step = tf.Variable(0, trainable=False)
-    # Assuming 'X_train' is your training data and 'batch_size' is the size of your batches
-    total_batches = int(X_train.shape[0] / batch_size)
 
-    # Compute decay steps
-    decay_steps = int(total_batches * decay_rate)
+    decay_steps = len(X_train) // batch_size * epochs
+
     alpha_decay = tf.train.exponential_decay(alpha, global_step, decay_steps, decay_rate, staircase=True)
     tf.add_to_collection('learning_rate', alpha_decay)
 
-    optimizer = tf.train.AdamOptimizer(learning_rate=alpha_decay, beta1=beta1, beta2=beta2, epsilon=epsilon)
+    optimizer = tf.train.AdamOptimizer(learning_rate=alpha, beta1=beta1, beta2=beta2, epsilon=epsilon)
     train_op = optimizer.minimize(cost, global_step=global_step)
     tf.add_to_collection('train_op', train_op)
 
