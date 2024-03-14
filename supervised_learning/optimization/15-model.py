@@ -87,7 +87,7 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
                 if j % 100 == 0 and j != 0:
                     
                     # if j != 0:
-                    print("\tStep {}:".format(j))
+                    print("\tStepsssss {}:".format(j))
                     print("\t\tCost: {}".format(step_cost))
                     print("\t\tAccuracy: {}".format(step_accuracy))
 
