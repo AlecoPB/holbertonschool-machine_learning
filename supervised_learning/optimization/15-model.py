@@ -41,7 +41,7 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
     tf.add_to_collection('cost', cost)
 
     correct_prediction = tf.equal(tf.argmax(y_pred, 1), tf.argmax(y, 1))
-    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32), name='accuracy')
+    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     tf.add_to_collection('accuracy', accuracy)
 
     global_step = tf.Variable(0, trainable=False)
