@@ -51,7 +51,10 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
     alpha_decay = tf.train.exponential_decay(alpha, global_step, decay_steps, decay_rate, staircase=True)
     tf.add_to_collection('learning_rate', alpha_decay)
 
-    optimizer = tf.train.AdamOptimizer(learning_rate=alpha_decay, beta1=beta1, beta2=beta2, epsilon=epsilon)
+    optimizer =\
+        tf.train.AdamOptimizer(learning_rate=alpha,
+                               beta1=beta1, beta2=beta2,
+                               epsilon=epsilon)
     train_op = optimizer.minimize(cost, global_step=global_step)
     tf.add_to_collection('train_op', train_op)
 
@@ -76,7 +79,7 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
             print("\tTraining Accuracy: {}".format(train_accuracy))
             print("\tValidation Cost: {}".format(valid_cost))
             print("\tValidation Accuracy: {}".format(valid_accuracy))
-            for j in range(0, m * 1.5, batch_size):
+            for j in range(0, m, batch_size):
                 #print(f'{j/batch_size}\n')
                 X_batch = X_shuffled[j:j+batch_size]
                 Y_batch = Y_shuffled[j:j+batch_size]
