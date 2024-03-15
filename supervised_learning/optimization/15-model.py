@@ -7,14 +7,26 @@ import numpy as np
 
 
 def forward_prop(prev, layers, activations, epsilon):
-    for l, a in zip(layers[:-1], activations[:-1]):
-        prev = tf.layers.dense(prev, units=l)
-        mean, var = tf.nn.moments(prev, axes=[0])
-        scale = tf.Variable(tf.ones([l]))
-        offset = tf.Variable(tf.zeros([l]))
-        prev = tf.nn.batch_normalization(prev, mean, var, offset, scale, epsilon)
-        prev = a(prev)
-    return tf.layers.dense(prev, units=layers[-1])
+    for i in range(len(layers)):
+        dense = tf.keras.layers.Dense(
+        units=layers,
+        kernel_initializer=tf.keras.initializers.VarianceScaling(
+            mode='fan_avg'))
+        Z = dense(prev)
+        batch_mean, batch_var = tf.nn.moments(Z, [0])
+        gamma = tf.Variable(tf.ones([layers]))
+        beta = tf.Variable(tf.zeros([layers]))
+        BN = tf.nn.batch_normalization(Z, batch_mean, batch_var, beta, gamma, epsilon)
+    return activations(BN)
+        
+    # for l, a in zip(layers[:-1], activations[:-1]):
+    #     prev = tf.layers.dense(prev, units=l)
+    #     mean, var = tf.nn.moments(prev, axes=[0])
+    #     scale = tf.Variable(tf.ones([l]))
+    #     offset = tf.Variable(tf.zeros([l]))
+    #     prev = tf.nn.batch_normalization(prev, mean, var, offset, scale, epsilon)
+    #     prev = a(prev)
+    # return tf.layers.dense(prev, units=layers[-1])
 
 def shuffle_data(X, Y):
     perm = np.random.permutation(X.shape[0])
