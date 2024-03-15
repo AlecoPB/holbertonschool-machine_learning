@@ -7,16 +7,18 @@ import numpy as np
 
 
 def forward_prop(prev, layers, activations, epsilon):
+    # Define scale and offset variables outside the loop
+    gammas = [tf.Variable(tf.ones([layer])) for layer in layers]
+    betas = [tf.Variable(tf.zeros([layer])) for layer in layers]
+    
     for i in range(len(layers)):
         dense = tf.keras.layers.Dense(
-        units=layers[i],  # use the number of units for the current layer
-        kernel_initializer=tf.keras.initializers.VarianceScaling(
-            mode='fan_avg'))
+            units=layers[i],  # use the number of units for the current layer
+            kernel_initializer=tf.keras.initializers.VarianceScaling(mode='fan_avg'))
         Z = dense(prev)
         batch_mean, batch_var = tf.nn.moments(Z, [0])
-        gamma = tf.Variable(tf.ones([layers[i]]))  # use the number of units for the current layer
-        beta = tf.Variable(tf.zeros([layers[i]]))  # use the number of units for the current layer
-        BN = tf.nn.batch_normalization(Z, batch_mean, batch_var, beta, gamma, epsilon)
+        # Use scale and offset variables for batch normalization
+        BN = tf.nn.batch_normalization(Z, batch_mean, batch_var, betas[i], gammas[i], epsilon)
         prev = activations[i](BN)  # update 'prev' for the next layer
     return prev  # return the output of the last layer
 
