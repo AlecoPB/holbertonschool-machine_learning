@@ -9,9 +9,10 @@ import numpy as np
 def forward_prop(prev, layers, activations, epsilon):
     for i in range(len(layers)):
         dense = tf.keras.layers.Dense(
-        units=layers,
-        kernel_initializer=tf.keras.initializers.VarianceScaling(
-            mode='fan_avg'))
+            units=layers, 
+            kernel_initializer=
+            tf.keras.initializers.VarianceScaling(
+                mode='fan_avg'))
         Z = dense(prev)
         batch_mean, batch_var = tf.nn.moments(Z, [0])
         gamma = tf.Variable(tf.ones([layers]))
