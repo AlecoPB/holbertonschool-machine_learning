@@ -17,7 +17,7 @@ def forward_prop(prev, layers, activations, epsilon):
         gamma = tf.Variable(tf.ones([layers[i]]))  # use the number of units for the current layer
         beta = tf.Variable(tf.zeros([layers[i]]))  # use the number of units for the current layer
         BN = tf.nn.batch_normalization(Z, batch_mean, batch_var, beta, gamma, epsilon)
-        prev = activations(BN)  # update 'prev' for the next layer
+        prev = activations[i](BN)  # update 'prev' for the next layer
     return prev  # return the output of the last layer
 
         
