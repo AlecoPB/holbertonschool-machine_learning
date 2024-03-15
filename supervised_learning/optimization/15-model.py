@@ -77,7 +77,7 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
             print("\tValidation Cost: {}".format(valid_cost))
             print("\tValidation Accuracy: {}".format(valid_accuracy))
             for j in range(0, m * 2, batch_size):
-                print(f'{j/batch_size}\n')
+                #print(f'{j/batch_size}\n')
                 X_batch = X_shuffled[j:j+batch_size]
                 Y_batch = Y_shuffled[j:j+batch_size]
 
