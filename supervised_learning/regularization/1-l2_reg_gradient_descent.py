@@ -4,18 +4,19 @@ This is some documentation
 """
 import numpy as np
 
-
 def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
     m = Y.shape[1]
-    dz_prev = cache['A' + str(L)] - Y
+    weights_copy = weights.copy()
+    dz = cache['A' + str(L)] - Y
 
-    for l in range(L, 0, -1):
-        A_prev = cache['A' + str(l-1)]
-        dw = (1/m) * np.dot(dz_prev, A_prev.T) + ((lambtha/m) * weights['W' + str(l)])
-        db = (1/m) * np.sum(dz_prev, axis=1, keepdims=True)
-        if l > 1:
-            W_prev = weights['W' + str(l-1)]
-            dz_prev = np.dot(W_prev.T, dz_prev) * (1 - cache['A' + str(l-1)] ** 2)
+    for i in range(L, 0, -1):
+        A_prev = cache['A' + str(i-1)]
+        dw = (1/m) * np.dot(dz, A_prev.T) + ((lambtha/m) * weights['W' + str(i)])
+        db = (1/m) * np.sum(dz, axis=1, keepdims=True)
+        if i > 1:
+            da = 1 - np.square(A_prev)
+            dz = np.dot(weights_copy['W' + str(i)].T, dz) * da
+        weights['W' + str(i)] -= alpha * dw
+        weights['b' + str(i)] -= alpha * db
 
-        weights['W' + str(l)] -= alpha * dw
-        weights['b' + str(l)] -= alpha * db
+    return weights
