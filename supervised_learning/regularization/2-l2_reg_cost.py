@@ -17,8 +17,8 @@ def l2_reg_cost(cost, lambtha, weights, L):
     Returns:
         _type_: _description_
     """
-    reg_cost = 0
-    for i in range(1, L + 1):
-        reg_cost += tf.nn.l2_loss(weights['W' + str(i)])
-    cost_l2 = cost + lambtha * reg_cost
-    return cost_l2
+    l2_reg = 0
+    for weight in weights:
+        l2_reg += tf.nn.l2_loss(weight)
+    cost_l2_reg = cost + lambtha * l2_reg
+    return cost_l2_reg
