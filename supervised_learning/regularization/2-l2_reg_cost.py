@@ -5,7 +5,7 @@ This is some documentation
 import tensorflow.compat.v1 as tf
 
 
-def l2_reg_cost(cost, lambtha, weights, L):
+def l2_reg_cost(cost):
     """_summary_
 
     Args:
@@ -17,8 +17,10 @@ def l2_reg_cost(cost, lambtha, weights, L):
     Returns:
         _type_: _description_
     """
-    l2_reg = 0
-    for weight in weights:
-        l2_reg += tf.nn.l2_loss(weight)
-    cost_l2_reg = cost + lambtha * l2_reg
-    return cost_l2_reg
+    weights = [v for v in tf.trainable_variables()]
+    l2_reg_cost = cost
+
+    for w in weights:
+        l2_reg_cost += tf.nn.l2_loss(w)
+
+    return l2_reg_cost
