@@ -25,5 +25,5 @@ def l2_reg_cost(cost):
     #     l2_reg_cost += tf.nn.l2_loss(w)
     f_cost = []
     for i in range(len(cost)):
-        f_cost[i] = cost[i]
+        f_cost.append = cost[i]
     return f_cost
