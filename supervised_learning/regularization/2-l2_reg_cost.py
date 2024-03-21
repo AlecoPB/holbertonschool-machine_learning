@@ -23,5 +23,6 @@ def l2_reg_cost(cost):
     #     print(cost(i))
     # for w in weights:
     #     l2_reg_cost += tf.nn.l2_loss(w)
-
+    dense = tf.keras.layers.Dense(3, kernel_regularizer='l2')
+    cost *= dense
     return cost
