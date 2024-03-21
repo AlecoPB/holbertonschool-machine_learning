@@ -17,11 +17,11 @@ def l2_reg_cost(cost):
     Returns:
         _type_: _description_
     """
-    weights = [v for v in tf.trainable_variables()]
-    l2_reg_cost = cost
-    for i in range(0, 3):
-        print(cost(i))
-    for w in weights:
-        l2_reg_cost += tf.nn.l2_loss(w)
+    # weights = [v for v in tf.trainable_variables()]
+    # l2_reg_cost = cost
+    # for i in range(0, 3):
+    #     print(cost(i))
+    # for w in weights:
+    #     l2_reg_cost += tf.nn.l2_loss(w)
 
     return l2_reg_cost
