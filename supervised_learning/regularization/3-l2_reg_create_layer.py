@@ -22,7 +22,7 @@ def l2_reg_create_layer(prev, n, activation, lambtha):
     layer = tf.keras.layers.Dense(
         units=n,
         activation=activation,
-        kernel_regularizer=tf.keras.refularizers.L2(lambtha)
+        kernel_regularizer=tf.keras.regularizers.L2(lambtha)
     )
     
     output = layer(prev)
