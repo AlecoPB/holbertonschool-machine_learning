@@ -19,15 +19,12 @@ def l2_reg_create_layer(prev, n, activation, lambtha):
     Returns:
         _type_: _description_
     """
-    initializer = tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
-
-    # Apply L2 regularization to weights
-    regularizer = tf.contrib.layers.l2_regularizer(lambtha)
-
-    # Create fully connected layer
-    layer = tf.layers.Dense(units=n,
-                            activation=activation,
-                            kernel_initializer=initializer,
-                            kernel_regularizer=regularizer)
+    layer = tf.keras.layers.Dense(
+        units=n,
+        activation=activation,
+        kernel_regularizer=tf.keras.refularizers.L2(lambtha),
+    )
     
-    return layer(prev)
+    output = layer(prev)
+    
+    return output
