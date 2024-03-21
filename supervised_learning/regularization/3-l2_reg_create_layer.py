@@ -4,7 +4,7 @@
 Returns:
     _type_: _description_
 """
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 
 def l2_reg_create_layer(prev, n, activation, lambtha):
@@ -19,14 +19,12 @@ def l2_reg_create_layer(prev, n, activation, lambtha):
     Returns:
         _type_: _description_
     """
-    # Create a dense layer with L2 regularization
     layer = tf.keras.layers.Dense(
-        units=n,  # Number of nodes
-        activation=activation,  # Activation function
+        units=n,
+        activation=activation,
         kernel_regularizer=tf.keras.regularizers.l2(lambtha)
     )
     
     output = layer(prev)
-    # layer = tf.keras.layers.Dense(3, kernel_regularizer='l2')
     
     return output
