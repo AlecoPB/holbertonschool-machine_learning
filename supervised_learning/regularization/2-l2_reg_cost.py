@@ -24,4 +24,4 @@ def l2_reg_cost(cost):
     # for w in weights:
     #     l2_reg_cost += tf.nn.l2_loss(w)
 
-    return l2_reg_cost
+    return cost
