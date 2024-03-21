@@ -28,6 +28,7 @@ def l2_reg_create_layer(prev, n, activation, lambtha):
     )
     
     # Connect the new layer to the previous layer
-    output = layer(prev)
+    # output = layer(prev)
+    # layer = tf.keras.layers.Dense(3, kernel_regularizer='l2')
     
-    return output
+    return layer
