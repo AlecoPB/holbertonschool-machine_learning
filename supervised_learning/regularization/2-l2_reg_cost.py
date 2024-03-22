@@ -24,6 +24,6 @@ def l2_reg_cost(cost):
     # for w in weights:
     #     l2_reg_cost += tf.nn.l2_loss(w)
     f_cost = []
-    for i in range(len(cost)):
-        f_cost.append = cost[i]
+    for i in cost:
+        f_cost.append = tf.losses.get_regularization_loss(cost[i])
     return f_cost
