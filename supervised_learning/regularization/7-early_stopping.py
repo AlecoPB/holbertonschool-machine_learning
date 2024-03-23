@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
+"""_summary_
+
+Returns:
+    _type_: _description_
+"""
 import numpy as np
+
 
 def early_stopping(cost, opt_cost, threshold, patience, count):
     """
@@ -7,7 +13,8 @@ def early_stopping(cost, opt_cost, threshold, patience, count):
 
     Parameters:
     cost (float): The current validation cost of the neural network.
-    opt_cost (float): The lowest recorded validation cost of the neural network.
+    opt_cost (float): The lowest recorded validation
+    cost of the neural network.
     threshold (float): The threshold used for early stopping.
     patience (int): The patience count used for early stopping.
     count (int): The count of how long the threshold has not been met.
@@ -16,8 +23,6 @@ def early_stopping(cost, opt_cost, threshold, patience, count):
     bool: Whether the network should be stopped early.
     int: The updated count.
     """
-    # Check if the validation cost has not decreased relative to the optimal validation cost by more than the threshold
-    #print(f"{cost} - {opt_cost} = {cost - opt_cost} is {cost - opt_cost >= threshold}")
     if opt_cost - cost < threshold:
         # print("Se sumó")
         count += 1
