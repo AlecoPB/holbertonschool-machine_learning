@@ -17,7 +17,7 @@ def early_stopping(cost, opt_cost, threshold, patience, count):
     int: The updated count.
     """
     # Check if the validation cost has not decreased relative to the optimal validation cost by more than the threshold
-    if cost - opt_cost < threshold:
+    if cost - opt_cost <= threshold:
         count += 1
     else:
         count = 0
