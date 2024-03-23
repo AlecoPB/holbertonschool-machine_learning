@@ -18,8 +18,10 @@ def early_stopping(cost, opt_cost, threshold, patience, count):
     """
     # Check if the validation cost has not decreased relative to the optimal validation cost by more than the threshold
     if cost - opt_cost >= threshold:
+        print("Se sumó")
         count += 1
     else:
+        print("Se seteó")
         count = 0
 
     # Check if the count exceeds the patience
