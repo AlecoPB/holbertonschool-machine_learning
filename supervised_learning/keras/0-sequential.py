@@ -25,16 +25,16 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
             # First layer needs input_shape
             model.add(
                 K.layers.Dense(nodes,
-                                    activation=activation,
-                                    kernel_regularizer=
-                                    K.regularizers.l2(lambtha),
-                                    input_shape=(nx,)))
+                                activation=activation,
+                                kernel_regularizer=
+                                K.regularizers.l2(lambtha),
+                                input_shape=(nx,)))
         else:
             model.add(
                 K.layers.Dense(nodes,
-                                    activation=activation,
-                                    kernel_regularizer=
-                                    K.regularizers.l2(lambtha)))
+                                activation=activation,
+                                kernel_regularizer=
+                                K.regularizers.l2(lambtha)))
         
         # Add dropout layer if keep_prob is provided
         # and it's not the last layer
