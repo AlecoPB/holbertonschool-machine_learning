@@ -69,7 +69,7 @@ def train_model(network,
                 K.callbacks.ModelCheckpoint(
                     filepath,
                     save_best_only=True,
-                    verbose=1)
+                    verbose=0)
             callbacks.append(model_checkpoint_callback)
 
     history = network.fit(data,
