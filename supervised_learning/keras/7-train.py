@@ -6,7 +6,18 @@ import tensorflow.keras as K
 
 
 def step_decay(epoch, alpha, decay_rate):
-        return alpha / (1 + decay_rate * epoch)
+    """_summary_
+
+    Args:
+        epoch (_type_): _description_
+        alpha (_type_): _description_
+        decay_rate (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    return alpha / (1 + decay_rate * epoch)
+
 
 def train_model(network,
                 data,
@@ -39,11 +50,16 @@ def train_model(network,
     callbacks = []
     if validation_data and patience < epochs:
         if early_stopping:
-            early_stopping_callback = K.callbacks.EarlyStopping(monitor='val_loss', patience=patience)
+            early_stopping_callback =\
+                K.callbacks.EarlyStopping(monitor='val_loss',
+                                          patience=patience)
             callbacks.append(early_stopping_callback)
-        
+
         if learning_rate_decay:
-            lr_decay_callback = K.callbacks.LearningRateScheduler(lambda epoch: step_decay(epoch, alpha, decay_rate), verbose=1)
+            lr_decay_callback =\
+                K.callbacks.LearningRateScheduler(
+                    lambda epoch: step_decay(epoch, alpha, decay_rate),
+                    verbose=1)
             callbacks.append(lr_decay_callback)
 
     history = network.fit(data,
