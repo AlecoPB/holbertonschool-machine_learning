@@ -2,6 +2,7 @@
 """_summary_
 This is some documentation
 """
+import tensorflow.keras as K
 
 
 def test_model(network, data, labels, verbose=True):
