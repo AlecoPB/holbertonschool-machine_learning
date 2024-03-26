@@ -2,6 +2,7 @@
 """_summary_
 This is some documentation
 """
+import tensorflow.keras as K
 
 
 def train_model(network, data, labels, batch_size, epochs, verbose=True, shuffle=False):
