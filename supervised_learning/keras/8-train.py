@@ -65,7 +65,10 @@ def train_model(network,
             callbacks.append(lr_decay_callback)
 
         if save_best and filepath:
-            model_checkpoint_callback = ModelCheckpoint(filepath, monitor='val_loss', save_best_only=True, verbose=1)
+            model_checkpoint_callback =\
+                K.callbacks.ModelCheckpoint(
+                    filepath, monitor='val_loss',
+                    save_best_only=True, verbose=1)
             callbacks.append(model_checkpoint_callback)
 
     history = network.fit(data,
