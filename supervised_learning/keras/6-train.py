@@ -29,9 +29,6 @@ def train_model(network,
     Returns:
         _type_: _description_
     """
-    def step_decay(epoch, alpha, decay_rate):
-        return alpha / (1 + decay_rate * epoch)
-
     callbacks = []
     if validation_data and early_stopping and patience < epochs:
         early_stopping_callback =\
