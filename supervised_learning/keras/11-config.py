@@ -6,13 +6,26 @@ import tensorflow.keras as K
 
 
 def save_config(network, filename):
-    # Serialize model to JSON
+    """_summary_
+
+    Args:
+        network (_type_): _description_
+        filename (_type_): _description_
+    """
     model_json = network.to_json()
     with open(filename, "w") as json_file:
         json_file.write(model_json)
 
+
 def load_config(filename):
-    # Load json and create model
+    """_summary_
+
+    Args:
+        filename (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     json_file = open(filename, 'r')
     loaded_model_json = json_file.read()
     json_file.close()
