@@ -67,7 +67,7 @@ def train_model(network,
         if save_best and filepath:
             model_checkpoint_callback =\
                 K.callbacks.ModelCheckpoint(
-                    filepath,
+                    monitor='val_loss',
                     save_best_only=True,
                     verbose=1)
             callbacks.append(model_checkpoint_callback)
