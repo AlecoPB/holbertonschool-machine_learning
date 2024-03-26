@@ -20,4 +20,4 @@ def test_model(network, data, labels, verbose=True):
     - accuracy: the accuracy of the model with the testing data
     """
     loss, accuracy = network.evaluate(data, labels, verbose=verbose)
-    return (loss, accuracy)
+    return [loss, accuracy]
