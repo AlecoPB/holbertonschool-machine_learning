@@ -5,7 +5,7 @@ This is some documentation
 import numpy as np
 
 
-def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
+def convolve_channels(images, kernel, padding='same', stride=(1, 1)):
     """_summary_
 
     Args:
