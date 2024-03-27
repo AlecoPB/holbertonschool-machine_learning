@@ -17,33 +17,36 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     Returns:
         _type_: _description_
     """
+    def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     m, h, w = images.shape
     kh, kw = kernel.shape
     sh, sw = stride
 
-    if padding == 'valid':
-        ph, pw = 0, 0
-        out_h = (h - kh) // sh + 1
-        out_w = (w - kw) // sw + 1
-    elif padding == 'same':
-        ph = ((h - 1) * sh + kh - h) // 2
-        pw = ((w - 1) * sw + kw - w) // 2
-        out_h = h
-        out_w = w
+    # Determine output shape based on padding
+    if padding == 'same':
+        pad_h = ((h - 1) * sh + kh - h) // 2
+        pad_w = ((w - 1) * sw + kw - w) // 2
+    elif padding == 'valid':
+        pad_h, pad_w = 0, 0
     else:
-        ph, pw = padding
-        out_h = (h + 2 * ph - kh) // sh + 1
-        out_w = (w + 2 * pw - kw) // sw + 1
+        pad_h, pad_w = padding
 
-    output = np.zeros((m, out_h, out_w))
+    # Pad images
+    images_padded = np.pad(images, ((0, 0), (pad_h, pad_h), (pad_w, pad_w)), mode='constant')
 
-    padded_images = np.pad(images, ((0,0), (ph,ph), (pw,pw)), mode='constant')
+    # Calculate output shape
+    out_h = (h + 2 * pad_h - kh) // sh + 1
+    out_w = (w + 2 * pad_w - kw) // sw + 1
 
-    for i in range(0, h - kh + 1, sh):
-        for j in range(0, w - kw + 1, sw):
-            output[:, i // sh, j // sw] = np.sum(
-                padded_images[:, i:i+kh, j:j+kw] * kernel,
-                axis=(1, 2)
-            )
+    # Initialize output
+    convolved_images = np.zeros((m, out_h, out_w))
 
-    return output
+    # Perform convolution
+    for i in range(out_h):
+        for j in range(out_w):
+            # Extract the region of interest from the padded image
+            image_region = images_padded[:, i * sh:i * sh + kh, j * sw:j * sw + kw]
+            # Perform element-wise multiplication and sum
+            convolved_images[:, i, j] = np.sum(image_region * kernel, axis=(1, 2))
+
+    return convolved_images
