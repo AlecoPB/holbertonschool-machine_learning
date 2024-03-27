@@ -17,7 +17,6 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     Returns:
         _type_: _description_
     """
-    def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     m, h, w = images.shape
     kh, kw = kernel.shape
     sh, sw = stride
