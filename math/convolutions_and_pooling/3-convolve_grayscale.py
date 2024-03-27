@@ -23,8 +23,8 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
 
     # Determine output shape based on padding
     if padding == 'same':
-        pad_h = ((h - 1) * sh + kh - h) // 2
-        pad_w = ((w - 1) * sw + kw - w) // 2
+        pad_h = ((h - 1) * sh + kh - h) // 2 + 1
+        pad_w = ((w - 1) * sw + kw - w) // 2 + 1
     elif padding == 'valid':
         pad_h, pad_w = 0, 0
     else:
