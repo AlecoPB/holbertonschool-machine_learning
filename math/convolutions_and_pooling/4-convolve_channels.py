@@ -17,7 +17,7 @@ def convolve_channels(images, kernel, padding='same', stride=(1, 1)):
     Returns:
         _type_: _description_
     """
-    m, h, w = images.shape
+    m, h, w, c = images.shape
     kh, kw = kernel.shape
     sh, sw = stride
 
