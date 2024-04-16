@@ -1,1 +1,0 @@
-Directory dedicated to maths
