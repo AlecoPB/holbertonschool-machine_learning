@@ -3,7 +3,8 @@
 def matrix_shape(matrix):
     length = []
     if not isinstance(matrix[0], list):
-        return len(matrix)
+        length.append(len(matrix))
+        return length
     else:
         length.append(len(matrix))
         prev_res = matrix_shape(matrix[0])
