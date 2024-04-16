@@ -15,8 +15,6 @@ def matrix_transpose(matrix):
     for i in range(0, length):
         transpose.append([])
         for j in range(0, width):
-            if i >= width:
-                break
             transpose[i].append(matrix[j][i])
 
     return transpose
