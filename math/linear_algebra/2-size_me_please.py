@@ -1,6 +1,15 @@
 #!/usr/bin/env python3
-
+"""_summary_
+This is some documentation
+"""
 def matrix_shape(matrix):
+    """
+    Args:
+        matrix (nested list)
+
+    Returns:
+        shape of matrix
+    """
     length = []
     if not isinstance(matrix[0], list):
         length.append(len(matrix))
