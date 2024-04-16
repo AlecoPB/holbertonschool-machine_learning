@@ -15,8 +15,8 @@ def add_matrices2D(mat1, mat2):
         _type_: _description_
     """
     if len(mat1) != len(mat2) or\
-        len(mat1[0]) != len(mat2[0]):
-            None
+       len(mat1[0]) != len(mat2[0]):
+        None
     else:
         new_mat = []
         for i in range(len(mat1)):
