@@ -2,7 +2,6 @@
 """
 This is some documentation
 """
-import numpy as np
 
 
 def np_shape(matrix):
