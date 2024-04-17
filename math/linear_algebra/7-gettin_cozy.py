@@ -5,6 +5,16 @@ This is some documentation
 
 
 def cat_matrices2D(mat1, mat2, axis=0):
+    """_summary_
+
+    Args:
+        mat1 (_type_): _description_
+        mat2 (_type_): _description_
+        axis (int, optional): _description_. Defaults to 0.
+
+    Returns:
+        _type_: _description_
+    """
     if axis == 1 and len(mat1) != len(mat2):
         return None
     elif axis == 0 and len(mat1[0]) != len(mat2[0]):
