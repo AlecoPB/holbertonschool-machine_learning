@@ -14,4 +14,8 @@ def np_elementwise(mat1, mat2):
     Returns:
         _type_: _description_
     """
-    return mat1 + mat2
+    addition = mat1 + mat2
+    substraction = mat1 - mat2
+    multiplication = mat1 * mat2
+    division = mat1 / mat2
+    return (addition, substraction, multiplication, division,)
