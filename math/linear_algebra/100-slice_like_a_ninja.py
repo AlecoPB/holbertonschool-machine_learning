@@ -5,17 +5,17 @@ This is some documentation
 
 
 def np_slice(matrix, axes={}):
-    """_summary_
-
-    Args:
-        matrix (_type_): _description_
-        axes (dict, optional): _description_. Defaults to {}.
-
-    Returns:
-        _type_: _description_
-    """
     new_arr = []
     for key, value in axes.items():
-        val1, val2 = value[0], value[1]
-        new_arr.append(matrix[key][val1:val2])
+        val1 = value[0]
+        val2 = value[1] if len(value) > 1 else None
+        if matrix.ndim == 1:
+            return matrix[val1:val2]
+        else:
+            new_axes = {k: v for k, v in axes.items() if k >= key}
+            for i in range(len(matrix)):
+                temp_arr = np_slice(matrix[i], new_axes)
+                new_arr.append([])
+                for j in temp_arr:
+                    new_arr[i].append(j)
     return new_arr
