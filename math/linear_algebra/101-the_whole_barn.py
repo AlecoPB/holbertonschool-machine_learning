@@ -26,4 +26,9 @@ def add_matrices(mat1, mat2):
     if check_dim(mat1, mat2) == False:
         return None
     else:    
-        return mat1 + mat2
+        if isinstance(mat1[0], list):
+            # For 2D matrices, iterate over the rows and columns
+            return [[mat1[i][j] + mat2[i][j] for j in range(len(mat1[0]))] for i in range(len(mat1))]
+        else:
+            # For 1D matrices, iterate over the elements
+            return [mat1[i] + mat2[i] for i in range(len(mat1))]
