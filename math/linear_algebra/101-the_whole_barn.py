@@ -25,7 +25,7 @@ def add_matrices(mat1, mat2):
     """
     This function just adds the matrices
     """
-    if check_dim(mat1, mat2) == False:
+    if check_dim(mat1, mat2) is False:
         return None
     else:
         if isinstance(mat1[0], list):
