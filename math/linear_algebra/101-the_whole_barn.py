@@ -27,8 +27,8 @@ def add_matrices(mat1, mat2):
         return None
     else:    
         if isinstance(mat1[0], list):
-            # For 2D matrices, iterate over the rows and columns
-            return [[mat1[i][j] + mat2[i][j] for j in range(len(mat1[0]))] for i in range(len(mat1))]
+            # For nested lists, recursively call add_matrices on the sub-lists
+            return [add_matrices(sub_mat1, sub_mat2) for sub_mat1, sub_mat2 in zip(mat1, mat2)]
         else:
-            # For 1D matrices, iterate over the elements
-            return [mat1[i] + mat2[i] for i in range(len(mat1))]
+            # For 1D lists, iterate over the elements
+            return [val1 + val2 for val1, val2 in zip(mat1, mat2)]
