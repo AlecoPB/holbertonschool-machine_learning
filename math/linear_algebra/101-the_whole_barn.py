@@ -3,6 +3,7 @@
 This is some documentation
 """
 
+
 def check_dim(mat1, mat2):
     """
     This function checks if the dimensions of
@@ -19,16 +20,17 @@ def check_dim(mat1, mat2):
         else:
             return False
 
+
 def add_matrices(mat1, mat2):
     """
     This function just adds the matrices
     """
     if check_dim(mat1, mat2) == False:
         return None
-    else:    
+    else:
         if isinstance(mat1[0], list):
-            # For nested lists, recursively call add_matrices on the sub-lists
-            return [add_matrices(sub_mat1, sub_mat2) for sub_mat1, sub_mat2 in zip(mat1, mat2)]
+            return [add_matrices(sub_mat1, sub_mat2)
+                    for sub_mat1, sub_mat2 in zip(mat1, mat2)]
         else:
-            # For 1D lists, iterate over the elements
             return [val1 + val2 for val1, val2 in zip(mat1, mat2)]
+        
