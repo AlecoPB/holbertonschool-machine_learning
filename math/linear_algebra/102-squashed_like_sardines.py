@@ -5,37 +5,27 @@ This is some documentation
 
 
 def cat_matrices(mat1, mat2, axis=0):
-  """
-  Concatenates two matrices (ndarrays) along a specific axis.
+    # Check if the matrices can be concatenated along the given axis
+    if len(mat1.shape) != len(mat2.shape) or \
+       any(s1 != s2 for s1, s2 in zip(mat1.shape, mat2.shape) if s1 != axis and s2 != axis):
+        return None
 
-  Args:
-      mat1: First matrix (ndarray).
-      mat2: Second matrix (ndarray).
-      axis: Axis along which to concatenate (default: 0).
+    # Create a new matrix to hold the result
+    shape = list(mat1.shape)
+    shape[axis] += mat2.shape[axis]
+    result = [[0] * shape[1] for _ in range(shape[0])]
 
-  Returns:
-      A new matrix (ndarray) containing the concatenated matrices, 
-      or None if concatenation is not possible.
-  """
+    # Copy the elements from the first matrix
+    for i in range(mat1.shape[0]):
+        for j in range(mat1.shape[1]):
+            result[i][j] = mat1[i][j]
 
-  # Check if matrices are empty (given assumption)
-  if not mat1.size or not mat2.size:
-    return None
+    # Copy the elements from the second matrix
+    for i in range(mat2.shape[0]):
+        for j in range(mat2.shape[1]):
+            if axis == 0:
+                result[i + mat1.shape[0]][j] = mat2[i][j]
+            else:
+                result[i][j + mat1.shape[1]] = mat2[i][j]
 
-  # Validate data type consistency
-  if mat1.dtype != mat2.dtype:
-    return None
-
-  # Validate dimension compatibility (except for concatenation axis)
-  for i in range(len(mat1.shape)):
-    if i != axis and mat1.shape[i] != mat2.shape[i]:
-      return None
-
-  # Concatenate based on axis
-  if axis == 0:
-    return np.concatenate((mat1, mat2))
-  elif axis == 1:
-    return np.concatenate((mat1, mat2), axis=axis)
-  else:
-    # Invalid axis provided
-    return None
+    return result
