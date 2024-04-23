@@ -22,12 +22,9 @@ def cat_matrices(mat1, mat2, axis=0):
 
         # Concatenate the matrices
         result = []
-        if axis == 0:
-            result = mat1 + mat2
-        elif axis == 1:
-            for m1, m2 in zip(mat1, mat2):
-                concatenated = cat_matrices(m1, m2, axis=0)
-                if concatenated is None:
-                    return None
-                result.append(concatenated)
+        for m1, m2 in zip(mat1, mat2):
+            concatenated = cat_matrices(m1, m2, axis - 1)
+            if concatenated is None:
+                return None
+            result.append(concatenated)
         return result
