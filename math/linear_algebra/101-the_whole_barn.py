@@ -33,4 +33,3 @@ def add_matrices(mat1, mat2):
                     for sub_mat1, sub_mat2 in zip(mat1, mat2)]
         else:
             return [val1 + val2 for val1, val2 in zip(mat1, mat2)]
-        
