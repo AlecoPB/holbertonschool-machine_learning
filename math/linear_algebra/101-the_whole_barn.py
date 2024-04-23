@@ -8,7 +8,7 @@ def check_dim(mat1, mat2):
     This function checks if the dimensions of
     both matrices are the same
     """
-    if mat1.ndim == 1:
+    if not isinstance(mat1[0], list):
         if len(mat1) == len(mat2):
             return True
         else:
