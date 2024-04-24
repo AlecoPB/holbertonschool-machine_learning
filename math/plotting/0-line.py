@@ -13,3 +13,5 @@ def line():
     plt.figure(figsize=(6.4, 4.8))
     plt.plot(np.arange(0, 11), y, 'r-')
     plt.show()
+
+line()
