@@ -19,5 +19,5 @@ def frequency():
     plt.xlim(0, 100)
     plt.ylabel('Number of Students')
     plt.ylim(0, 30)
-    plt.hist(student_grades, bins=np.arange(0, 120, 10),
+    plt.hist(student_grades, bins=np.arange(0, 101, 10),
              edgecolor='black')
