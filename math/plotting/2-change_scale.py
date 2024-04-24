@@ -21,3 +21,4 @@ def change_scale():
     plt.yscale('log')
     plt.ylabel('Fraction Remaining')
     plt.title('Exponential Decay of C-14')
+    plt.show()
