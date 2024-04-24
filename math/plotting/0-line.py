@@ -14,5 +14,3 @@ def line():
     plt.plot(np.arange(0, 11), y, 'r-')
     plt.xlim(0, 10)
     plt.show()
-
-line()
