@@ -5,10 +5,11 @@ This is some documentation
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def change_scale():
     """
     Basic line plot that shows the
-    exponential decay of C-14 
+    exponential decay of C-14
     """
     x = np.arange(0, 28651, 5730)
     r = np.log(0.5)
