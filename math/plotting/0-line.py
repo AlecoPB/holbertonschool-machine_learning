@@ -11,5 +11,5 @@ def line():
     """
     y = np.arange(0, 11) ** 3
     plt.figure(figsize=(6.4, 4.8))
-    plot = plt.plot(np.arange(0, 11), y, 'r-')
+    plt.plot(np.arange(0, 11), y, 'r-')
     plt.show()
