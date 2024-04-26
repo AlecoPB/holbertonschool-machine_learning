@@ -3,6 +3,7 @@
 This is some documentation
 """
 
+
 def summation_i_squared(n):
     """
     Sum of squares
