@@ -17,6 +17,6 @@ def poly_derivative(poly):
             d_x.append(poly[i]*i)
         if d_x[0] == 0:
             d_x.pop(0)
-        elif d_x == []:
+        elif d_x == [0]:
             return [0]
         return d_x
