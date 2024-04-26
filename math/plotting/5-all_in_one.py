@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
+"""
+This is some documentation
+"""
 import numpy as np
 import matplotlib.pyplot as plt
 
 
 def all_in_one():
-
+    """
+    Figure with 5 sub-plots
+    """
     y0 = np.arange(0, 11) ** 3
 
     mean = [69, 0]
