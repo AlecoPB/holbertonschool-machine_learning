@@ -2,7 +2,7 @@
 
 
 def summation_i_squared(n):
-    sum = 0
-    for i in range(n):
-        sum += i^2
-    return sum
+    if n == 1:
+        return n^2
+    else:
+        return n^2 + (n-1)^2
