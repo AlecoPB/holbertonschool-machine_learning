@@ -26,7 +26,8 @@ def poly_integral(poly, C=0):
             integral.append(0)
         else:
             integral_coef = coef / (i + 1)
-            integral.append(int(integral_coef) if integral_coef.is_integer() else integral_coef)
+            integral.append(int(integral_coef) if
+                            integral_coef.is_integer() else integral_coef)
 
     # Remove trailing zeros
     while len(integral) > 1 and integral[-1] == 0:
