@@ -43,7 +43,6 @@ class Node:
         We have the option to just count the leaves
         """
         ToN = 0 if only_leaves else 1
-        if self.is_leaf: print(self.is_leaf)
         if self.left_child:
             ToN += self.left_child.count_nodes_below(only_leaves)
         if self.right_child:
