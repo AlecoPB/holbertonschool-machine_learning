@@ -6,6 +6,9 @@ import numpy as np
 
 
 class Node:
+    """
+    A node for a tree
+    """
     def __init__(self, feature=None,
                  threshold=None,
                  left_child=None,
@@ -36,6 +39,9 @@ class Node:
 
 
 class Leaf(Node):
+    """
+    A leaf on a tree
+    """
     def __init__(self, value, depth=None):
         super().__init__()
         self.value = value
@@ -50,6 +56,9 @@ class Leaf(Node):
 
 
 class Decision_Tree():
+    """
+    A tree
+    """
     def __init__(self, max_depth=10,
                  min_pop=1,
                  seed=0,
