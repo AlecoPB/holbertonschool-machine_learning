@@ -105,3 +105,6 @@ class Decision_Tree():
         Count nodes for nodes
         """
         return self.root.count_nodes_below(only_leaves=only_leaves)
+
+    def __str__(self):
+        return self.root.__str__()
