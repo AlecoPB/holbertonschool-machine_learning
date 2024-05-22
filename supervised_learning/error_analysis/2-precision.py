@@ -9,6 +9,6 @@ def precision(confusion):
     preci = np.zeros(confusion.shape[0])
     for i in range(confusion.shape[0]):
         correct = confusion[i][i]
-        total = sum(confusion[i, :])
+        total = sum(confusion[:, i])
         preci[i] = round(correct / total, 8)
     return preci
