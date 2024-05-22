@@ -14,7 +14,7 @@ def sensitivity(confusion):
     Returns:
         int: sensitivity value
     """
-    sensitivity_values = np.zeros(confusion.shape[0])
+    sensi = np.zeros(confusion.shape[0])
     for i in range(confusion.shape[0]):
         correct = confusion[i][i]
         incorrect = sum(confusion[i, :]) - correct
