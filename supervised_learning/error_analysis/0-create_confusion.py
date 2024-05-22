@@ -10,8 +10,10 @@ def create_confusion_matrix(labels, logits):
     Creates a confusion matrix.
 
     Args:
-        labels (numpy.ndarray): One-hot encoded matrix of correct labels (shape: (m, classes)).
-        logits (numpy.ndarray): One-hot encoded matrix of predicted labels (shape: (m, classes)).
+        labels (numpy.ndarray):
+        One-hot encoded matrix of correct labels (shape: (m, classes)).
+        logits (numpy.ndarray):
+        One-hot encoded matrix of predicted labels (shape: (m, classes)).
 
     Returns:
         numpy.ndarray: Confusion matrix (shape: (classes, classes)).
