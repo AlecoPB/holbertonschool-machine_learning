@@ -20,4 +20,4 @@ def sensitivity(confusion):
         incorrect = sum(confusion[i, :]) - correct
         sensi.append(round(np.float32(correct / (correct + incorrect)), 8))
 
-    return sensi
+    return np.ndarray(sensi)
