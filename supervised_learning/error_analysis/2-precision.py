@@ -10,5 +10,5 @@ def precision(confusion):
     for i in range(confusion.shape[0]):
         correct = confusion[i][i]
         total = sum(confusion[i, :])
-        preci[i] = round(correct / (correct + total), 8)
+        preci[i] = round(correct / total, 8)
     return preci
