@@ -9,7 +9,7 @@ def sensitivity(confusion):
     """_summary_
 
     Args:
-        confusion (matrix): Confusion matrix 
+        confusion (matrix): Confusion matrix
 
     Returns:
         int: sensitivity value
