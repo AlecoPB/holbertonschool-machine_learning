@@ -22,5 +22,5 @@ def sensitivity(confusion):
                 correct += confusion[i][j]
             else:
                 incorrect += confusion[j][i]
-        sensi.append(correct / (correct + incorrect))
+            sensi.append(correct / (correct + incorrect))
     return sensi
