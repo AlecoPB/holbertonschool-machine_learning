@@ -15,9 +15,10 @@ def sensitivity(confusion):
         int: sensitivity value
     """
     sensi = []
+    np.ndarray(sensi)
     for i in range(confusion.shape[0]):
         correct = confusion[i][i]
         incorrect = sum(confusion[i, :]) - correct
         sensi.append(round(np.float32(correct / (correct + incorrect)), 8))
 
-    return np.ndarray(sensi)
+    return sensi
