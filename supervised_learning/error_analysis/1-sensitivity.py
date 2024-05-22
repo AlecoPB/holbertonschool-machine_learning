@@ -14,10 +14,10 @@ def sensitivity(confusion):
     Returns:
         int: sensitivity value
     """
-    correct, incorrect = 0, 0
     sensi = []
     for i in range(confusion.shape[0]):
         correct = confusion[i][i]
         incorrect = sum(confusion[i, :]) - correct
-        sensi.append(correct / (correct + incorrect))
+        sensi.append(np.float16(correct / (correct + incorrect)))
+
     return sensi
