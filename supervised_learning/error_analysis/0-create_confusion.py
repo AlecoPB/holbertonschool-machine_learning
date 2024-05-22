@@ -6,8 +6,22 @@ import numpy as np
 
 
 def create_confusion_matrix(labels, logits):
-    decoded_labels = np.zeros_like(labels, dtype=np.uint8)
-    for i in range(labels.shape[0]):
-        decoded_labels[i, np.argmax(labels[i])] = 1
-    print(decoded_labels.shape, logits.shape)
-    return decoded_labels.shape, logits.shape
+    """
+    Creates a confusion matrix.
+
+    Args:
+        labels (numpy.ndarray): One-hot encoded matrix of correct labels (shape: (m, classes)).
+        logits (numpy.ndarray): One-hot encoded matrix of predicted labels (shape: (m, classes)).
+
+    Returns:
+        numpy.ndarray: Confusion matrix (shape: (classes, classes)).
+    """
+    m, classes = labels.shape
+    confusion_matrix = np.zeros((classes, classes), dtype=np.int)
+
+    for i in range(m):
+        true_label = np.argmax(labels[i])
+        predicted_label = np.argmax(logits[i])
+        confusion_matrix[true_label][predicted_label] += 1
+
+    return confusion_matrix
