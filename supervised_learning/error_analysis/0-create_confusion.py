@@ -17,7 +17,7 @@ def create_confusion_matrix(labels, logits):
         numpy.ndarray: Confusion matrix (shape: (classes, classes)).
     """
     m, classes = labels.shape
-    confusion_matrix = np.zeros((classes, classes), dtype=np.int32)
+    confusion_matrix = np.zeros((classes, classes), dtype=np.float32)
 
     for i in range(m):
         true_label = np.argmax(labels[i])
