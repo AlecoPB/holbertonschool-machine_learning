@@ -15,10 +15,12 @@ def sensitivity(confusion):
         int: sensitivity value
     """
     correct, incorrect = 0, 0
+    sensi = []
     for i in range(confusion.shape[0]):
         for j in range(confusion.shape[0]):
             if i==j:
                 correct += confusion[i][j]
             else:
-                incorrect += confusion[i][j]
-    return correct / (correct + incorrect)
+                incorrect += confusion[j][i]
+        sensi.append(correct / (correct + incorrect))
+    return sensi
