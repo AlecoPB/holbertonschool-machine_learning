@@ -16,6 +16,7 @@ def f1_score(confusion):
     prec = precision(confusion)
 
     f1_scores = 2 * (prec * sens) / (prec + sens)
-    f1_scores = [round(i, 8) for i in f1_scores]
+    for i in f1_scores:
+        f1_scores[i] = np.floor(i, 8)
 
     return f1_scores
