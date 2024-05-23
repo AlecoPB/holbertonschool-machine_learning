@@ -17,4 +17,4 @@ def f1_score(confusion):
 
     f1_scores = 2 * (prec * sens) / (prec + sens)
 
-    return np.float32(f1_scores)
+    return round(f1_scores, 8)
