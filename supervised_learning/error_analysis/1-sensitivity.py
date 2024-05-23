@@ -18,6 +18,6 @@ def sensitivity(confusion):
     for i in range(confusion.shape[0]):
         correct = confusion[i][i]
         incorrect = sum(confusion[i, :]) - correct
-        sensi[i] = round(correct / (correct + incorrect), 8)
+        sensi[i] = np.floor(correct / (correct + incorrect), 8)
 
     return sensi
