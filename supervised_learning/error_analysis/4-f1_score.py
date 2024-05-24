@@ -15,8 +15,7 @@ def f1_score(confusion):
     sens = sensitivity(confusion)
     prec = precision(confusion)
     
-    f1_scores = np.zeros(confusion.shape[0])
-    for i in range(confusion.shape[0]):
-        f1_scores[i] = (2 * (prec[i] * sens[i])) / (prec[i] + sens[i])
+#    f1_scores = np.zeros(confusion.shape[0])
+    f1_scores = 2 * ((prec * sens) / (prec + sens))
 
     return f1_scores
