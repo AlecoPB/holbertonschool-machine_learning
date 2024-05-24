@@ -13,6 +13,7 @@ def f1_score(confusion):
     precision = __import__('2-precision').precision
 
     e = 1e-7
+    print(e)
     sens = sensitivity(confusion)
     prec = precision(confusion)
 
