@@ -12,11 +12,10 @@ def f1_score(confusion):
     sensitivity = __import__('1-sensitivity').sensitivity
     precision = __import__('2-precision').precision
 
+    e = 1e-7
     sens = sensitivity(confusion)
     prec = precision(confusion)
 
-    f1_scores = 2 * ((prec * sens) / (prec + sens))
-    f1_scores[3] -= 0.00000001
-    f1_scores[13] += 0.00000001
+    f1_scores = 2 * ((prec * sens) / (prec + sens + e))
 
     return f1_scores
