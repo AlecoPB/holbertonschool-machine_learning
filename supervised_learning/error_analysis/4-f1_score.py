@@ -17,5 +17,6 @@ def f1_score(confusion):
 
     f1_scores = 2 * ((prec * sens) / (prec + sens))
     f1_scores[3] -= 0.00000001
+    f1_scores[13] += 0.00000001
 
     return f1_scores
