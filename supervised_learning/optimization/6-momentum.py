@@ -13,6 +13,6 @@ def create_momentum_op(loss, alpha, beta1):
         alpha (_type_): _description_
         beta1 (_type_): _description_
     """
-    optimizer = tf.train.MomentumOptimizer(learning_rate=alpha, momentum=beta1)
+    optimizer = tf.keras.optimizers.SGD(learning_rate=alpha, momentum=beta1)
     optimizer = optimizer.minimize(loss)
     return optimizer
