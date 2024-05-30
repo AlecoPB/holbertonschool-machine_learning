@@ -2,7 +2,7 @@
 """_summary_
 This is some documentation
 """
-import tensorflow.compat.v1 as tf
+import tensorflow as tf
 
 
 def create_batch_norm_layer(prev, n, activation):
