@@ -27,51 +27,27 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid, batch_size=32,
     Returns:
         _type_: _description_
     """
-    with tf.Session() as sess:
-        saver = tf.train.import_meta_graph(load_path + '.meta')
-        saver.restore(sess, load_path)
+    m = X.shape[0]  # number of data points
 
-        x = tf.get_collection('x')[0]
-        y = tf.get_collection('y')[0]
-        accuracy = tf.get_collection('accuracy')[0]
-        loss = tf.get_collection('loss')[0]
-        train_op = tf.get_collection('train_op')[0]
+    # Shuffle the data
+    shuffle_data = __import__('2-shuffle_data').shuffle_data
+    X, Y = shuffle_data(X, Y)
 
-        m = X_train.shape[0]
-        for c_epoch in range(epochs):
-            X_shuffled, Y_shuffled = shuffle_data(X_train, Y_train)
+    # Calculate the number of batches
+    num_batches = m // batch_size
 
-            train_cost, train_accuracy =\
-                sess.run([loss, accuracy],
-                         feed_dict={x: X_train, y: Y_train})
-            valid_cost, valid_accuracy =\
-                sess.run([loss, accuracy],
-                         feed_dict={x: X_valid, y: Y_valid})
-            print(f"After {c_epoch} epochs:"
-                  f"\n\tTraining Cost: {train_cost}"
-                  f"\n\tTraining Accuracy: {train_accuracy}"
-                  f"\n\tValidation Cost: {valid_cost}"
-                  f"\n\tValidation Accuracy: {valid_accuracy}")
-            for i in range(0, m, batch_size):
-                X_batch = X_shuffled[i: i + batch_size]
-                Y_batch = Y_shuffled[i: i + batch_size]
-                sess.run(train_op, feed_dict={x: X_batch, y: Y_batch})
-                if ((i // batch_size) + 1) % 100 == 0:
-                    step_cost, step_accuracy =\
-                        sess.run([loss, accuracy],
-                                 feed_dict={x: X_batch, y: Y_batch})
-                    if i != 0:
-                        print(f"\tStep {(i // batch_size) + 1}:"
-                              f"\n\t\tCost: {step_cost}"
-                              f"\n\t\tAccuracy: {step_accuracy}")
-        train_cost, train_accuracy =\
-            sess.run([loss, accuracy], feed_dict={x: X_train, y: Y_train})
-        valid_cost, valid_accuracy =\
-            sess.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
-        print(f"After {c_epoch + 1} epochs:"
-              f"\n\tTraining Cost: {train_cost}"
-              f"\n\tTraining Accuracy: {train_accuracy}"
-              f"\n\tValidation Cost: {valid_cost}"
-              f"\n\tValidation Accuracy: {valid_accuracy}")
-        save_path = saver.save(sess, save_path)
-    return save_path
+    mini_batches = []
+
+    for i in range(num_batches):
+        X_batch = X[i * batch_size:(i + 1) * batch_size, :]
+        Y_batch = Y[i * batch_size:(i + 1) * batch_size, :]
+        mini_batches.append((X_batch, Y_batch))
+
+    # If the number of data points is not a multiple of batch_size
+    # Create a mini-batch with the remaining data points
+    if m % batch_size != 0:
+        X_batch = X[num_batches * batch_size:, :]
+        Y_batch = Y[num_batches * batch_size:, :]
+        mini_batches.append((X_batch, Y_batch))
+
+    return mini_batches
