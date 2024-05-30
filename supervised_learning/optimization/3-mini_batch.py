@@ -7,6 +7,16 @@ shuffle_data = __import__('2-shuffle_data').shuffle_data
 
 
 def create_mini_batches(X, Y, batch_size):
+    """_summary_
+
+    Args:
+        X (_type_): _description_
+        Y (_type_): _description_
+        batch_size (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     m = X.shape[0]  # number of data points
 
     # Shuffle the data
