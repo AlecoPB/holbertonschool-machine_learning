@@ -2,31 +2,11 @@
 """_summary_
 This is some documentation
 """
-import tensorflow.compat.v1 as tf
+import tensorflow as tf
 shuffle_data = __import__('2-shuffle_data').shuffle_data
 
 
-def train_mini_batch(X_train, Y_train, X_valid, Y_valid, batch_size=32,
-                     epochs=5, load_path="/tmp/model.ckpt",
-                     save_path="/tmp/model.ckpt"):
-    """_summary_
-
-    Args:
-        X_train (_type_): _description_
-        Y_train (_type_): _description_
-        X_valid (_type_): _description_
-        Y_valid (_type_): _description_
-        batch_size (int, optional): _description_. Defaults to 32.
-        epochs (int, optional): _description_.
-        Defaults to 5.
-        load_path (str, optional)
-        Defaults to "/tmp/model.ckpt".
-        save_path (str, optional)
-        Defaults to "/tmp/model.ckpt".
-
-    Returns:
-        _type_: _description_
-    """
+def create_mini_batches(X, Y, batch_size):
     m = X.shape[0]  # number of data points
 
     # Shuffle the data
