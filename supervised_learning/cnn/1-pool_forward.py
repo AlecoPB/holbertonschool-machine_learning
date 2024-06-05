@@ -2,9 +2,8 @@
 """
 This is some documentation
 """
-
-
 import numpy as np
+
 
 def pool_forward(A_prev, kernel_shape, stride=(1, 1), mode='max'):
     """
@@ -28,12 +27,13 @@ def pool_forward(A_prev, kernel_shape, stride=(1, 1), mode='max'):
                     vert_end = vert_start + kh
                     horiz_start = w * sw
                     horiz_end = horiz_start + kw
-                    
-                    A_slice = A_prev[i, vert_start:vert_end, horiz_start:horiz_end, c]
+
+                    A_slice = A_prev[i, vert_start:vert_end,
+                                     horiz_start:horiz_end, c]
 
                     if mode == 'max':
                         A[i, h, w, c] = np.max(A_slice)
                     elif mode == 'avg':
                         A[i, h, w, c] = np.mean(A_slice)
-    
+
     return A
