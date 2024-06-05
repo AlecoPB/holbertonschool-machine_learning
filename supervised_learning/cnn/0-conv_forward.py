@@ -15,7 +15,7 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
     (m, h_prev, w_prev, c_prev) = A_prev.shape
     (kh, kw, c_prev, c_new) = W.shape
     (sh, sw) = stride
-    
+
     # Determine padding
     if padding == "same":
         ph = int(((h_prev - 1) * sh + kh - h_prev) / 2)
@@ -50,9 +50,9 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
                     w_end = w_start + kw
 
                     A_slice = A_prev_pad[i, h_start:h_end, w_start:w_end, :]
-                    Z[i, h, w, c] = np.sum(A_slice * W[:, :, :, c]) + b[0, 0, 0, c]
-    
-    # Apply activation function
+                    Z[i, h, w, c] = np.sum(A_slice * W[:, :, :, c])\
+                        + b[0, 0, 0, c]
+
     A = activation(Z)
-    
+
     return A
