@@ -32,22 +32,25 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
         pw = 0
 
 
-    # Compute output dimensions
-    h_out = int((h_prev - kh + 2 * pad_h) / sh) + 1
-    w_out = int((w_prev - kw + 2 * pad_w) / sw) + 1
-
-    # Initialize output feature maps
-    Z = np.zeros((m, h_out, w_out, c_new))
-
-    # Convolution
-    for i in range(h_out):
-        for j in range(w_out):
-            h_start, h_end = i * sh, i * sh + kh
-            w_start, w_end = j * sw, j * sw + kw
-            A_slice = A_prev_padded[:, h_start:h_end, w_start:w_end, :]
-            Z[:, i, j, :] = np.sum(A_slice * W, axis=(1, 2, 3)) + b
-
-    # Apply activation function
+    A_prev_padded = np.pad(A_prev, ((0, 0), (ph, ph), (pw, pw), (0, 0)), mode='constant', constant_values=0)
+    
+    h_new = (h_prev + 2 * ph - kh) // sh + 1
+    w_new = (w_prev + 2 * pw - kw) // sw + 1
+    
+    Z = np.zeros((m, h_new, w_new, c_new))
+    
+    for i in range(m):
+        for h in range(h_new):
+            for w in range(w_new):
+                for c in range(c_new):
+                    vert_start = h * sh
+                    vert_end = vert_start + kh
+                    horiz_start = w * sw
+                    horiz_end = horiz_start + kw
+                    
+                    A_slice = A_prev_padded[i, vert_start:vert_end, horiz_start:horiz_end, :]
+                    Z[i, h, w, c] = np.sum(A_slice * W[:, :, :, c]) + b[:, :, :, c]
+    
     A = activation(Z)
 
     return A
