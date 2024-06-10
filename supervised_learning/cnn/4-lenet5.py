@@ -6,6 +6,9 @@ import tensorflow.compat.v1 as tf
 
 
 def lenet5(x, y):
+    """
+    This is a lenet5 model
+    """
     # He normal initializer
     initializer = tf.keras.initializers.VarianceScaling(scale=2.0)
 
@@ -73,7 +76,8 @@ def lenet5(x, y):
     softmax_output = tf.nn.softmax(logits)
 
     # Loss using softmax cross-entropy
-    loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(labels=y, logits=logits))
+    loss = tf.reduce_mean(
+        tf.nn.softmax_cross_entropy_with_logits_v2(labels=y, logits=logits))
 
     # Training operation using Adam optimizer
     train_op = tf.train.AdamOptimizer().minimize(loss)
