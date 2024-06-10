@@ -2,7 +2,7 @@
 """
 This is some documentation
 """
-import tensorflow.compat.V1 as tf
+import tensorflow.compat.v1 as tf
 
 
 def lenet5(x, y):
