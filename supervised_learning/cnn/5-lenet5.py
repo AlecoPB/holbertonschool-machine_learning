@@ -6,6 +6,9 @@ from tensorflow import keras as K
 
 
 def lenet5(X):
+    """
+    LeNet5 model using Keras
+    """
     initializer = K.initializers.HeNormal(seed=0)
 
     conv1 = K.layers.Conv2D(
