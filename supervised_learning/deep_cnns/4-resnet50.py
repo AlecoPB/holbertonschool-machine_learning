@@ -58,6 +58,6 @@ def resnet50():
     X = K.layers.Dense(1000, activation='softmax', kernel_initializer=initializer)(X)
 
     # Create model
-    model = models.Model(inputs=inputs, outputs=X)
+    model = K.models.Model(inputs=inputs, outputs=X)
 
     return model
