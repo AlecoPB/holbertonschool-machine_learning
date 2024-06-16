@@ -20,7 +20,8 @@ def projection_block(A_prev, filters, s=2):
                       filters in the 3x3 convolution.
                     - F12: Number of
                       filters in the second 1x1 convolution
-                      as well as the 1x1 convolution in the shortcut connection.
+                      as well as the 1x1 convolution in the
+                      shortcut connection.
         s (int): The stride of the first convolution
         in both the main path and the shortcut connection.
 
@@ -32,28 +33,28 @@ def projection_block(A_prev, filters, s=2):
 
     # First component of main path
     X = K.layers.Conv2D(filters=F11, kernel_size=(1, 1),
-                      strides=(s), padding='same',
-                      kernel_initializer=initializer)(A_prev)
+                        strides=(s), padding='same',
+                        kernel_initializer=initializer)(A_prev)
     X = K.layers.BatchNormalization(axis=3)(X)
     X = K.layers.ReLU()(X)
 
     # Second component of main path
     X = K.layers.Conv2D(filters=F3, kernel_size=(3, 3),
-                      strides=(1, 1), padding='same',
-                      kernel_initializer=initializer)(X)
+                        strides=(1, 1), padding='same',
+                        kernel_initializer=initializer)(X)
     X = K.layers.BatchNormalization(axis=3)(X)
     X = K.layers.ReLU()(X)
 
     # Third component of main path
     X = K.layers.Conv2D(filters=F12, kernel_size=(1, 1),
-                      strides=(1, 1), padding='same',
-                      kernel_initializer=initializer)(X)
+                        strides=(1, 1), padding='same',
+                        kernel_initializer=initializer)(X)
     X = K.layers.BatchNormalization(axis=3)(X)
 
     # Shortcut path
     shortcut = K.layers.Conv2D(filters=F12, kernel_size=(1, 1),
-                             strides=(s), padding='same',
-                             kernel_initializer=initializer)(A_prev)
+                               strides=(s), padding='same',
+                               kernel_initializer=initializer)(A_prev)
     shortcut = K.layers.BatchNormalization(axis=3)(shortcut)
 
     # Final step: Add shortcut value to the main path,
