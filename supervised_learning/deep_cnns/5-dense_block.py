@@ -8,13 +8,13 @@ from tensorflow import keras as K
 def dense_block(X, nb_filters, growth_rate, layers_count):
     """
     Builds a dense block as described in 'Densely Connected Convolutional Networks'.
-    
+
     Parameters:
         X (tensor): The output from the previous layer.
         nb_filters (int): The number of filters in X.
         growth_rate (int): The growth rate for the dense block.
         K.layers_count (int): The number of K.layers in the dense block.
-    
+
     Returns:
         tensor: The concatenated output of each layer within the Dense Block.
         int: The number of filters within the concatenated outputs.
@@ -25,9 +25,10 @@ def dense_block(X, nb_filters, growth_rate, layers_count):
         # Bottleneck layer
         bottleneck = K.layers.BatchNormalization(axis=3)(X)
         bottleneck = K.layers.ReLU()(bottleneck)
-        bottleneck = K.layers.Conv2D(4 * growth_rate, (1, 1),
-                                     padding='same',
-                                     kernel_initializer=initializer)(bottleneck)
+        bottleneck =\
+            K.layers.Conv2D(4 * growth_rate, (1, 1),
+                            padding='same',
+                            kernel_initializer=initializer)(bottleneck)
 
         # 3x3 Convolution layer
         conv = K.layers.BatchNormalization(axis=3)(bottleneck)
