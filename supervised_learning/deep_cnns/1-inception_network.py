@@ -2,8 +2,8 @@
 """
 This is some documentation
 """
-import tensorflow as tf
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, concatenate
+from tensorflow import jeras as K
+inception_block = __import__(0)
 
 
 def inception_block(A_prev, filters):
