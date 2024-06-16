@@ -9,7 +9,7 @@ def identity_block(A_prev, filters):
     """
     Builds an identity block as described in
     'Deep Residual Learning for Image Recognition' (2015).
-    
+
     Parameters:
         A_prev (tensor): The output form the previous layer.
         filters (tuple or list): A tuple or list
@@ -29,19 +29,19 @@ def identity_block(A_prev, filters):
 
     # First component of main path
     X = K.layers.Conv2D(filters=F11, kernel_size=(1, 1),
-                      padding='same', kernel_initializer=initializer)(A_prev)
+                        padding='same', kernel_initializer=initializer)(A_prev)
     X = K.layers.BatchNormalization(axis=3)(X)
     X = K.layers.ReLU()(X)
 
     # Second component of main path
     X = K.layers.Conv2D(filters=F3, kernel_size=(3, 3),
-                      padding='same', kernel_initializer=initializer)(X)
+                        padding='same', kernel_initializer=initializer)(X)
     X = K.layers.BatchNormalization(axis=3)(X)
     X = K.layers.ReLU()(X)
 
     # Third component of main path
     X = K.layers.Conv2D(filters=F12, kernel_size=(1, 1),
-                      padding='same', kernel_initializer=initializer)(X)
+                        padding='same', kernel_initializer=initializer)(X)
     X = K.layers.BatchNormalization(axis=3)(X)
 
     # Final step: Add shortcut value to the
