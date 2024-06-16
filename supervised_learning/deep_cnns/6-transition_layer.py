@@ -9,19 +9,19 @@ def transition_layer(X, nb_filters, compression):
     """
     Builds a transition layer as described in
     'Densely Connected Convolutional Networks'.
-    
+
     Parameters:
         X (tensor): The output from the previous layer.
         nb_filters (int): The number of filters in X.
         compression (float): The compression factor for
         the transition layer.
-    
+
     Returns:
         tensor: The output of the transition layer.
         int: The number of filters within the output.
     """
     initializer = K.initializers.he_normal(seed=0)
-    
+
     # Compute the number of filters after compression
     nb_filters = int(nb_filters * compression)
 
