@@ -20,7 +20,7 @@ def identity_block(A_prev, filters):
                                  of filters in the 3x3 convolution.
                                  - F12: Number
                                  of filters in the second 1x1 convolution.
-    
+
     Returns:
         tensor: The activated output of the identity block.
     """
