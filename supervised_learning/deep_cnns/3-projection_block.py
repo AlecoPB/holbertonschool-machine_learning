@@ -11,7 +11,7 @@ def projection_block(A_prev, filters, s=2):
     'Deep Residual Learning for Image Recognition' (2015).
 
     Parameters:
-        A_prev (tensor): The output from-> the previous layer.
+        A_prev (tensor): The output seen in the previous layer.
         filters (tuple or list): A tuple or list
         containing F11, F3, F12, respectively:
                                  - F11: Number of
