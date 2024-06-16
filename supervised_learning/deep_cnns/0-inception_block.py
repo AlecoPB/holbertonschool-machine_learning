@@ -8,11 +8,13 @@ from tensorflow import keras as K
 
 def inception_block(A_prev, filters):
     """
-    Builds an inception block as described in "Going Deeper with Convolutions (2014)".
+    Builds an inception block as
+    described in "Going Deeper with Convolutions (2014)".
 
     Args:
         A_prev: the output from the previous layer
-        filters: a tuple or list containing F1, F3R, F3, F5R, F5, FPP, respectively
+        filters: a tuple or list containing
+        F1, F3R, F3, F5R, F5, FPP, respectively
 
     Returns:
         The concatenated output of the inception block
@@ -33,6 +35,3 @@ def inception_block(A_prev, filters):
     output = K.layers.Concatenate()([conv1, conv3, conv5, pool_conv])
 
     return output
-
-if __name__ == "__main__":
-    pass
