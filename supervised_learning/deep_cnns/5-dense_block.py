@@ -21,7 +21,7 @@ def dense_block(X, nb_filters, growth_rate, layers_count):
     """
     initializer = K.initializers.he_normal(seed=0)
 
-    for _ in range(K.layers_count):
+    for _ in range(layers_count):
         # Bottleneck layer
         bottleneck = K.layers.BatchNormalization(axis=3)(X)
         bottleneck = K.layers.ReLU()(bottleneck)
