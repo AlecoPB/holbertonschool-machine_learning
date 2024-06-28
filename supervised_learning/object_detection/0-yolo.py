@@ -16,3 +16,14 @@ class Yolo:
         self.class_t = class_t
         self.nms_t = nms_t
         self.anchors = anchors
+
+    def process_outputs(self, outputs, image_size):
+        boxes, box_confidences, box_class_probs = [], [], []
+        for i in range(3):
+            boxes.append(outputs[i])
+            box_confidences.append(outputs[i])
+            box_class_probs.append(outputs[i])
+        boxes.append(outputs[3])
+        box_confidences.append(outputs[4])
+        box_class_probs.append(outputs[5])
+        return (boxes, box_confidences, box_class_probs)
