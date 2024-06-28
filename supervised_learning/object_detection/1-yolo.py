@@ -3,6 +3,7 @@
 This is some documentation
 """
 import keras
+import numpy as np
 
 
 class Yolo:
