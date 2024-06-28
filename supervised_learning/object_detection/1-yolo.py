@@ -20,10 +20,19 @@ class Yolo:
     def process_outputs(self, outputs, image_size):
         boxes, box_confidences, box_class_probs = [], [], []
         for i in range(3):
-            boxes.append(outputs[i])
-            box_confidences.append(outputs[i])
-            box_class_probs.append(outputs[i])
-        boxes.append(outputs[3])
-        box_confidences.append(outputs[4])
-        box_class_probs.append(outputs[5])
-        return (boxes, box_confidences, box_class_probs)
+            t_x, t_y, t_w, t_h = outputs[i][..., :4]  # Bounding box coordinates
+            box_confidence = outputs[i][..., 4:5]     # Box confidence
+            class_probs = outputs[i][..., 5:]         # Class probabilities
+
+            # Convert bounding box coordinates to absolute values
+            x1 = (t_x - t_w / 2) * image_size[1]
+            y1 = (t_y - t_h / 2) * image_size[0]
+            x2 = (t_x + t_w / 2) * image_size[1]
+            y2 = (t_y + t_h / 2) * image_size[0]
+
+            # Append processed components to lists
+            boxes.append(np.stack([x1, y1, x2, y2], axis=-1))
+            box_confidences.append(box_confidence)
+            box_class_probs.append(class_probs)
+
+        return boxes, box_confidences, box_class_probs
