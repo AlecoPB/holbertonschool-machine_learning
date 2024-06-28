@@ -21,7 +21,7 @@ class Yolo:
         boxes, box_confidences, box_class_probs = [], [], []
 
         for i in range(3):
-            t_x, t_y, t_w, t_h = outputs[i][..., :4]  # Bounding box coordinates
+            t_x, t_y, t_w, t_h = outputs[i][..., :3]  # Bounding box coordinates
             box_confidence = outputs[i][..., 4:5]     # Box confidence
             class_probs = outputs[i][..., 5:]         # Class probabilities
 
