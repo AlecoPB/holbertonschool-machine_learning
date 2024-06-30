@@ -10,7 +10,7 @@ import keras
 class Yolo:
     """
     Yolo class for object detection using Yolo v3.
-    
+
     Attributes:
         model (keras.Model): The YOLO model loaded from the given path.
         class_names (list): List of class names loaded from the given path.
@@ -42,8 +42,10 @@ class Yolo:
         Processes the outputs from the Darknet model.
 
         Args:
-            outputs (list): List of numpy.ndarrays containing the predictions from the model.
-            image_size (numpy.ndarray): Image's original size [image_height, image_width].
+            outputs (list): List of numpy.ndarrays
+            containing the predictions from the model.
+            image_size (numpy.ndarray): Image's original
+            size [image_height, image_width].
 
         Returns:
             tuple: (boxes, box_confidences, box_class_probs)
@@ -63,8 +65,14 @@ class Yolo:
             tx, ty, tw, th = box[..., 0], box[..., 1], box[..., 2], box[..., 3]
             
             # Create the grid for bx and by
-            cx = np.tile(np.arange(grid_width), (grid_height, 1)).reshape((grid_height, grid_width, 1))
-            cy = np.tile(np.arange(grid_height), (grid_width, 1)).T.reshape((grid_height, grid_width, 1))
+            cx = np.tile(np.arange(grid_width),
+                         (grid_height, 1)).reshape((grid_height,
+                                                    grid_width,
+                                                    1))
+            cy = np.tile(np.arange(grid_height),
+                         (grid_width, 1)).T.reshape((grid_height,
+                                                     grid_width,
+                                                     1))
 
             # Normalize the bx and by
             bx = (1 / (1 + np.exp(-tx))) + cx
