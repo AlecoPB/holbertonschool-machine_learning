@@ -3,9 +3,9 @@
 This module provides the Yolo class for object detection using Yolo v3.
 """
 
+import os
 import numpy as np
 import keras
-
 
 class Yolo:
     """
@@ -217,6 +217,7 @@ class Yolo:
 
         return iou
 
+    @staticmethod
     def load_images(folder_path):
         """
         Loads images from a folder path.
