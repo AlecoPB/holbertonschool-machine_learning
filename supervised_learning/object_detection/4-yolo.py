@@ -148,7 +148,7 @@ class Yolo:
                 predicted_box_classes (numpy.ndarray): Array of shape (?,) containing the class number for each box in box_predictions ordered by class and box score.
                 predicted_box_scores (numpy.ndarray): Array of shape (?) containing the box scores for each box in box_predictions ordered by class and box score.
         """
-        # Sort boxes based on scores
+        # Sort boxes based on scores and classes in descending order
         idxs = np.argsort(-box_scores)
         filtered_boxes = filtered_boxes[idxs]
         box_classes = box_classes[idxs]
@@ -216,3 +216,33 @@ class Yolo:
         iou = intersection_area / union_area
 
         return iou
+
+    def load_images(folder_path):
+        """
+        Loads images from a folder path.
+
+        Args:
+            folder_path (str): Path to the folder containing images.
+
+        Returns:
+            tuple: (images, image_paths)
+                images (list of numpy.ndarray): List of images as numpy arrays.
+                image_paths (list of str): List of paths to the individual images.
+        """
+        images = []
+        image_paths = []
+
+        # Iterate through all files in the folder
+        for filename in os.listdir(folder_path):
+            # Check if the file is an image file (common image extensions)
+            if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif')):
+                # Construct the full path to the image file
+                file_path = os.path.join(folder_path, filename)
+                # Read the image using OpenCV
+                image = cv2.imread(file_path)
+                if image is not None:
+                    # Append the loaded image and its path to the lists
+                    images.append(image)
+                    image_paths.append(file_path)
+
+        return images, image_paths
