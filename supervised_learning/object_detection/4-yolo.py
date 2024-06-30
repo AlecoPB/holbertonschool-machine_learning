@@ -138,17 +138,6 @@ class Yolo:
     def non_max_suppression(self, filtered_boxes, box_classes, box_scores):
         """
         Performs Non-max suppression (NMS) on filtered boxes.
-
-        Args:
-            filtered_boxes (numpy.ndarray): Array of shape (?, 4) containing all of the filtered bounding boxes.
-            box_classes (numpy.ndarray): Array of shape (?,) containing the class number for each box in filtered_boxes.
-            box_scores (numpy.ndarray): Array of shape (?) containing the box scores for each box in filtered_boxes.
-
-        Returns:
-            tuple: (box_predictions, predicted_box_classes, predicted_box_scores)
-                box_predictions (numpy.ndarray): Array of shape (?, 4) containing all of the predicted bounding boxes ordered by class and box score.
-                predicted_box_classes (numpy.ndarray): Array of shape (?,) containing the class number for each box in box_predictions ordered by class and box score.
-                predicted_box_scores (numpy.ndarray): Array of shape (?) containing the box scores for each box in box_predictions ordered by class and box score.
         """
         # Sort boxes based on scores and classes in descending order
         idxs = np.argsort(-box_scores)
@@ -207,7 +196,9 @@ class Yolo:
         intersection_y2 = np.minimum(box[3], boxes[:, 3])
 
         # Calculate intersection area
-        intersection_area = np.maximum(0, intersection_x2 - intersection_x1 + 1) * np.maximum(0, intersection_y2 - intersection_y1 + 1)
+        intersection_area = np.maximum(0,
+                                       intersection_x2 - intersection_x1 + 1)\
+                                           * np.maximum(0, intersection_y2 - intersection_y1 + 1)
 
         # Calculate union area
         box_area = (box[2] - box[0] + 1) * (box[3] - box[1] + 1)
