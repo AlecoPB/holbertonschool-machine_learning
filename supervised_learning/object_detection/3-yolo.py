@@ -148,44 +148,44 @@ class Yolo:
                 predicted_box_classes (numpy.ndarray): Array of shape (?,) containing the class number for each box in box_predictions ordered by class and box score.
                 predicted_box_scores (numpy.ndarray): Array of shape (?) containing the box scores for each box in box_predictions ordered by class and box score.
         """
-        # Sort boxes based on scores in descending order
-        idxs = np.argsort(-box_scores)
-        filtered_boxes = filtered_boxes[idxs]
-        box_classes = box_classes[idxs]
-        box_scores = box_scores[idxs]
+        # Combine boxes, classes, and scores
+        combined = np.concatenate((filtered_boxes, box_classes[:, np.newaxis], box_scores[:, np.newaxis]), axis=1)
 
-        # Initialize lists to store results
-        box_predictions = []
-        predicted_box_classes = []
-        predicted_box_scores = []
+        # Sort by class and then by score descending
+        sorted_idxs = np.lexsort((-combined[:, 5], -combined[:, 4]))
 
-        while len(filtered_boxes) > 0:
-            # Pick the box with the highest score
-            best_box = filtered_boxes[0]
-            best_class = box_classes[0]
-            best_score = box_scores[0]
+        # Apply sorting
+        combined_sorted = combined[sorted_idxs]
 
-            box_predictions.append(best_box)
-            predicted_box_classes.append(best_class)
-            predicted_box_scores.append(best_score)
+        # Extract sorted boxes, classes, and scores
+        sorted_boxes = combined_sorted[:, :4]
+        sorted_classes = combined_sorted[:, 4].astype(int)
+        sorted_scores = combined_sorted[:, 5]
 
-            # Compute IoU (Intersection over Union) with remaining boxes
-            iou = self.compute_iou(best_box, filtered_boxes[1:])
-            
-            # Find the indices of boxes with IoU less than nms_t
+        # Perform Non-max suppression
+        keep_idxs = []
+        while len(sorted_boxes) > 0:
+            best_box = sorted_boxes[0]
+            best_class = sorted_classes[0]
+            best_score = sorted_scores[0]
+
+            keep_idxs.append(0)
+
+            iou = self.compute_iou(best_box, sorted_boxes[1:])
             iou_mask = iou < self.nms_t
 
-            # Filter out boxes with high IoU
-            filtered_boxes = filtered_boxes[1:][iou_mask]
-            box_classes = box_classes[1:][iou_mask]
-            box_scores = box_scores[1:][iou_mask]
+            sorted_boxes = sorted_boxes[1:][iou_mask]
+            sorted_classes = sorted_classes[1:][iou_mask]
+            sorted_scores = sorted_scores[1:][iou_mask]
 
-        # Convert lists to numpy arrays
-        box_predictions = np.array(box_predictions)
-        predicted_box_classes = np.array(predicted_box_classes)
-        predicted_box_scores = np.array(predicted_box_scores)
+        keep_idxs = np.array(keep_idxs)
+
+        box_predictions = combined_sorted[keep_idxs, :4]
+        predicted_box_classes = combined_sorted[keep_idxs, 4].astype(int)
+        predicted_box_scores = combined_sorted[keep_idxs, 5]
 
         return box_predictions, predicted_box_classes, predicted_box_scores
+
 
 
     def compute_iou(self, box, boxes):
