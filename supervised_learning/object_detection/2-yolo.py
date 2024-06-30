@@ -114,7 +114,8 @@ class Yolo:
         for i in range(len(boxes)):
             box = boxes[i].reshape(-1, 4)
             box_confidence = box_confidences[i].reshape(-1)
-            box_class_prob = box_class_probs[i].reshape(-1, box_class_probs[i].shape[-1])
+            box_class_prob =\
+                box_class_probs[i].reshape(-1, box_class_probs[i].shape[-1])
 
             box_scores_current = box_confidence[:, np.newaxis] * box_class_prob
             box_classes_current = np.argmax(box_scores_current, axis=1)
@@ -131,4 +132,3 @@ class Yolo:
         box_scores = np.concatenate(box_scores, axis=0)
 
         return filtered_boxes, box_classes, box_scores
-
