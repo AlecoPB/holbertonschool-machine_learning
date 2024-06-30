@@ -7,46 +7,78 @@ import numpy as np
 
 
 class Yolo:
-    def __init__(self, model, anchors, class_names):
-        self.model = model
-        self.anchors = anchors
-        self.class_names = class_names
+    """
+    Yolo class for object detection using Yolo v3.
     
-    def sigmoid(self, x):
-        return 1 / (1 + np.exp(-x))
+    Attributes:
+        model (keras.Model): The YOLO model loaded from the given path.
+        class_names (list): List of class names loaded from the given path.
+        class_t (float): Threshold for class score.
+        nms_t (float): Non-max suppression threshold.
+        anchors (list): List of anchor boxes.
+    """
+
+    def __init__(self, model_path, classes_path, class_t, nms_t, anchors):
+        """
+        Initializes the Yolo object with the given parameters.
+
+        Args:
+            model_path (str): Path to the YOLO model file.
+            classes_path (str): Path to the file containing class names.
+            class_t (float): Threshold for class score.
+            nms_t (float): Non-max suppression threshold.
+            anchors (list): List of anchor boxes.
+        """
+        self.model = keras.models.load_model(model_path)
+        with open(classes_path, 'r') as f:
+            self.class_names = [line.strip() for line in f]
+        self.class_t = class_t
+        self.nms_t = nms_t
+        self.anchors = anchors
 
     def process_outputs(self, outputs, image_size):
+        """
+        Processes the outputs from the Darknet model.
+
+        Args:
+            outputs (list): List of numpy.ndarrays containing the predictions from the model.
+            image_size (numpy.ndarray): Image's original size [image_height, image_width].
+
+        Returns:
+            tuple: (boxes, box_confidences, box_class_probs)
+        """
         boxes = []
         box_confidences = []
         box_class_probs = []
-        
+
         image_height, image_width = image_size
-        
+
         for output in outputs:
-            grid_height, grid_width, anchor_boxes, _ = output.shape
-            tx = output[..., 0]
-            ty = output[..., 1]
-            tw = output[..., 2]
-            th = output[..., 3]
-            box_confidence = self.sigmoid(output[..., 4, np.newaxis])
-            class_probs = self.sigmoid(output[..., 5:])
-            
-            cx = (self.sigmoid(tx) + np.arange(grid_width).reshape(1, grid_width, 1)) / grid_width
-            cy = (self.sigmoid(ty) + np.arange(grid_height).reshape(grid_height, 1, 1)) / grid_height
-            
-            pw = self.anchors[:, 0].reshape(1, 1, anchor_boxes)
-            ph = self.anchors[:, 1].reshape(1, 1, anchor_boxes)
-            
-            bw = pw * np.exp(tw) / self.model.input.shape[1].value
-            bh = ph * np.exp(th) / self.model.input.shape[2].value
-            
-            x1 = (cx - bw / 2) * image_width
-            y1 = (cy - bh / 2) * image_height
-            x2 = (cx + bw / 2) * image_width
-            y2 = (cy + bh / 2) * image_height
-            
-            boxes.append(np.stack((x1, y1, x2, y2), axis=-1))
+            grid_height, grid_width, anchor_boxes = output.shape[:3]
+            box = output[..., :4]
+            box_confidence = 1 / (1 + np.exp(-output[..., 4, np.newaxis]))
+            box_class_prob = 1 / (1 + np.exp(-output[..., 5:]))
+
+            tx, ty, tw, th = box[..., 0], box[..., 1], box[..., 2], box[..., 3]
+            bx = (1 / (1 + np.exp(-tx))) + np.tile(np.arange(grid_width), (grid_height, 1)).T
+            by = (1 / (1 + np.exp(-ty))) + np.tile(np.arange(grid_height), (grid_width, 1))
+            bw = np.exp(tw) * self.anchors[..., 0]
+            bh = np.exp(th) * self.anchors[..., 1]
+
+            bx /= grid_width
+            by /= grid_height
+            bw /= self.model.input.shape[1].value
+            bh /= self.model.input.shape[2].value
+
+            x1 = (bx - (bw / 2)) * image_width
+            y1 = (by - (bh / 2)) * image_height
+            x2 = (bx + (bw / 2)) * image_width
+            y2 = (by + (bh / 2)) * image_height
+
+            box[..., 0], box[..., 1], box[..., 2], box[..., 3] = x1, y1, x2, y2
+
+            boxes.append(box)
             box_confidences.append(box_confidence)
-            box_class_probs.append(class_probs)
-        
-        return (boxes, box_confidences, box_class_probs)
+            box_class_probs.append(box_class_prob)
+
+        return boxes, box_confidences, box_class_probs
