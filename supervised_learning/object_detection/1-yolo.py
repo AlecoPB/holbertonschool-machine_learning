@@ -54,7 +54,7 @@ class Yolo:
 
         image_height, image_width = image_size
 
-        for output in outputs:
+        for output, anchors in zip(outputs, self.anchors):
             grid_height, grid_width, anchor_boxes = output.shape[:3]
             box = output[..., :4]
             box_confidence = 1 / (1 + np.exp(-output[..., 4, np.newaxis]))
@@ -63,16 +63,16 @@ class Yolo:
             tx, ty, tw, th = box[..., 0], box[..., 1], box[..., 2], box[..., 3]
             
             # Create the grid for bx and by
-            cx = np.tile(np.arange(grid_width), grid_height).reshape((grid_height, grid_width))
-            cy = np.tile(np.arange(grid_height), grid_width).reshape((grid_width, grid_height)).T
+            cx = np.tile(np.arange(grid_width), (grid_height, 1)).reshape((grid_height, grid_width, 1))
+            cy = np.tile(np.arange(grid_height), (grid_width, 1)).T.reshape((grid_height, grid_width, 1))
 
             # Normalize the bx and by
-            bx = (1 / (1 + np.exp(-tx))) + cx[..., np.newaxis]
-            by = (1 / (1 + np.exp(-ty))) + cy[..., np.newaxis]
+            bx = (1 / (1 + np.exp(-tx))) + cx
+            by = (1 / (1 + np.exp(-ty))) + cy
 
             # Normalize the bw and bh using anchors
-            bw = np.exp(tw) * self.anchors[:, 0].reshape((1, 1, anchor_boxes))
-            bh = np.exp(th) * self.anchors[:, 1].reshape((1, 1, anchor_boxes))
+            bw = np.exp(tw) * anchors[:, 0].reshape((1, 1, len(anchors)))
+            bh = np.exp(th) * anchors[:, 1].reshape((1, 1, len(anchors)))
 
             bx /= grid_width
             by /= grid_height
