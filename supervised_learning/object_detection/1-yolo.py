@@ -30,12 +30,12 @@ class Yolo:
             nms_t (float): Non-max suppression threshold.
             anchors (list): List of anchor boxes.
         """
-        self.model = keras.models.load_model(model_path)
+        self.model = keras.models.load_model(model_path, compile=False)
         with open(classes_path, 'r') as f:
             self.class_names = [line.strip() for line in f]
         self.class_t = class_t
         self.nms_t = nms_t
-        self.anchors = anchors
+        self.anchors = np.array(anchors)
 
     def process_outputs(self, outputs, image_size):
         """
@@ -61,16 +61,25 @@ class Yolo:
             box_class_prob = 1 / (1 + np.exp(-output[..., 5:]))
 
             tx, ty, tw, th = box[..., 0], box[..., 1], box[..., 2], box[..., 3]
-            bx = (1 / (1 + np.exp(-tx))) + np.tile(np.arange(grid_width), (grid_height, 1)).T
-            by = (1 / (1 + np.exp(-ty))) + np.tile(np.arange(grid_height), (grid_width, 1))
-            bw = np.exp(tw) * self.anchors[..., 0]
-            bh = np.exp(th) * self.anchors[..., 1]
+            
+            # Create the grid for bx and by
+            cx = np.tile(np.arange(grid_width), grid_height).reshape((grid_height, grid_width))
+            cy = np.tile(np.arange(grid_height), grid_width).reshape((grid_width, grid_height)).T
+
+            # Normalize the bx and by
+            bx = (1 / (1 + np.exp(-tx))) + cx[..., np.newaxis]
+            by = (1 / (1 + np.exp(-ty))) + cy[..., np.newaxis]
+
+            # Normalize the bw and bh using anchors
+            bw = np.exp(tw) * self.anchors[:, 0].reshape((1, 1, anchor_boxes))
+            bh = np.exp(th) * self.anchors[:, 1].reshape((1, 1, anchor_boxes))
 
             bx /= grid_width
             by /= grid_height
-            bw /= self.model.input.shape[1].value
-            bh /= self.model.input.shape[2].value
+            bw /= self.model.input.shape[1]
+            bh /= self.model.input.shape[2]
 
+            # Convert to x1, y1, x2, y2
             x1 = (bx - (bw / 2)) * image_width
             y1 = (by - (bh / 2)) * image_height
             x2 = (bx + (bw / 2)) * image_width
