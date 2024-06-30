@@ -38,6 +38,8 @@ class Yolo:
         self.class_t = class_t
         self.nms_t = nms_t
         self.anchors = np.array(anchors)
+        self.input_h = 416
+        self.input_w = 416
 
     def process_outputs(self, outputs, image_size):
         """
