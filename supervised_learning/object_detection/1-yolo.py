@@ -63,7 +63,7 @@ class Yolo:
             box_class_prob = 1 / (1 + np.exp(-output[..., 5:]))
 
             tx, ty, tw, th = box[..., 0], box[..., 1], box[..., 2], box[..., 3]
-            
+
             # Create the grid for bx and by
             cx = np.tile(np.arange(grid_width),
                          (grid_height, 1)).reshape((grid_height,
