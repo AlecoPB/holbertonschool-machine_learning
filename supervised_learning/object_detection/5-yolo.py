@@ -275,4 +275,4 @@ class Yolo:
         image_shapes = np.array(image_shapes)
 
         # Return preprocessed images, number of images, input dimensions, and original image shapes
-        return pimages, len(images), self.input_h, self.input_w, image_shapes
+        return pimages, image_shapes
