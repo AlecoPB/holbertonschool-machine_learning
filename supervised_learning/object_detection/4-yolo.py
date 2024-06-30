@@ -193,11 +193,13 @@ class Yolo:
         intersection_area =\
             np.maximum(0,
                        intersection_x2 - intersection_x1 + 1)\
-                           * np.maximum(0, intersection_y2 - intersection_y1 + 1)
+                        * np.maximum(0,
+                                     intersection_y2 - intersection_y1 + 1)
 
         # Calculate union area
         box_area = (box[2] - box[0] + 1) * (box[3] - box[1] + 1)
-        boxes_area = (boxes[:, 2] - boxes[:, 0] + 1) * (boxes[:, 3] - boxes[:, 1] + 1)
+        boxes_area = (boxes[:, 2] - boxes[:, 0] + 1)\
+            * (boxes[:, 3] - boxes[:, 1] + 1)
         union_area = box_area + boxes_area - intersection_area
 
         # Calculate IoU
@@ -213,10 +215,6 @@ class Yolo:
         Args:
             folder_path (str): Path to the folder containing images.
 
-        Returns:
-            tuple: (images, image_paths)
-                images (list of numpy.ndarray): List of images as numpy arrays.
-                image_paths (list of str): List of paths to the individual images.
         """
         images = []
         image_paths = []
