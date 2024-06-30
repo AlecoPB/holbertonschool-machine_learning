@@ -180,7 +180,12 @@ class Yolo:
             box_classes = box_classes[1:][iou_mask]
             box_scores = box_scores[1:][iou_mask]
 
-        return np.array(box_predictions), np.array(predicted_box_classes), np.array(predicted_box_scores)
+        # Convert lists to numpy arrays
+        box_predictions = np.array(box_predictions)
+        predicted_box_classes = np.array(predicted_box_classes)
+        predicted_box_scores = np.array(predicted_box_scores)
+
+        return box_predictions, predicted_box_classes, predicted_box_scores
 
     def compute_iou(self, box, boxes):
         """
