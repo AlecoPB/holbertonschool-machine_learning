@@ -190,9 +190,10 @@ class Yolo:
         intersection_y2 = np.minimum(box[3], boxes[:, 3])
 
         # Calculate intersection area
-        intersection_area = np.maximum(0,
-                                       intersection_x2 - intersection_x1 + 1)\
-                                           * np.maximum(0, intersection_y2 - intersection_y1 + 1)
+        intersection_area =\
+            np.maximum(0,
+                       intersection_x2 - intersection_x1 + 1)\
+                           * np.maximum(0, intersection_y2 - intersection_y1 + 1)
 
         # Calculate union area
         box_area = (box[2] - box[0] + 1) * (box[3] - box[1] + 1)
