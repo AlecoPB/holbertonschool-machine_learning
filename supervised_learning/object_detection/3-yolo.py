@@ -10,7 +10,7 @@ import keras
 class Yolo:
     """
     Yolo class for object detection using Yolo v3.
-    
+
     Attributes:
         model (keras.Model): The YOLO model loaded from the given path.
         class_names (list): List of class names loaded from the given path.
@@ -42,8 +42,10 @@ class Yolo:
         Processes the outputs from the Darknet model.
 
         Args:
-            outputs (list): List of numpy.ndarrays containing the predictions from the model.
-            image_size (numpy.ndarray): Image's original size [image_height, image_width].
+            outputs (list): List of numpy.ndarrays
+            containing the predictions from the model.
+            image_size (numpy.ndarray): Image's original
+            size [image_height, image_width].
 
         Returns:
             tuple: (boxes, box_confidences, box_class_probs)
@@ -61,10 +63,16 @@ class Yolo:
             box_class_prob = 1 / (1 + np.exp(-output[..., 5:]))
 
             tx, ty, tw, th = box[..., 0], box[..., 1], box[..., 2], box[..., 3]
-            
+
             # Create the grid for bx and by
-            cx = np.tile(np.arange(grid_width), (grid_height, 1)).reshape((grid_height, grid_width, 1))
-            cy = np.tile(np.arange(grid_height), (grid_width, 1)).T.reshape((grid_height, grid_width, 1))
+            cx = np.tile(np.arange(grid_width),
+                         (grid_height, 1)).reshape((grid_height,
+                                                    grid_width,
+                                                    1))
+            cy = np.tile(np.arange(grid_height),
+                         (grid_width, 1)).T.reshape((grid_height,
+                                                     grid_width,
+                                                     1))
 
             # Normalize the bx and by
             bx = (1 / (1 + np.exp(-tx))) + cx
@@ -96,12 +104,6 @@ class Yolo:
     def filter_boxes(self, boxes, box_confidences, box_class_probs):
         """
         Filters the boxes based on box scores.
-
-        Args:
-            boxes (list): List of numpy.ndarrays of shape (grid_height, grid_width, anchor_boxes, 4) containing the processed boundary boxes for each output, respectively.
-            box_confidences (list): List of numpy.ndarrays of shape (grid_height, grid_width, anchor_boxes, 1) containing the processed box confidences for each output, respectively.
-            box_class_probs (list): List of numpy.ndarrays of shape (grid_height, grid_width, anchor_boxes, classes) containing the processed box class probabilities for each output, respectively.
-
         Returns:
             tuple: (filtered_boxes, box_classes, box_scores)
         """
@@ -112,7 +114,8 @@ class Yolo:
         for i in range(len(boxes)):
             box = boxes[i].reshape(-1, 4)
             box_confidence = box_confidences[i].reshape(-1)
-            box_class_prob = box_class_probs[i].reshape(-1, box_class_probs[i].shape[-1])
+            box_class_prob =\
+                box_class_probs[i].reshape(-1, box_class_probs[i].shape[-1])
 
             box_scores_current = box_confidence[:, np.newaxis] * box_class_prob
             box_classes_current = np.argmax(box_scores_current, axis=1)
