@@ -234,3 +234,45 @@ class Yolo:
                     image_paths.append(file_path)
 
         return images, image_paths
+
+    def preprocess_images(self, images):
+        """
+        Preprocesses a list of images for input into the Yolo model.
+
+        Args:
+            images (list of numpy.ndarray): List of images as numpy arrays.
+
+        Returns:
+            tuple: (pimages, image_shapes)
+                pimages (numpy.ndarray): Array of preprocessed images of shape (ni, input_h, input_w, 3).
+                ni (int): Number of images preprocessed.
+                input_h (int): Input height for the Darknet model.
+                input_w (int): Input width for the Darknet model.
+                image_shapes (numpy.ndarray): Array of original image shapes of shape (ni, 2) containing (image_height, image_width).
+        """
+        pimages = []
+        image_shapes = []
+
+        # Iterate through each image
+        for img in images:
+            # Get original shape
+            original_shape = img.shape[:2]
+            image_shapes.append(original_shape)
+
+            # Resize image with inter-cubic interpolation
+            resized_img = cv2.resize(img, (self.input_w, self.input_h), interpolation=cv2.INTER_CUBIC)
+
+            # Rescale pixel values to [0, 1]
+            resized_img = resized_img / 255.0
+
+            # Append preprocessed image to list
+            pimages.append(resized_img)
+
+        # Convert pimages to numpy array
+        pimages = np.array(pimages)
+
+        # Convert image_shapes to numpy array
+        image_shapes = np.array(image_shapes)
+
+        # Return preprocessed images, number of images, input dimensions, and original image shapes
+        return pimages, len(images), self.input_h, self.input_w, image_shapes
