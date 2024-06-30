@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-This is some documentation
+This module provides the Yolo class for object detection using Yolo v3.
 """
-import keras
+
 import numpy as np
+import keras
 
 
 class Yolo:
