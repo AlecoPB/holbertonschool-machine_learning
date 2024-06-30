@@ -162,7 +162,7 @@ class Yolo:
 
             # Compute IoU (Intersection over Union) with remaining boxes
             iou = self.compute_iou(best_box, filtered_boxes[1:])
-            
+
             # Find the indices of boxes with IoU less than nms_t
             iou_mask = iou < self.nms_t
 
@@ -180,14 +180,8 @@ class Yolo:
 
     def compute_iou(self, box, boxes):
         """
-        Computes IoU (Intersection over Union) between a box and an array of boxes.
-
-        Args:
-            box (numpy.ndarray): Box to compare, shape (4,).
-            boxes (numpy.ndarray): Array of boxes to compare against, shape (?, 4).
-
-        Returns:
-            numpy.ndarray: Array of IoU values, shape (?).
+        Computes IoU (Intersection over Union)
+        between a box and an array of boxes.
         """
         # Calculate intersection coordinates
         intersection_x1 = np.maximum(box[0], boxes[:, 0])
