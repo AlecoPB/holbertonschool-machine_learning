@@ -148,7 +148,7 @@ class Yolo:
                 predicted_box_classes (numpy.ndarray): Array of shape (?,) containing the class number for each box in box_predictions ordered by class and box score.
                 predicted_box_scores (numpy.ndarray): Array of shape (?) containing the box scores for each box in box_predictions ordered by class and box score.
         """
-        # Sort boxes based on scores in descending order
+        # Sort boxes based on scores
         idxs = np.argsort(-box_scores)
         filtered_boxes = filtered_boxes[idxs]
         box_classes = box_classes[idxs]
@@ -186,7 +186,6 @@ class Yolo:
         predicted_box_scores = np.array(predicted_box_scores)
 
         return box_predictions, predicted_box_classes, predicted_box_scores
-
 
     def compute_iou(self, box, boxes):
         """
