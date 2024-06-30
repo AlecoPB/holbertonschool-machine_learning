@@ -222,7 +222,11 @@ class Yolo:
         # Iterate through all files in the folder
         for filename in os.listdir(folder_path):
             # Check if the file is an image file (common image extensions)
-            if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif')):
+            if filename.lower().endswith(('.png',
+                                          '.jpg',
+                                          '.jpeg',
+                                          '.bmp',
+                                          '.gif')):
                 # Construct the full path to the image file
                 file_path = os.path.join(folder_path, filename)
                 # Read the image using OpenCV
