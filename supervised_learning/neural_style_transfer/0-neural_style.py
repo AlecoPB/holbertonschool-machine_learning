@@ -19,20 +19,25 @@ class NST:
     ]
     content_layer = 'block5_conv2'
 
-    def __init__(self, style_image: np.ndarray, content_image: np.ndarray, alpha: float = 1e4, beta: float = 1):
+    def __init__(self,
+                 style_image: np.ndarray,
+                 content_image: np.ndarray,
+                 alpha: float = 1e4, beta: float = 1):
         """
-        Initializes the NST class with style and content images and their weights.
-
         Args:
             style_image (np.ndarray): The style reference image.
             content_image (np.ndarray): The content reference image.
             alpha (float): The weight for content cost.
             beta (float): The weight for style cost.
         """
-        if not isinstance(style_image, np.ndarray) or style_image.shape[-1] != 3:
-            raise TypeError('style_image must be a numpy.ndarray with shape (h, w, 3)')
-        if not isinstance(content_image, np.ndarray) or content_image.shape[-1] != 3:
-            raise TypeError('content_image must be a numpy.ndarray with shape (h, w, 3)')
+        if not isinstance(style_image, np.ndarray)\
+            or style_image.shape[-1] != 3:
+            raise TypeError('style_image must be a',
+                            'numpy.ndarray with shape (h, w, 3)')
+        if not isinstance(content_image, np.ndarray)\
+            or content_image.shape[-1] != 3:
+            raise TypeError('content_image must be a',
+                            'numpy.ndarray with shape (h, w, 3)')
         if not isinstance(alpha, (int, float)) or alpha < 0:
             raise TypeError('alpha must be a non-negative number')
         if not isinstance(beta, (int, float)) or beta < 0:
