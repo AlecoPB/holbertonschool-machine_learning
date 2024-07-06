@@ -46,11 +46,6 @@ class NST:
     @staticmethod
     def scale_image(image: np.ndarray) -> tf.Tensor:
         """
-        Rescales an image such that its pixels values are between 0 and 1 and its largest side is 512 pixels.
-
-        Args:
-            image (np.ndarray): The image to be scaled.
-
         Returns:
             tf.Tensor: The scaled image.
         """
