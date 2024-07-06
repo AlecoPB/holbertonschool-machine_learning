@@ -58,14 +58,12 @@ class NST:
             raise TypeError('image must be a numpy.ndarray with shape (h, w, 3)')
 
         h, w, _ = image.shape
-
-        # Compute the new size while maintaining the aspect ratio
         if h > w:
             new_h = 512
-            new_w = int((512 / h) * w)
+            new_w = int(w * (512 / h))
         else:
             new_w = 512
-            new_h = int((512 / w) * h)
+            new_h = int(h * (512 / w))
 
         image = tf.image.resize(image, (new_h, new_w), method='bicubic')
         image = image / 255.0
