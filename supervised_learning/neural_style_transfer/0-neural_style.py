@@ -31,18 +31,18 @@ class NST:
             beta (float): The weight for style cost.
         """
         if not isinstance(style_image, np.ndarray)\
-            or style_image.shape[-1] != 3:
+           or style_image.shape[-1] != 3:
             raise TypeError(f'style_image must be a'
                             f' numpy.ndarray with shape (h, w, 3)')
         if not isinstance(content_image, np.ndarray)\
-            or content_image.shape[-1] != 3:
+           or content_image.shape[-1] != 3:
             raise TypeError(f'content_image must be a'
                             f' numpy.ndarray with shape (h, w, 3)')
         if not isinstance(alpha, (int, float)) or\
-            alpha < 0:
+           alpha < 0:
             raise TypeError('alpha must be a non-negative number')
         if not isinstance(beta, (int, float)) or\
-            beta < 0:
+           beta < 0:
             raise TypeError('beta must be a non-negative number')
 
         self.style_image = self.scale_image(style_image)
@@ -57,7 +57,8 @@ class NST:
             tf.Tensor: The scaled image.
         """
         if not isinstance(image, np.ndarray) or image.shape[-1] != 3:
-            raise TypeError('image must be a numpy.ndarray with shape (h, w, 3)')
+            raise TypeError(f'image must be a'
+                            f' numpy.ndarray with shape (h, w, 3)')
 
         h, w, _ = image.shape
         if h > w:
