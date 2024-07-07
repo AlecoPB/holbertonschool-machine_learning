@@ -7,6 +7,9 @@ import tensorflow as tf
 
 
 class NST:
+    """
+    Class that performs tasks for Neural Style Transfer.
+    """
     def __init__(self, style_image, content_image, alpha=1e4, beta=1):
         """
         Initializes the Neural Style Transfer class.
