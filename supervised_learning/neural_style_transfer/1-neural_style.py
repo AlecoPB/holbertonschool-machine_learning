@@ -60,7 +60,8 @@ class NST:
             tf.Tensor: The scaled image.
         """
         if not isinstance(image, np.ndarray) or image.shape[-1] != 3:
-            raise TypeError('image must be a numpy.ndarray with shape (h, w, 3)')
+            raise TypeError(f'image must be a'
+                            f' numpy.ndarray with shape (h, w, 3)')
 
         h, w, _ = image.shape
         if h > w:
