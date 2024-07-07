@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+This is some documentation
+"""
 import numpy as np
 import tensorflow as tf
 
@@ -39,7 +42,8 @@ class NST:
         vgg.trainable = False
 
         # Specify the layers to be used for style and content extraction
-        style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1', 'block4_conv1', 'block5_conv1']
+        style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1',
+                        'block4_conv1', 'block5_conv1']
         content_layer = 'block5_conv2'
 
         # Get outputs of the specified layers
@@ -48,4 +52,4 @@ class NST:
         # Create a new model that takes the same input as VGG19 but outputs the specified layer outputs
         model = tf.keras.Model(inputs=vgg.input, outputs=outputs)
 
-        return model  # Make sure to return the model
+        return model
