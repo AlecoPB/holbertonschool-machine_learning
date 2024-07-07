@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-"""
-This is some documentation
-"""
+
 import numpy as np
 import tensorflow as tf
 
@@ -9,6 +7,10 @@ import tensorflow as tf
 class NST:
     """
     A class to perform Neural Style Transfer.
+
+    Attributes:
+        style_layers (list): List of layers to be used for style extraction.
+        content_layer (str): Layer to be used for content extraction.
     """
 
     style_layers = [
@@ -19,54 +21,35 @@ class NST:
 
     def __init__(self, style_image: np.ndarray, content_image: np.ndarray, alpha: float = 1e4, beta: float = 1):
         """
+        Initializes the NST class with style and content images and their weights.
+
         Args:
             style_image (np.ndarray): The style reference image.
             content_image (np.ndarray): The content reference image.
             alpha (float): The weight for content cost.
             beta (float): The weight for style cost.
         """
-        if not isinstance(style_image, np.ndarray) or\
-           style_image.shape != (style_image.shape[0],
-                                 style_image.shape[1],
-                                 3):
-            raise TypeError(f"style_image must be a"
-                            f" numpy.ndarray with shape (h, w, 3)")
-        if not isinstance(content_image, np.ndarray) or\
-           content_image.shape != (content_image.shape[0],
-                                   content_image.shape[1], 3):
-            raise TypeError(f"content_image must be a"
-                            f" numpy.ndarray with shape (h, w, 3)")
+        if not isinstance(style_image, np.ndarray) or style_image.shape[-1] != 3:
+            raise TypeError('style_image must be a numpy.ndarray with shape (h, w, 3)')
+        if not isinstance(content_image, np.ndarray) or content_image.shape[-1] != 3:
+            raise TypeError('content_image must be a numpy.ndarray with shape (h, w, 3)')
         if not isinstance(alpha, (int, float)) or alpha < 0:
-            raise TypeError("alpha must be a non-negative number")
+            raise TypeError('alpha must be a non-negative number')
         if not isinstance(beta, (int, float)) or beta < 0:
-            raise TypeError("beta must be a non-negative number")
+            raise TypeError('beta must be a non-negative number')
 
         self.style_image = self.scale_image(style_image)
         self.content_image = self.scale_image(content_image)
         self.alpha = alpha
         self.beta = beta
         self.model = self.load_model()
-        self.gram_style_features = None
-        self.content_feature = None
-
-    # Existing methods (scale_image, load_model)...
-
-    def generate_features(self):
-        """
-        Extracts the features used to calculate neural style cost.
-        Sets the public instance attributes:
-        - content_feature: the content layer output of the content image
-        """
-        # Calculate style features (gram matrices)
-        style_outputs = self.model(self.style_image)
-        self.gram_style_features = [self.gram_matrix(output) for output in style_outputs[:-1]]
-
-        # Calculate content feature
-        self.content_feature = self.model(self.content_image)[-1]
+        self.gram_style_features, self.content_feature = self.generate_features()
 
     @staticmethod
     def scale_image(image: np.ndarray) -> tf.Tensor:
         """
+        Rescales an image such that its pixels values are between 0 and 1 and its largest side is 512 pixels.
+
         Args:
             image (np.ndarray): The image to be scaled.
 
@@ -74,8 +57,7 @@ class NST:
             tf.Tensor: The scaled image.
         """
         if not isinstance(image, np.ndarray) or image.shape[-1] != 3:
-            raise TypeError(f'image must be a'
-                            f' numpy.ndarray with shape (h, w, 3)')
+            raise TypeError('image must be a numpy.ndarray with shape (h, w, 3)')
 
         h, w, _ = image.shape
         if h > w:
@@ -99,39 +81,45 @@ class NST:
         Returns:
             tf.keras.Model: The Keras model used for Neural Style Transfer.
         """
-        vgg = tf.keras.applications.VGG19(include_top=False,
-                                          weights='imagenet')
+        vgg = tf.keras.applications.VGG19(include_top=False, weights='imagenet')
         vgg.trainable = False
 
-        style_outputs = [vgg.get_layer(name).output
-                         for name in self.style_layers]
+        style_outputs = [vgg.get_layer(name).output for name in self.style_layers]
         content_output = vgg.get_layer(self.content_layer).output
         model_outputs = style_outputs + [content_output]
 
         model = tf.keras.Model(inputs=vgg.input, outputs=model_outputs)
         return model
 
-    @staticmethod
-    def gram_matrix(input_layer: tf.Tensor) -> tf.Tensor:
+    def generate_features(self):
         """
-        Calculates the gram matrix of the input layer.
+        Extracts the features used to calculate neural style cost.
+
+        Sets the instance attributes:
+            gram_style_features - a list of gram matrices calculated from the style layer outputs of the style image
+            content_feature - the content layer output of the content image
+        """
+        style_outputs = self.model(self.style_image)[:len(self.style_layers)]
+        content_output = self.model(self.content_image)[len(self.style_layers):][0]
+
+        gram_style_features = [self.gram_matrix(style_output) for style_output in style_outputs]
+        content_feature = content_output
+
+        return gram_style_features, content_feature
+
+    @staticmethod
+    def gram_matrix(input_tensor):
+        """
+        Computes the Gram matrix of an input tensor.
 
         Args:
-            input_layer (tf.Tensor): Layer output of shape (1, h, w, c).
+            input_tensor: A tensor of shape (1, height, width, channels).
 
         Returns:
-            tf.Tensor: Gram matrix of shape (1, c, c).
+            Gram matrix of the input tensor.
         """
-        if not isinstance(input_layer, (tf.Tensor, tf.Variable))\
-           or len(input_layer.shape) != 4:
-            raise TypeError("input_layer must be a tensor of rank 4")
-
-        # Reshape the input layer to (h * w, c)
-        flattened = tf.reshape(input_layer, shape=(-1, input_layer.shape[-1]))
-
-        # Compute the gram matrix
-        gram = tf.matmul(flattened, flattened, transpose_a=True)
-        gram /= tf.cast(tf.reduce_prod(input_layer.shape[1:]),
-                        dtype=tf.float32)
-
-        return gram
+        channels = int(input_tensor.shape[-1])
+        a = tf.reshape(input_tensor, [-1, channels])
+        n = tf.shape(a)[0]
+        gram = tf.matmul(a, a, transpose_a=True)
+        return gram / tf.cast(n, tf.float32)
