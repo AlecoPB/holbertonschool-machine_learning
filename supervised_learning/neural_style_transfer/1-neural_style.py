@@ -39,17 +39,13 @@ class NST:
         vgg.trainable = False
 
         # Specify the layers to be used for style and content extraction
-        self.style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1', 'block4_conv1', 'block5_conv1']
-        self.content_layer = 'block5_conv2'
+        style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1', 'block4_conv1', 'block5_conv1']
+        content_layer = 'block5_conv2'
 
-        # Verify that specified layers exist in the VGG19 model
-        available_layers = [layer.name for layer in vgg.layers]
-        assert all(name in available_layers for name in self.style_layers), "One or more style layers are not in VGG19"
-        assert self.content_layer in available_layers, "Content layer is not in VGG19"
+        # Get outputs of the specified layers
+        outputs = [vgg.get_layer(name).output for name in style_layers + [content_layer]]
 
-        style_outputs = [vgg.get_layer(name).output for name in self.style_layers]
-        content_output = vgg.get_layer(self.content_layer).output
-        model_outputs = style_outputs + [content_output]
+        # Create a new model that takes the same input as VGG19 but outputs the specified layer outputs
+        model = tf.keras.Model(inputs=vgg.input, outputs=outputs)
 
-        model = tf.keras.Model(inputs=vgg.input, outputs=model_outputs)
-        return model
+        return model  # Make sure to return the model
