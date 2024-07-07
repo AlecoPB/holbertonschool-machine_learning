@@ -94,3 +94,71 @@ class NST:
             gram_generated = self.gram_matrix(gen_output)
             loss += tf.reduce_mean(tf.square(gram_style - gram_generated))
         return loss
+
+    def content_loss(self, content_output, generated_output):
+        """
+        Calculates the content loss.
+        """
+        return tf.reduce_mean(tf.square(content_output - generated_output))
+
+    def compute_loss(self, style_outputs, content_output, generated_outputs):
+        """
+        Computes the total loss.
+        """
+        style_outputs = style_outputs[:-1]
+        content_output = style_outputs[-1]
+        generated_style_outputs = generated_outputs[:-1]
+        generated_content_output = generated_outputs[-1]
+
+        style_loss = self.style_loss(style_outputs, generated_style_outputs)
+        content_loss = self.content_loss(content_output, generated_content_output)
+        total_loss = self.alpha * content_loss + self.beta * style_loss
+        return total_loss
+
+    @tf.function
+    def train_step(self, generated_image):
+        """
+        Performs one step of gradient descent.
+        """
+        with tf.GradientTape() as tape:
+            generated_outputs = self.model(generated_image)
+            style_outputs = self.model(self.style_image)
+            content_output = self.model(self.content_image)
+            loss = self.compute_loss(style_outputs, content_output, generated_outputs)
+        
+        gradients = tape.gradient(loss, generated_image)
+        optimizer = tf.optimizers.Adam(learning_rate=0.02)
+        optimizer.apply_gradients([(gradients, generated_image)])
+        generated_image.assign(tf.clip_by_value(generated_image, 0.0, 1.0))
+        return loss
+
+    def train(self, style_image, content_image, epochs=10, steps_per_epoch=100):
+        """
+        Performs style transfer.
+        """
+        generated_image = tf.Variable(content_image, dtype=tf.float32)
+        for epoch in range(epochs):
+            for step in range(steps_per_epoch):
+                loss = self.train_step(generated_image)
+                if step % 10 == 0:
+                    print(f"Epoch {epoch+1}, Step {step}, Loss: {loss.numpy()}")
+        return generated_image
+
+    @staticmethod
+    def deprocess_image(image):
+        """
+        Converts the image back to a displayable format.
+        """
+        image = image * 255.0
+        image = np.array(image, dtype=np.uint8)
+        if np.ndim(image) > 3:
+            image = image[0]
+        return image
+
+    @staticmethod
+    def save_image(image, path):
+        """
+        Saves the image to a file.
+        """
+        image = NST.deprocess_image(image)
+        tf.keras.preprocessing.image.save_img(path, image)
