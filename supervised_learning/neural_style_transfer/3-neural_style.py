@@ -49,7 +49,8 @@ class NST:
         """
         Creates the model used to calculate cost using the VGG19 base model.
         """
-        vgg = tf.keras.applications.VGG19(include_top=False, weights='imagenet')
+        vgg = tf.keras.applications.VGG19(include_top=False,
+                                          weights='imagenet')
         vgg.trainable = False
 
         style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1',
@@ -74,7 +75,8 @@ class NST:
 
         flattened = tf.reshape(input_layer, shape=(-1, input_layer.shape[-1]))
         gram = tf.matmul(flattened, flattened, transpose_a=True)
-        gram /= tf.cast(tf.reduce_prod(input_layer.shape[1:]), dtype=tf.float32)
+        gram /= tf.cast(tf.reduce_prod(input_layer.shape[1:]),
+                        dtype=tf.float32)
 
         return gram
 
