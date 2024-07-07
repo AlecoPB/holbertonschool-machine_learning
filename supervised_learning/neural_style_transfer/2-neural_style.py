@@ -50,9 +50,8 @@ class NST:
         content_layer = 'block5_conv2'
 
         # Get outputs of the specified layers
-        outputs = [vgg.get_layer(name).output for name in style_layers + [content_layer]]
-
-        # Create a new model that takes the same input as VGG19 but outputs the specified layer outputs
+        outputs = [vgg.get_layer(name).output
+                   for name in style_layers + [content_layer]]
         model = tf.keras.Model(inputs=vgg.input, outputs=outputs)
 
         return model
@@ -62,13 +61,11 @@ class NST:
         """
         Calculates the gram matrix of the input layer.
 
-        Args:
-            input_layer (tf.Tensor or tf.Variable): Layer output of shape (1, h, w, c).
-
         Returns:
             tf.Tensor: Gram matrix of shape (1, c, c).
         """
-        if not isinstance(input_layer, (tf.Tensor, tf.Variable)) or len(input_layer.shape) != 4:
+        if not isinstance(input_layer, (tf.Tensor, tf.Variable))\
+           or len(input_layer.shape) != 4:
             raise TypeError("input_layer must be a tensor of rank 4")
 
         # Reshape the input layer to (h * w, c)
