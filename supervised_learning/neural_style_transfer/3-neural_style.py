@@ -94,19 +94,17 @@ class NST:
     def generate_features(self):
         """
         Extracts the features used to calculate neural style cost.
-
-        Sets the instance attributes:
-            gram_style_features - a list of gram matrices calculated from the style layer outputs of the style image
-            content_feature - the content layer output of the content image
         """
-        outputs = self.model(self.style_image)
-        style_outputs = outputs[:len(self.style_layers)]
-        content_output = outputs[len(self.style_layers):][0]
+        # Pass the style and content images through the model
+        style_outputs = self.model(self.style_image)
+        content_outputs = self.model(self.content_image)
 
-        gram_style_features = [self.gram_matrix(style_output) for style_output in style_outputs]
-        content_feature = content_output
+        # Extract style and content features
+        style_features = [style_layer for style_layer in style_outputs[:-1]]
+        self.content_feature = content_outputs[-1]
 
-        return gram_style_features, content_feature
+        # Calculate gram matrices for each style layer
+        self.gram_style_features = [self.gram_matrix(feature) for feature in style_features]
 
     @staticmethod
     def gram_matrix(input_tensor):
