@@ -87,4 +87,5 @@ class NST:
         content_output = vgg.get_layer(self.content_layer).output
         model_outputs = style_outputs + [content_output]
 
-        return tf.keras.Model(inputs=vgg.input, outputs=model_outputs)
+        model = tf.keras.Model(inputs=vgg.input, outputs=model_outputs)
+        return model
