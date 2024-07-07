@@ -71,7 +71,7 @@ class NST:
 
         return gram
 
-     def generate_features(self):
+    def generate_features(self):
         """
         Extracts the features used to calculate neural style cost.
         """
