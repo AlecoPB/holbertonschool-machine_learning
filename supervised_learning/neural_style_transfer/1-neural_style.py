@@ -9,10 +9,6 @@ import tensorflow as tf
 class NST:
     """
     A class to perform Neural Style Transfer.
-
-    Attributes:
-        style_layers (list): List of layers to be used for style extraction.
-        content_layer (str): Layer to be used for content extraction.
     """
 
     style_layers = [
@@ -21,10 +17,12 @@ class NST:
     ]
     content_layer = 'block5_conv2'
 
-    def __init__(self, style_image: np.ndarray, content_image: np.ndarray, alpha: float = 1e4, beta: float = 1):
+    def __init__(self,
+                 style_image: np.ndarray,
+                 content_image: np.ndarray,
+                 alpha: float = 1e4,
+                 beta: float = 1):
         """
-        Initializes the NST class with style and content images and their weights.
-
         Args:
             style_image (np.ndarray): The style reference image.
             content_image (np.ndarray): The content reference image.
@@ -32,9 +30,11 @@ class NST:
             beta (float): The weight for style cost.
         """
         if not isinstance(style_image, np.ndarray) or style_image.shape[-1] != 3:
-            raise TypeError('style_image must be a numpy.ndarray with shape (h, w, 3)')
+            raise TypeError(f'style_image must be a'
+                            f' numpy.ndarray with shape (h, w, 3)')
         if not isinstance(content_image, np.ndarray) or content_image.shape[-1] != 3:
-            raise TypeError('content_image must be a numpy.ndarray with shape (h, w, 3)')
+            raise TypeError(f'content_image must be a'
+                            f' numpy.ndarray with shape (h, w, 3)')
         if not isinstance(alpha, (int, float)) or alpha < 0:
             raise TypeError('alpha must be a non-negative number')
         if not isinstance(beta, (int, float)) or beta < 0:
@@ -49,8 +49,6 @@ class NST:
     @staticmethod
     def scale_image(image: np.ndarray) -> tf.Tensor:
         """
-        Rescales an image such that its pixels values are between 0 and 1 and its largest side is 512 pixels.
-
         Args:
             image (np.ndarray): The image to be scaled.
 
