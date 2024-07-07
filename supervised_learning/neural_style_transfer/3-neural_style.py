@@ -99,8 +99,9 @@ class NST:
             gram_style_features - a list of gram matrices calculated from the style layer outputs of the style image
             content_feature - the content layer output of the content image
         """
-        style_outputs = self.model(self.style_image)[:len(self.style_layers)]
-        content_output = self.model(self.content_image)[len(self.style_layers):][0]
+        outputs = self.model(self.style_image)
+        style_outputs = outputs[:len(self.style_layers)]
+        content_output = outputs[len(self.style_layers):][0]
 
         gram_style_features = [self.gram_matrix(style_output) for style_output in style_outputs]
         content_feature = content_output
