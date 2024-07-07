@@ -2,9 +2,6 @@
 
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.applications import VGG19
-from tensorflow.keras.models import Model
-from tensorflow.keras.preprocessing import image as kimage
 
 
 class NST:
@@ -76,18 +73,18 @@ class NST:
 
         return image
 
-    def load_model(self) -> Model:
+    def load_model(self) -> tf.Model:
         """
         Creates the model used to calculate cost using the VGG19 base model.
 
         Returns:
             Model: The Keras model used for Neural Style Transfer.
         """
-        vgg = VGG19(include_top=False, weights='imagenet')
+        vgg = tf.VGG19(include_top=False, weights='imagenet')
         vgg.trainable = False
 
         style_outputs = [vgg.get_layer(name).output for name in self.style_layers]
         content_output = vgg.get_layer(self.content_layer).output
         model_outputs = style_outputs + [content_output]
 
-        return Model(inputs=vgg.input, outputs=model_outputs)
+        return tf.Model(inputs=vgg.input, outputs=model_outputs)
