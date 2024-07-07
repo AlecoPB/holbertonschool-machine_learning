@@ -11,10 +11,17 @@ class NST:
     Class that performs tasks for Neural Style Transfer.
     """
     def __init__(self, style_image, content_image, alpha=1e4, beta=1):
-        if not isinstance(style_image, np.ndarray) or style_image.shape[-1] != 3:
-            raise TypeError("style_image must be a numpy.ndarray with shape (h, w, 3)")
-        if not isinstance(content_image, np.ndarray) or content_image.shape[-1] != 3:
-            raise TypeError("content_image must be a numpy.ndarray with shape (h, w, 3)")
+        """
+        Initializes the Neural Style Transfer class.
+        """
+        if not isinstance(style_image, np.ndarray)\
+           or style_image.shape[-1] != 3:
+            raise TypeError(f"style_image must be a"
+                            f" numpy.ndarray with shape (h, w, 3)")
+        if not isinstance(content_image, np.ndarray)\
+           or content_image.shape[-1] != 3:
+            raise TypeError(f"content_image must be a"
+                            f" numpy.ndarray with shape (h, w, 3)")
         if not isinstance(alpha, (int, float)) or alpha < 0:
             raise TypeError("alpha must be a non-negative number")
         if not isinstance(beta, (int, float)) or beta < 0:
@@ -41,7 +48,8 @@ class NST:
         """
         Creates the model used to calculate cost using the VGG19 base model.
         """
-        vgg = tf.keras.applications.VGG19(include_top=False, weights='imagenet')
+        vgg = tf.keras.applications.VGG19(include_top=False,
+                                          weights='imagenet')
         vgg.trainable = False
 
         # Specify the layers to be used for style and content extraction
@@ -73,6 +81,7 @@ class NST:
 
         # Compute the gram matrix
         gram = tf.matmul(flattened, flattened, transpose_a=True)
-        gram /= tf.cast(tf.reduce_prod(input_layer.shape[1:]), dtype=tf.float32)
+        gram /= tf.cast(tf.reduce_prod(input_layer.shape[1:]),
+                        dtype=tf.float32)
 
         return gram
