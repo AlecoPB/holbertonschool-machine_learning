@@ -84,7 +84,6 @@ class NST:
         """
         Extracts the features used to calculate neural style cost.
         """
-        # Assuming self.model is already defined and correctly set up
         style_outputs = self.model(self.style_image)
         content_outputs = self.model(self.content_image)
 
