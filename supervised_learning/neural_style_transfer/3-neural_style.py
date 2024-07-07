@@ -14,10 +14,14 @@ class NST:
         """
         Initializes the Neural Style Transfer class.
         """
-        if not isinstance(style_image, np.ndarray) or style_image.shape[-1] != 3:
-            raise TypeError("style_image must be a numpy.ndarray with shape (h, w, 3)")
-        if not isinstance(content_image, np.ndarray) or content_image.shape[-1] != 3:
-            raise TypeError("content_image must be a numpy.ndarray with shape (h, w, 3)")
+        if not isinstance(style_image, np.ndarray)\
+           or style_image.shape[-1] != 3:
+            raise TypeError(f"style_image must be a"
+                            f"numpy.ndarray with shape (h, w, 3)")
+        if not isinstance(content_image, np.ndarray)\
+           or content_image.shape[-1] != 3:
+            raise TypeError(f"content_image must be a"
+                            f" numpy.ndarray with shape (h, w, 3)")
         if not isinstance(alpha, (int, float)) or alpha < 0:
             raise TypeError("alpha must be a non-negative number")
         if not isinstance(beta, (int, float)) or beta < 0:
@@ -52,7 +56,8 @@ class NST:
                         'block4_conv1', 'block5_conv1']
         content_layer = 'block5_conv2'
 
-        outputs = [vgg.get_layer(name).output for name in style_layers + [content_layer]]
+        outputs = [vgg.get_layer(name).output
+                   for name in style_layers + [content_layer]]
         model = tf.keras.Model(inputs=vgg.input, outputs=outputs)
 
         return model
@@ -62,7 +67,9 @@ class NST:
         """
         Calculates the gram matrix of the input layer.
         """
-        if not isinstance(input_layer, (tf.Tensor, tf.Variable)) or len(input_layer.shape) != 4:
+        if not isinstance(input_layer,
+                          (tf.Tensor, tf.Variable)) or\
+                              len(input_layer.shape) != 4:
             raise TypeError("input_layer must be a tensor of rank 4")
 
         flattened = tf.reshape(input_layer, shape=(-1, input_layer.shape[-1]))
@@ -79,11 +86,11 @@ class NST:
         style_outputs = self.model(self.style_image)
         content_outputs = self.model(self.content_image)
 
-        # Extract style and content features from the model outputs
-        style_layer_outputs = style_outputs[:-1]  # Exclude the last layer which is for content
-        content_layer_output = content_outputs[-1]  # The last layer output is the content feature
+        style_layer_outputs = style_outputs[:-1]
+        content_layer_output = content_outputs[-1]
 
         # Calculate and store Gram matrices for style features
-        self.gram_style_features = [self.gram_matrix(output) for output in style_layer_outputs]
+        self.gram_style_features = [self.gram_matrix(output)
+                                    for output in style_layer_outputs]
         # Store the content feature
         self.content_feature = content_layer_output
