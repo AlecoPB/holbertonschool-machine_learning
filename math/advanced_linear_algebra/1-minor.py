@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+"""
+Tjis is some documentation
+"""
+
+
 def minor(matrix):
     # Check if matrix is a list of lists
     if not all(isinstance(row, list) for row in matrix):
