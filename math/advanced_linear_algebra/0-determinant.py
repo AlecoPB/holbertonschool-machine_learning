@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-
 def determinant(matrix):
     """
     Calculate the determinant of a square matrix recursively.
@@ -17,6 +16,10 @@ def determinant(matrix):
     n = len(matrix)
     if any(len(row) != n for row in matrix):
         raise ValueError("matrix must be a square matrix")
+    
+    # Base case for 1x1 matrix
+    if n == 1:
+        return matrix[0][0]
     
     # Base case for 2x2 matrix
     if n == 2:
