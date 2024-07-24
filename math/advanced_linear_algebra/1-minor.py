@@ -1,19 +1,12 @@
-#!/usr/bin/env python3
-
 def minor(matrix):
-    """
-    Calculate the minor matrix of a square matrix.
-    """
     # Check if matrix is a list of lists
-    if not isinstance(matrix, list) or not all(isinstance(row, list) for row in matrix):
+    if not all(isinstance(row, list) for row in matrix):
         raise TypeError("matrix must be a list of lists")
     
-    # Check if matrix is empty or not square
-    n = len(matrix)
-    if n == 0 or any(len(row) != n for row in matrix):
+    # Check if matrix is square and non-empty
+    if not matrix or len(matrix) != len(matrix[0]):
         raise ValueError("matrix must be a non-empty square matrix")
     
-    # Function to calculate the determinant of a matrix
     def determinant(matrix):
         # Base cases
         if len(matrix) == 1:
@@ -29,9 +22,9 @@ def minor(matrix):
     
     # Calculate the minor matrix
     minor_matrix = []
-    for i in range(n):
+    for i in range(len(matrix)):
         minor_row = []
-        for j in range(n):
+        for j in range(len(matrix)):
             sub_matrix = [row[:j] + row[j+1:] for row in (matrix[:i] + matrix[i+1:])]
             minor_row.append(determinant(sub_matrix))
         minor_matrix.append(minor_row)
