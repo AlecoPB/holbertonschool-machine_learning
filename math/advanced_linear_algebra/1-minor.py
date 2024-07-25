@@ -46,6 +46,9 @@ def minor(matrix):
     if n == 0 or any(len(row) != n for row in matrix):
         raise ValueError("matrix must be a non-empty square matrix")
 
+    if len(matrix) == 1:
+        return matrix[0][0]
+
     # Calculate the minor matrix
     minor_matrix = []
     for i in range(len(matrix)):
