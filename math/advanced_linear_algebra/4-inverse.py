@@ -203,7 +203,6 @@ def inverse(matrix):
     if det == 0:
         return None  # Matrix is singular and cannot be inverted
 
-    # Calculate the inverse matrix by dividing the adjugate matrix by the determinant
     inverse_matrix = [[adjugate_matrix[i][j]
                        / det for j in range(n)] for i in range(n)]
 
