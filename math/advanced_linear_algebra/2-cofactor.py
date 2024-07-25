@@ -99,7 +99,8 @@ def cofactor(matrix):
     for i in range(n):
         cofactor_row = []
         for j in range(n):
-            sub_matrix = [row[:j] + row[j+1:] for row in (matrix[:i] + matrix[i+1:])]
+            sub_matrix = [row[:j] + row[j+1:]
+                          for row in (matrix[:i] + matrix[i+1:])]
             cofactor_value = ((-1) ** (i + j)) * determinant(sub_matrix)
             cofactor_row.append(cofactor_value)
         cofactor_matrix.append(cofactor_row)
