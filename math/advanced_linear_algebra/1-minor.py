@@ -47,8 +47,7 @@ def minor(matrix):
     # Check if matrix is square and non-empty
     n = len(matrix)
     if n == 0 or any(len(row) != n for row in matrix):
-        raise ValueError('matrix must be a ',
-                         'non-empty square matrix')
+        raise ValueError("matrix must be a non-empty square matrix")
 
     if len(matrix) == 1:
         return [[1]]
