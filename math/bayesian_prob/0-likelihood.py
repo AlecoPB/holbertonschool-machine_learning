@@ -37,7 +37,7 @@ def likelihood(x, n, P):
 		return c
 
 	# Calculate the likelihood for each probability in P
-	binom_coeff = binomial_coefficient(n, x)
+	binom_coeff = float(binomial_coefficient(n, x))
 	likelihoods = binom_coeff * (P ** x) * ((1 - P) ** (n - x))
 
 	return likelihoods
