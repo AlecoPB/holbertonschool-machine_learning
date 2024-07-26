@@ -5,7 +5,7 @@ This module contains a function to perform PCA on a dataset.
 import numpy as np
 
 
-np.set_printoptions(precision=8, suppress=False, formatter={'float': '{:0.4e}'.format})
+np.set_printoptions(precision=8, suppress=False)
 def pca(X, var=0.95):
     """
     Performs PCA on a dataset.
