@@ -5,6 +5,7 @@ This module contains a function to perform PCA on a dataset.
 import numpy as np
 
 
+np.set_printoptions(precision=4, suppress=False, formatter={'float': '{:0.4e}'.format})
 def pca(X, var=0.95):
 	"""
 	Performs PCA on a dataset.
@@ -30,5 +31,3 @@ def pca(X, var=0.95):
 	W = sorted_eigenvectors[:, :nd]
 
 	return W
-
-np.set_printoptions(precision=8, suppress=False)
