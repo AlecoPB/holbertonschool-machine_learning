@@ -10,8 +10,7 @@ import numpy as np
 def likelihood(x, n, P):
 	"""
 	Calculate the likelihood of obtaining the
-    data given various hypothetical probabilities.
-	"""
+    data given various hypothetical probabilities."""
 	# Validate inputs
 	if not isinstance(n, int) or n <= 0:
 		raise ValueError("n must be a positive integer")
