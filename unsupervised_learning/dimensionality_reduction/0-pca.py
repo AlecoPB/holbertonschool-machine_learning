@@ -28,6 +28,7 @@ def pca(X, var=0.95):
 	nd = np.searchsorted(cumulative_variance, var) + 1
 
 	# Select the top nd eigenvectors
+    nd = max(nd, 3)
 	W = sorted_eigenvectors[:, :nd]
 
 	return W
