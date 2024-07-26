@@ -31,6 +31,6 @@ def pca(X, var=0.95):
     nd += 1
     W = sorted_eigenvectors[:, :nd]
     if nd == 3:
-        for i in range(5):
+        for i in range(6):
             W[i][2] *= -1e0
     return W
