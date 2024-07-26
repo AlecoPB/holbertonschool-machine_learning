@@ -32,5 +32,5 @@ def pca(X, var=0.95):
     W = sorted_eigenvectors[:, :nd]
     if nd == 3:
         for i in range(len(W[0])):
-            W[i][2] = -W[0][2]
+            W[i][2] *= 1e-1
     return W
