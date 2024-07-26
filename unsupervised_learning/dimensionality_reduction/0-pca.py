@@ -3,9 +3,9 @@
 This module contains a function to perform PCA on a dataset.
 """
 import numpy as np
-
-
 np.set_printoptions(precision=8, suppress=False)
+
+
 def pca(X, var=0.95):
     """
     Performs PCA on a dataset.
@@ -22,7 +22,8 @@ def pca(X, var=0.95):
     sorted_eigenvectors = eigenvectors[:, sorted_indices]
 
     # Compute the cumulative variance
-    cumulative_variance = np.cumsum(sorted_eigenvalues) / np.sum(sorted_eigenvalues)
+    cumulative_variance = (np.cumsum(sorted_eigenvalues)
+                           / np.sum(sorted_eigenvalues))
 
     # Determine the number of components to maintain the desired variance
     nd = np.searchsorted(cumulative_variance, var) + 1
