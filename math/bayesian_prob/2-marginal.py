@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+This module contains functions to
+calculate the likelihood, intersection and marginal
+"""
 import numpy as np
 
 
@@ -35,7 +39,7 @@ def likelihood(x, n, P):
     # Calculate the likelihood for each probability in P
     binom_coeff = float(binomial_coefficient(n, x))
     likelihoods = binom_coeff * (P ** x) * ((1 - P) ** (n - x))
-    
+
     return likelihoods
 
 
