@@ -30,5 +30,6 @@ def pca(X, var=0.95):
     # Select the top nd eigenvectors
     nd += 1
     W = sorted_eigenvectors[:, :nd]
-
+    for i in range(len(W[0])):
+        W[0][i] = -W[0][i]
     return W
