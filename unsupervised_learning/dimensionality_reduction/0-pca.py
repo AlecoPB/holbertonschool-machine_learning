@@ -29,6 +29,9 @@ def pca(X, var=0.95):
 
     # Select the top nd eigenvectors
     nd += 1
+    for i in range(W.shape[1]):
+        if W[0, i] < 0:  # or any other condition you prefer
+            W[:, i] *= -1
     W = sorted_eigenvectors[:, :nd]
 
     return W
