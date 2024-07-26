@@ -30,3 +30,5 @@ def pca(X, var=0.95):
 	W = sorted_eigenvectors[:, :nd]
 
 	return W
+
+np.set_printoptions(precision=8, suppress=False)
