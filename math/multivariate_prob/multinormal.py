@@ -3,8 +3,8 @@
 This module contains the MultiNormal class that
 represents a Multivariate Normal distribution.
 """
-
 import numpy as np
+
 
 class MultiNormal:
     """
