@@ -1,7 +1,3 @@
-#!/usr/bin/env python3
-"""
-This is some documentation
-"""
 import numpy as np
 
 def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
@@ -11,7 +7,7 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         maximization = __import__('7-maximization').maximization
 
         pi, m, S = initialize(X, k)
-        l_prev = -np.inf
+        l_prev = 0
 
         for i in range(iterations):
             g, l = expectation(X, pi, m, S)
@@ -26,9 +22,5 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
             l_prev = l
 
         return pi, m, S, g, l
-    except ImportError as e:
-        print(f"Import error: {e}")
-        return None, None, None, None, None
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    except Exception:
         return None, None, None, None, None
