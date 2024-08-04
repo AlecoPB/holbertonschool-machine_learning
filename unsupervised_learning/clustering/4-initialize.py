@@ -25,6 +25,6 @@ def initialize(X, k):
     m, _ = kmeans(X, k)
 
     # Initialize S as identity matrices
-    S = np.array([np.identity(d) for _ in range(k)])
+    S = np.tile(np.identity(d), (k, 1, 1))
 
     return pi, m, S
