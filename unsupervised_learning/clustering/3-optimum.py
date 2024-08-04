@@ -4,7 +4,11 @@ This is some documentation
 """
 import numpy as np
 
+
 def optimum_k(X, kmin=1, kmax=None, iterations=1000):
+    """
+    Optimum K
+    """
     if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         return None, None
     if not isinstance(kmin, int) or kmin <= 0:
