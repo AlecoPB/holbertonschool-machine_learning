@@ -4,6 +4,7 @@ This is some documentation
 """
 import sklearn.mixture
 
+
 def gmm(X, k):
     """
     Calculates a GMM from a dataset.
