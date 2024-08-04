@@ -2,22 +2,21 @@
 """
 This is some documentation
 """
-import scipy.cluster.hierarchy as sch
-import matplotlib.pyplot as plt
+from sklearn.mixture import GaussianMixture
 
-def agglomerative(X, dist):
-    try:
-        # Perform the hierarchical clustering using Ward linkage
-        Z = sch.linkage(X, method='ward')
-        
-        # Create the dendrogram
-        plt.figure()
-        dendrogram = sch.dendrogram(Z, color_threshold=dist)
-        plt.show()
-        
-        # Get the cluster indices for each data point
-        clss = sch.fcluster(Z, t=dist, criterion='distance')
-        
-        return clss
-    except Exception:
-        return None
+def gmm(X, k):
+    """
+    Calculates a GMM from a dataset.
+    """
+    # Fit the Gaussian Mixture Model
+    gmm = GaussianMixture(n_components=k)
+    gmm.fit(X)
+    
+    # Extract the parameters
+    pi = gmm.weights_
+    m = gmm.means_
+    S = gmm.covariances_
+    clss = gmm.predict(X)
+    bic = gmm.bic(X)
+    
+    return pi, m, S, clss, bic
