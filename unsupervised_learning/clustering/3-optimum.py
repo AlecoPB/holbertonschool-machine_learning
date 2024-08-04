@@ -4,19 +4,18 @@ This is some documentation
 """
 import numpy as np
 
-
 def optimum_k(X, kmin=1, kmax=None, iterations=1000):
-    """
-    Tests the optimum number of clusters by variance.
-    """
+    if not isinstance(X, np.ndarray) or len(X.shape) != 2:
+        return None, None
+    if not isinstance(kmin, int) or kmin <= 0:
+        return None, None
+    if kmax is not None and (not isinstance(kmax, int) or kmax <= 0):
+        return None, None
+    if not isinstance(iterations, int) or iterations <= 0:
+        return None, None
     if kmax is None:
         kmax = X.shape[0]
-
-    if not isinstance(kmin, int) or not isinstance(kmax, int) or not isinstance(iterations, int):
-        return None, None
-    if kmin <= 0 or kmax <= 0 or iterations <= 0:
-        return None, None
-    if kmin >= kmax:
+    if kmax < kmin:
         return None, None
 
     kmeans = __import__('1-kmeans').kmeans
@@ -26,12 +25,11 @@ def optimum_k(X, kmin=1, kmax=None, iterations=1000):
     d_vars = []
 
     for k in range(kmin, kmax + 1):
-        C, clss = kmeans(X, k, iterations)
-        results.append((C, clss))
-        var = variance(X, C)
-        d_vars.append(var)
-
-    min_var = d_vars[0]
-    d_vars = [var - min_var for var in d_vars]
+        centroids, clss = kmeans(X, k, iterations)
+        results.append((centroids, clss))
+        var = variance(X, centroids)
+        if k == kmin:
+            min_var = var
+        d_vars.append(min_var - var)
 
     return results, d_vars
