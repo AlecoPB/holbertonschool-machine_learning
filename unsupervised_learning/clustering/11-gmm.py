@@ -2,14 +2,14 @@
 """
 This is some documentation
 """
-from sklearn.mixture import GaussianMixture
+import sklearn.mixture
 
 def gmm(X, k):
     """
     Calculates a GMM from a dataset.
     """
     # Fit the Gaussian Mixture Model
-    gmm = GaussianMixture(n_components=k)
+    gmm = sklearn.mixture.GaussianMixture(n_components=k)
     gmm.fit(X)
     
     # Extract the parameters
