@@ -17,9 +17,8 @@ def maximization(X, g):
     k, n_g = g.shape
     if n != n_g:
         return None, None, None
-
-    if np.any(np.sum(g, axis=1) == 0):
-        return None, None, None
+    if not np.allclose(np.sum(g, axis=0), np.ones(n)):
+            return None, None, None
 
     # Calculate the updated priors
     pi = np.sum(g, axis=1) / n
