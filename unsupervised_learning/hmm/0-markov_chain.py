@@ -11,6 +11,6 @@ def markov_chain(P, s, t=1):
     being in a particular state
     """
     result = s
-    for i in range(t):
+    for _ in range(t):
         result = np.matmul(result, P)
     return result
