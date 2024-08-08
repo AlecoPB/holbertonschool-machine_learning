@@ -5,7 +5,7 @@ Module that defines a function called markov_chain
 import numpy as np
 
 
-def markov_chain(P, s, t=1):
+def regular(P, s, t=1):
     """
     Determines the probability of a markov chain
     being in a steady state
