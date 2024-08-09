@@ -10,10 +10,24 @@ def regular(P):
     Determines the probability of a markov chain
     being in a steady state
     """
+    if not isinstance(P, np.ndarray) or P.ndim != 2:
+        return None
+    n = P.shape[0]
+    if P.shape != (n, n):
+        return None
+    if not np.allclose(P.sum(axis=1), 1):
+        return None
+
+    # Create the matrix A = P.T - I
+    A = P.T - np.eye(n)
+
+    A[-1, :] = 1
+    b = np.zeros(n)
+    b[-1] = 1
+
     try:
-        pi = [1]
-        pi = (pi.append(0) for _ in range(P[0] - 1))
-        result = np.linalg.solve(P, pi)
-        return result
-    except:
+        pi = np.linalg.solve(A, b)
+        return pi.reshape(1, -1)
+    except np.linalg.LinAlgError:
+        # Return None if there's an error in solving
         return None
