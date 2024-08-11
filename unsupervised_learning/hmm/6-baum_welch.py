@@ -22,7 +22,8 @@ def baum_welch(Observations, Transition, Emission, Initial, iterations=1000):
 
             for t in range(1, T):
                 for j in range(M):
-                    alpha[j, t] = (np.sum(alpha[:, t-1] * Transition[:, j])
+                    alpha[j, t] = (np.sum(alpha[:, t-1]
+                                          * Transition[:, j])
                                    * Emission[j, Observations[t]])
 
             # Backward part
@@ -32,7 +33,8 @@ def baum_welch(Observations, Transition, Emission, Initial, iterations=1000):
             for t in range(T-2, -1, -1):
                 for i in range(M):
                     beta[i, t] = (np.sum(Transition[i, :]
-                                         * Emission[:, Observations[t+1]] * beta[:, t+1]))
+                                         * Emission[:, Observations[t+1]]
+                                         * beta[:, t+1]))
 
             # Calculate gamma and xi
             gamma = np.zeros((M, T))
@@ -43,21 +45,26 @@ def baum_welch(Observations, Transition, Emission, Initial, iterations=1000):
                 for i in range(M):
                     gamma[i, t] = (alpha[i, t] * beta[i, t]) / denom
                     xi[i, :, t] = (alpha[i, t] * Transition[i, :]
-                                   * Emission[:, Observations[t+1]] * beta[:, t+1]) / denom
+                                   * Emission[:, Observations[t+1]]
+                                   * beta[:, t+1]) / denom
 
-            gamma[:, T-1] = alpha[:, T-1] * beta[:, T-1] / np.sum(alpha[:, T-1] * beta[:, T-1])
+            gamma[:, T-1] = (alpha[:, T-1] * beta[:, T-1]
+                             / np.sum(alpha[:, T-1] * beta[:, T-1]))
 
             # M-Step: Update the parameters
             # Update Initial probabilities
             Initial[:, 0] = gamma[:, 0]
 
             # Update Transition probabilities
-            Transition = np.sum(xi, axis=2) / np.sum(gamma[:, :-1], axis=1).reshape(-1, 1)
+            Transition = (np.sum(xi, axis=2)
+                          / np.sum(gamma[:, :-1],
+                                   axis=1).reshape(-1, 1))
 
             # Update Emission probabilities
             for k in range(N):
                 mask = (Observations == k)
-                Emission[:, k] = np.sum(gamma[:, mask], axis=1) / np.sum(gamma, axis=1)
+                Emission[:, k] = (np.sum(gamma[:, mask], axis=1)
+                                  / np.sum(gamma, axis=1))
 
         return Transition, Emission
 
