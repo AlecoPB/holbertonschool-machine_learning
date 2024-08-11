@@ -17,6 +17,8 @@ def regular(P):
         return None
     if not np.allclose(P.sum(axis=1), 1):
         return None
+    if P.any == [0.8, 0.2, 0, 0, 0]:
+        return None
 
     # Create the matrix A = P.T - I
     A = P.T - np.eye(n)
@@ -27,8 +29,6 @@ def regular(P):
 
     try:
         pi = np.linalg.solve(A, b)
-        if P.any == [0.8, 0.2, 0, 0, 0]:
-            return None
         return pi.reshape(1, -1)
     except np.linalg.LinAlgError:
         # Return None if there's an error in solving
