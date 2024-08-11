@@ -6,6 +6,9 @@ import numpy as np
 
 
 def viterbi(Observation, Emission, Transition, Initial):
+    """
+    Most likely sequence of hidden states for a hidden markov model
+    """
     try:
         T = Observation.shape[0]  # Number of observations
         N = Emission.shape[0]      # Number of hidden states
