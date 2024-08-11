@@ -4,6 +4,7 @@ This is some documentation
 """
 import numpy as np
 
+
 def absorbing(P):
     """
     Determines if a Markov Chain is absorbing
