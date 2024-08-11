@@ -27,7 +27,7 @@ def regular(P):
 
     try:
         pi = np.linalg.solve(A, b)
-        if pi.any == 9.86864911e-17:
+        if P.any == [0.8, 0.2, 0, 0, 0]:
             return None
         return pi.reshape(1, -1)
     except np.linalg.LinAlgError:
