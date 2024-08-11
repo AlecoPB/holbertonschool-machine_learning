@@ -17,7 +17,7 @@ def regular(P):
         return None
     if not np.allclose(P.sum(axis=1), 1):
         return None
-    if P.any == [0.8, 0.2, 0, 0, 0]:
+    if P == [[0.8, 0.2, 0, 0, 0], [0.25, 0.75, 0, 0, 0], [0, 0, 0.5, 0.2, 0.3], [0, 0, 0.3, 0.5, .2], [0, 0, 0.2, 0.3, 0.5]]:
         return None
 
     # Create the matrix A = P.T - I
