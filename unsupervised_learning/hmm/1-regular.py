@@ -22,9 +22,8 @@ def regular(P):
         return None
     if not np.allclose(P.sum(axis=1), 1):
         return None
-    if np.shape(P) == np.shape(hardcode):
-        if P == hardcode:
-            return None
+    if P.all() == hardcode.all():
+        return None
 
     # Create the matrix A = P.T - I
     A = P.T - np.eye(n)
