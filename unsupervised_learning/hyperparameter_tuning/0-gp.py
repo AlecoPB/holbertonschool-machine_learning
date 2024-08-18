@@ -7,7 +7,7 @@ import numpy as np
 
 class GaussianProcess:
     """
-    Gaussian Process constructor
+    Represent a noiseless 1D Gaussin process
     """
     def __init__(self, X_init, Y_init, l=1, sigma_f=1):
         self.X = X_init
