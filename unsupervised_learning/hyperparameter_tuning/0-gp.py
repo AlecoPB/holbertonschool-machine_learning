@@ -17,6 +17,9 @@ class GaussianProcess:
         self.K = self.kernel(self.X, self.X)
 
     def kernel(self, X1, X2):
+        """
+        Kernel for the activation
+        """
         sqdist = np.sum(X1**2, axis=1).reshape(-1, 1) +\
             np.sum(X2**2, axis=1) -\
             2 * np.dot(X1, X2.T)
