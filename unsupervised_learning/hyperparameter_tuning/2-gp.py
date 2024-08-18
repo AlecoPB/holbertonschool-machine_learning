@@ -43,13 +43,13 @@ class GaussianProcess:
         return mu_s, sigma_s
 
     def update(self, X_new, Y_new):
-            """
-            Update a Gaussian Process
-            """
-            # Update X and Y with the new data points
-            self.X = np.vstack((self.X, X_new.reshape(-1, 1)))
-            self.Y = np.vstack((self.Y, Y_new.reshape(-1, 1)))
+        """
+        Update a Gaussian Process
+        """
+        # Update X and Y with the new data points
+        self.X = np.vstack((self.X, X_new.reshape(-1, 1)))
+        self.Y = np.vstack((self.Y, Y_new.reshape(-1, 1)))
 
-            # Update the covariance matrix K with the new data point
-            K_new = self.kernel(self.X, self.X)
-            self.K = K_new
+        # Update the covariance matrix K with the new data point
+        K_new = self.kernel(self.X, self.X)
+        self.K = K_new
