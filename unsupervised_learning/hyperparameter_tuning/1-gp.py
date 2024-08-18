@@ -37,7 +37,7 @@ class GaussianProcess:
         mu_s = K_s.T.dot(K_inv).dot(self.Y).flatten()
 
         cov_s = K_ss - K_s.T.dot(K_inv).dot(K_s)
-        
+
         sigma_s = np.diag(cov_s)
 
         return mu_s, sigma_s
