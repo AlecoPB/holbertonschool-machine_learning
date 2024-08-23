@@ -21,7 +21,7 @@ def autoencoder(input_dims, filters, latent_dims):
     latent_input = keras.Input(shape=latent_dims)
     x = latent_input
     for i, num_filters in enumerate(reversed(filters)):
-        if i < len(filters) - 2:
+        if i <=len(filters) - 2:
             x = keras.layers.Conv2D(num_filters, (3, 3), activation='relu', padding='same')(x)
             x = keras.layers.UpSampling2D((2, 2))(x)
         else:
