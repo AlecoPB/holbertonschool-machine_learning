@@ -51,7 +51,7 @@ class BayesianOptimization:
         """_summary_
 
         Args:
-            iterations (int, optional): _description_. Defaults to 100.
+            iterations (int, optional)
 
         Returns:
             _type_: _description_
