@@ -8,10 +8,10 @@ import tensorflow.keras as keras
 def sampling(args):
     """Reparameterization trick by sampling from an isotropic unit Gaussian."""
     z_mean, z_log_var = args
-    batch = K.shape(z_mean)[0]
-    dim = K.int_shape(z_mean)[1]
-    epsilon = K.random_normal(shape=(batch, dim))
-    return z_mean + K.exp(0.5 * z_log_var) * epsilon
+    batch = keras.backend.shape(z_mean)[0]
+    dim = keras.backend.int_shape(z_mean)[1]
+    epsilon = keras.backend.random_normal(shape=(batch, dim))
+    return z_mean + keras.backend.exp(0.5 * z_log_var) * epsilon
 
 def autoencoder(input_dims, hidden_layers, latent_dims):
     """
