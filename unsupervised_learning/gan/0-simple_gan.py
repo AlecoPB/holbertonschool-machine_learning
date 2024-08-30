@@ -6,7 +6,9 @@ import matplotlib.pyplot as plt
 
 
 class Simple_GAN(keras.Model):
-
+    """
+    Filler doc
+    """
     def __init__(self, generator, discriminator,
                  latent_generator, real_examples,
                  batch_size=200, disc_iter=2,
@@ -46,11 +48,17 @@ class Simple_GAN(keras.Model):
                                    loss=self.discriminator.loss)
 
     def get_fake_sample(self, size=None, training=False):
+        """
+        Filler doc
+        """
         if not size:
             size = self.batch_size
         return self.generator(self.latent_generator(size), training=training)
 
     def get_real_sample(self, size=None):
+        """
+        Filler doc
+        """
         if not size:
             size = self.batch_size
         sorted_indices = tf.range(tf.shape(self.real_examples)[0])
