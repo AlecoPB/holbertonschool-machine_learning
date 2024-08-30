@@ -28,11 +28,17 @@ class Simple_GAN(keras.Model):
         self.generator.loss =\
             lambda x: tf.keras.losses.MeanSquaredError()(x,
                                                          tf.ones(x.shape))
-        self.generator.compile(optimizer=self.generator.optimizer, loss=self.generator.loss)
+        self.generator.compile(optimizer=self.generator.optimizer,
+                               loss=self.generator.loss)
 
-        self.discriminator.loss = lambda x, y: tf.keras.losses.MeanSquaredError()(x, tf.ones(x.shape)) + tf.keras.losses.MeanSquaredError()(y, -1 * tf.ones(y.shape))
-        self.discriminator.optimizer = keras.optimizers.Adam(learning_rate=self.learning_rate, beta_1=self.beta_1, beta_2=self.beta_2)
-        self.discriminator.compile(optimizer=self.discriminator.optimizer, loss=self.discriminator.loss)
+        self.discriminator.loss =\
+            lambda x, y: (tf.keras.losses.MeanSquaredError()(x, tf.ones(x.shape))
+                          + tf.keras.losses.MeanSquaredError()(y, -1 * tf.ones(y.shape)))
+        self.discriminator.optimizer = keras.optimizers.Adam(learning_rate=self.learning_rate,
+                                                             beta_1=self.beta_1,
+                                                             beta_2=self.beta_2)
+        self.discriminator.compile(optimizer=self.discriminator.optimizer,
+                                   loss=self.discriminator.loss)
 
     def get_fake_sample(self, size=None, training=False):
         if not size:
@@ -59,7 +65,8 @@ class Simple_GAN(keras.Model):
                 discr_loss = self.discriminator.loss(real_output, fake_output)
 
             gradients = tape.gradient(discr_loss, self.discriminator.trainable_variables)
-            self.discriminator.optimizer.apply_gradients(zip(gradients, self.discriminator.trainable_variables))
+            self.discriminator.optimizer.apply_gradients(zip(gradients,
+                                                             self.discriminator.trainable_variables))
 
         # Training the generator
         with tf.GradientTape() as tape:
