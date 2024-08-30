@@ -58,6 +58,9 @@ class Simple_GAN(keras.Model):
         return tf.gather(self.real_examples, random_indices)
 
     def train_step(self, data):
+        """
+        Training function
+        """
         # Training the discriminator
         for _ in range(self.disc_iter):
             with tf.GradientTape() as tape:
