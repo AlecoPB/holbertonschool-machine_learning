@@ -7,7 +7,10 @@ import matplotlib.pyplot as plt
 
 class Simple_GAN(keras.Model):
 
-    def __init__(self, generator, discriminator, latent_generator, real_examples, batch_size=200, disc_iter=2, learning_rate=.005):
+    def __init__(self, generator, discriminator,
+                 latent_generator, real_examples,
+                 batch_size=200, disc_iter=2,
+                 learning_rate=.005):
         super().__init__()
         self.latent_generator = latent_generator
         self.real_examples = real_examples
@@ -19,8 +22,12 @@ class Simple_GAN(keras.Model):
         self.beta_1 = .5
         self.beta_2 = .9
 
-        self.generator.loss = lambda x: tf.keras.losses.MeanSquaredError()(x, tf.ones(x.shape))
-        self.generator.optimizer = keras.optimizers.Adam(learning_rate=self.learning_rate, beta_1=self.beta_1, beta_2=self.beta_2)
+        self.generator.optimizer =\
+            keras.optimizers.Adam(learning_rate=self.learning_rate,
+                                  beta_1=self.beta_1, beta_2=self.beta_2)
+        self.generator.loss =\
+            lambda x: tf.keras.losses.MeanSquaredError()(x,
+                                                         tf.ones(x.shape))
         self.generator.compile(optimizer=self.generator.optimizer, loss=self.generator.loss)
 
         self.discriminator.loss = lambda x, y: tf.keras.losses.MeanSquaredError()(x, tf.ones(x.shape)) + tf.keras.losses.MeanSquaredError()(y, -1 * tf.ones(y.shape))
