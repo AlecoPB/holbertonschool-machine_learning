@@ -9,6 +9,9 @@ import matplotlib.pyplot as plt
 
 
 class WGAN_GP(keras.Model):
+    """
+    This is some doc
+    """
     def __init__(self, generator, discriminator,
                  latent_generator, real_examples,
                  batch_size=200, disc_iter=2,
@@ -58,12 +61,18 @@ class WGAN_GP(keras.Model):
                                    loss=discriminator.loss)
 
     def get_fake_sample(self, size=None, training=False):
+        """
+        This is some doc
+        """
         if not size:
             size = self.batch_size
         return self.generator(self.latent_generator(size),
                               training=training)
 
     def get_real_sample(self, size=None):
+        """
+        This is some doc
+        """
         if not size:
             size = self.batch_size
         sorted_indices = tf.range(tf.shape(self.real_examples)[0])
@@ -71,11 +80,17 @@ class WGAN_GP(keras.Model):
         return tf.gather(self.real_examples, random_indices)
 
     def get_interpolated_sample(self, real_sample, fake_sample):
+        """
+        This is some doc
+        """
         u = tf.random.uniform(self.scal_shape)
         v = tf.ones(self.scal_shape)-u
         return u * real_sample + v * fake_sample
 
     def gradient_penalty(self, interpolated_sample):
+        """
+        This is some doc
+        """
         with tf.GradientTape() as gp_tape:
             gp_tape.watch(interpolated_sample)
             pred = self.discriminator(interpolated_sample, training=True)
@@ -84,6 +99,9 @@ class WGAN_GP(keras.Model):
         return tf.reduce_mean((norm - 1.0) ** 2)
 
     def train_step(self, useless_argument):
+        """
+        This is a training function
+        """
         discr_loss = 0
         for _ in range(self.disc_iter):
             with tf.GradientTape() as disc_tape:
