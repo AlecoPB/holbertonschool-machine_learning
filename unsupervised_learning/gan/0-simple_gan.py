@@ -21,13 +21,13 @@ class Simple_GAN(keras.Model):
         self.batch_size = batch_size
         self.disc_iter = disc_iter
         self.learning_rate = learning_rate
-        self.beta_1 =.5
-        self.beta_2 =.9
+        self.beta_1 = .5
+        self.beta_2 = .9
 
         # define the generator loss and optimizer:
         self.generator.loss =\
             lambda x: tf.keras.losses.MeanSquaredError()(x,
-                                                          tf.ones(x.shape))
+                                                         tf.ones(x.shape))
         self.generator.optimizer =\
             keras.optimizers.Adam(learning_rate=self.learning_rate,
                                   beta_1=self.beta_1, beta_2=self.beta_2)
@@ -36,11 +36,13 @@ class Simple_GAN(keras.Model):
 
         # define the discriminator loss and optimizer:
         self.discriminator.loss =\
-            lambda x,y: (tf.keras.losses.MeanSquaredError()(x,
+            lambda x,y: (tf.keras.losses.MeanSquaredError()(x, 
                                                             tf.ones(x.shape))
-                         + tf.keras.losses.MeanSquaredError()(y, -1*tf.ones(y.shape)))
-        self.discriminator.optimizer = keras.optimizers.Adam(learning_rate=self.learning_rate,
-                                                             beta_1=self.beta_1, beta_2=self.beta_2)
+                         + tf.keras.losses.MeanSquaredError()\
+                             (y, -1*tf.ones(y.shape)))
+        self.discriminator.optimizer = keras.optimizers.Adam(learning_rate =\
+            self.learning_rate, 
+            beta_1=self.beta_1, beta_2=self.beta_2)
         self.discriminator.compile(optimizer=self.discriminator.optimizer,
                                    loss=self.discriminator.loss )
 
