@@ -38,7 +38,7 @@ class WGAN_clip(keras.Model):
                                loss=self.generator.loss)
 
         self.discriminator.loss = lambda x, y: (tf.math.reduce_mean(y)
-                                               - tf.math.reduce_mean(x))
+                                                - tf.math.reduce_mean(x))
         self.discriminator.optimizer =\
             keras.optimizers.Adam(learning_rate=self.
                                   learning_rate,
@@ -78,22 +78,26 @@ class WGAN_clip(keras.Model):
                                             self.
                                             discriminator(fake_sample,
                                                           training=True))
-            gradients_of_discriminator = disc_tape.gradient(discr_loss,
-                                                            self.discriminator.
-                                                            trainable_variables)
-            self.discriminator.optimizer.apply_gradients(zip(gradients_of_discriminator,
-                                                             self.discriminator.
-                                                             trainable_variables))
+            gradients_of_discriminator =\
+                disc_tape.gradient(discr_loss,
+                                   self.discriminator.
+                                   trainable_variables)
+            self.discriminator.optimizer.\
+                apply_gradients(zip(gradients_of_discriminator,
+                                    self.discriminator.
+                                    trainable_variables))
 
             for var in self.discriminator.trainable_variables:
                 var.assign(tf.clip_by_value(var, -1, 1))
 
         with tf.GradientTape() as gen_tape:
             fake_sample = self.get_fake_sample(training=True)
-            gen_loss = self.generator.loss(self.discriminator(fake_sample, training=True))
+            gen_loss = self.generator.loss(self.discriminator(fake_sample,
+                                                              training=True))
         gradients_of_generator = gen_tape.gradient(gen_loss, self.generator.
                                                    trainable_variables)
         self.generator.optimizer.apply_gradients(zip(gradients_of_generator,
-                                                     self.generator.trainable_variables))
+                                                     self.generator.
+                                                     trainable_variables))
 
         return {"discr_loss": discr_loss, "gen_loss": gen_loss}
