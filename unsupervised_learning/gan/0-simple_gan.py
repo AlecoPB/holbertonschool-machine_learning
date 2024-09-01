@@ -82,7 +82,8 @@ class Simple_GAN(keras.Model):
                                    self.discriminator.trainable_variables)
             self.discriminator.\
                 optimizer.apply_gradients(zip(gradients_of_discriminator,
-                                              self.discriminator.trainable_variables))
+                                              self.discriminator.\
+                                                  trainable_variables))
 
         with tf.GradientTape() as gen_tape:
             # get a fake sample
