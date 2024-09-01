@@ -8,19 +8,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-class Simple_GAN(keras.Model) :
+class Simple_GAN(keras.Model):
 
-    def __init__( self, generator , discriminator ,
+    def __init__( self, generator, discriminator,
                  latent_generator, real_examples,
                  batch_size=200, disc_iter=2, learning_rate=.005):
         super().__init__()
         self.latent_generator = latent_generator
-        self.real_examples    = real_examples
-        self.generator        = generator
-        self.discriminator    = discriminator
-        self.batch_size       = batch_size
-        self.disc_iter        = disc_iter
-        self.learning_rate    = learning_rate
+        self.real_examples = real_examples
+        self.generator = generator
+        self.discriminator = discriminator
+        self.batch_size = batch_size
+        self.disc_iter = disc_iter
+        self.learning_rate = learning_rate
         self.beta_1=.5
         self.beta_2=.9
 
@@ -55,7 +55,7 @@ class Simple_GAN(keras.Model) :
         if not size :
             size= self.batch_size
         sorted_indices = tf.range(tf.shape(self.real_examples)[0])
-        random_indices  = tf.random.shuffle(sorted_indices)[:size]
+        random_indices = tf.random.shuffle(sorted_indices)[:size]
         return tf.gather(self.real_examples, random_indices)
 
     # overloading train_step()    
