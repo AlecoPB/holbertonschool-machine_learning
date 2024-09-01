@@ -8,11 +8,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-class WGAN_clip(keras.Model) :
+class WGAN_clip(keras.Model):
     """
     This is some documentation
     """
-    def __init__( self, generator, discriminator,
+    def __init__(self, generator, discriminator,
                  latent_generator, real_examples,
                  batch_size=200, disc_iter=2,
                  learning_rate=.005):
@@ -23,24 +23,35 @@ class WGAN_clip(keras.Model) :
         self.discriminator = discriminator
         self.batch_size = batch_size
         self.disc_iter = disc_iter
-        
+
         self.learning_rate = learning_rate
         self.beta_1 = .5
         self.beta_2 = .9
 
         self.generator.loss = lambda x: -tf.math.reduce_mean(x)
-        self.generator.optimizer = keras.optimizers.Adam(learning_rate=self.learning_rate, beta_1=self.beta_1, beta_2=self.beta_2)
-        self.generator.compile(optimizer=self.generator.optimizer, loss=self.generator.loss)
+        self.generator.optimizer = keras.optimizers.Adam(learning_rate=
+                                                         self.learning_rate,
+                                                         beta_1=self.beta_1,
+                                                         beta_2=self.beta_2)
+        self.generator.compile(optimizer=self.
+                               generator.optimizer,
+                               loss=self.generator.loss)
 
-        self.discriminator.loss = lambda x,y: tf.math.reduce_mean(y) - tf.math.reduce_mean(x)
-        self.discriminator.optimizer = keras.optimizers.Adam(learning_rate=self.learning_rate, beta_1=self.beta_1, beta_2=self.beta_2)
-        self.discriminator.compile(optimizer=self.discriminator.optimizer, loss=self.discriminator.loss)
+        self.discriminator.loss = lambda x,y: (tf.math.reduce_mean(y)
+                                               - tf.math.reduce_mean(x))
+        self.discriminator.optimizer = keras.optimizers.Adam(learning_rate=
+                                                             self.learning_rate,
+                                                             beta_1=self.beta_1,
+                                                             beta_2=self.beta_2)
+        self.discriminator.compile(optimizer=self.discriminator.optimizer,
+                                   loss=self.discriminator.loss)
 
     # generator of real samples of size batch_size
     def get_fake_sample(self, size=None, training=False):
         if not size:
             size = self.batch_size
-        return self.generator(self.latent_generator(size), training=training)
+        return self.generator(self.latent_generator(size),
+                              training=training)
 
     # generator of fake samples of size batch_size
     def get_real_sample(self, size=None):
