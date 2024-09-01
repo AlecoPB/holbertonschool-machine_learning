@@ -64,6 +64,9 @@ class Simple_GAN(keras.Model):
 
     # overloading train_step()
     def train_step(self, useless_argument):
+        """
+        This is the training function
+        """
         discr_loss = 0
         for _ in range(self.disc_iter):
             with tf.GradientTape() as disc_tape:
