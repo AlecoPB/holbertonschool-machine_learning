@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-class WGAN_GP(keras.Model):    
+class WGAN_GP(keras.Model):
     def __init__(self, generator, discriminator,
                  latent_generator, real_examples,
                  batch_size=200, disc_iter=2,
@@ -31,7 +31,7 @@ class WGAN_GP(keras.Model):
         self.axis = tf.range(1, self.len_dims, delta=1, dtype='int32')
         self.scal_shape = self.dims.as_list()
         self.scal_shape[0] = self.batch_size
-        for i in range(1,self.len_dims):
+        for i in range(1, self.len_dims):
             self.scal_shape[i] = 1
         self.scal_shape = tf.convert_to_tensor(self.scal_shape)
 
@@ -81,7 +81,7 @@ class WGAN_GP(keras.Model):
             pred = self.discriminator(interpolated_sample, training=True)
         grads = gp_tape.gradient(pred, [interpolated_sample])[0]
         norm = tf.sqrt(tf.reduce_sum(tf.square(grads), axis=self.axis))
-        return tf.reduce_mean((norm - 1.0) ** 2)  
+        return tf.reduce_mean((norm - 1.0) ** 2)
 
     def train_step(self, useless_argument):
         discr_loss = 0
@@ -97,12 +97,13 @@ class WGAN_GP(keras.Model):
                                             fake_sample)
                 discr_loss =\
                     self.discriminator.loss(self.
-                                            discriminator(real_sample, training=True),
+                                            discriminator(real_sample,
+                                                          training=True),
                                             self.
-                                            discriminator(fake_sample, training=True))
+                                            discriminator(fake_sample,
+                                                          training=True))
                 # compute the gradient penalty gp
                 gp = self.gradient_penalty(interpolated_sample)
-                # compute the sum new_discr_loss = discr_loss + self.lambda_gp * gp
                 new_discr_loss = discr_loss + self.lambda_gp * gp
             gradients_of_discriminator =\
                 disc_tape.gradient(new_discr_loss,
