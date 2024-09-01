@@ -38,12 +38,12 @@ class Simple_GAN(keras.Model):
         self.discriminator.loss =\
             lambda x, y: (tf.keras.losses.MeanSquaredError()
                           (x, tf.ones(x.shape))
-                          + tf.keras.losses.MeanSquaredError()\
-                              (y, -1*tf.ones(y.shape)))
-        self.discriminator.optimizer = keras.optimizers.Adam(learning_rate=
-                                                             self.learning_rate,
-                                                             beta_1=self.beta_1,
-                                                             beta_2=self.beta_2)
+                          + tf.keras.losses.MeanSquaredError()
+                          (y, -1*tf.ones(y.shape)))
+        self.discriminator.optimizer =\
+            keras.optimizers.Adam(learning_rate=self.learning_rate,
+                                  beta_1=self.beta_1,
+                                  beta_2=self.beta_2)
         self.discriminator.compile(optimizer=self.discriminator.optimizer,
                                    loss=self.discriminator.loss)
 
@@ -71,11 +71,11 @@ class Simple_GAN(keras.Model):
                 real_sample = self.get_real_sample()
                 # get a fake sample
                 fake_sample = self.get_fake_sample(training=True)
-                discr_loss = self.discriminator.loss\
-                    (self.discriminator(real_sample,
-                                        training=True), 
-                     self.discriminator(fake_sample,
-                                        training=True))
+                discr_loss = self.discriminator.\
+                    loss(self.discriminator(real_sample,
+                                            training=True),
+                         self.discriminator(fake_sample,
+                                            training=True))
             # apply gradient descent once to the discriminator
             gradients_of_discriminator = disc_tape.gradient(discr_loss,
                                                             self.discriminator.trainable_variables)
