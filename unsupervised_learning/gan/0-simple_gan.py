@@ -77,8 +77,9 @@ class Simple_GAN(keras.Model):
                          self.discriminator(fake_sample,
                                             training=True))
             # apply gradient descent once to the discriminator
-            gradients_of_discriminator = disc_tape.gradient(discr_loss,
-                                                            self.discriminator.trainable_variables)
+            gradients_of_discriminator =\
+                disc_tape.gradient(discr_loss,
+                                   self.discriminator.trainable_variables)
             self.discriminator.optimizer.apply_gradients(zip(gradients_of_discriminator,
                                                              self.discriminator.trainable_variables))
 
