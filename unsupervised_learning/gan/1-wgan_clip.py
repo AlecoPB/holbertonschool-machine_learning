@@ -63,8 +63,8 @@ class WGAN_clip(keras.Model):
             self.discriminator.optimizer.apply_gradients(zip(gradients, self.discriminator.trainable_variables))
  
             # Clip the weights of the discriminator
-            for var in self.discriminator.trainable_variables:
-                var.assign(tf.clip_by_value(var, -1., 1.))
+        for var in self.discriminator.trainable_variables:
+            var.assign(tf.clip_by_value(var, -1., 1.))
 
         # Training the generator
         with tf.GradientTape() as tape:
