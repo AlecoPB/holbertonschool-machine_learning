@@ -53,7 +53,7 @@ class Simple_GAN(keras.Model):
     def get_fake_sample(self, size=None, training=False):
         """
         Some documentation
-        """        
+        """
         if not size:
             size = self.batch_size
         return self.generator(self.latent_generator(size),
