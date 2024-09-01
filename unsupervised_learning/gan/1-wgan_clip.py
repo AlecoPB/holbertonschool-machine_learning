@@ -52,20 +52,28 @@ class WGAN_clip(keras.Model) :
     # overloading train_step()    
     def train_step(self,useless_argument):
         discr_loss = 0
-        for _ in range(self.disc_iter):
+        for _ in range(self.disc_iter) :
             with tf.GradientTape() as disc_tape:
+                # get a real sample
                 real_sample = self.get_real_sample()
+                # get a fake sample
                 fake_sample = self.get_fake_sample(training=True)
-                discr_loss = self.discriminator.loss(self.discriminator(fake_sample, training=True), self.discriminator(real_sample, training=True))
+                # compute the loss discr_loss of the discriminator on real and fake samples
+                discr_loss = self.discriminator.loss(self.discriminator(real_sample, training=True), self.discriminator(fake_sample, training=True))
+            # apply gradient descent once to the discriminator
             gradients_of_discriminator = disc_tape.gradient(discr_loss, self.discriminator.trainable_variables)
             self.discriminator.optimizer.apply_gradients(zip(gradients_of_discriminator, self.discriminator.trainable_variables))
-
+            
+            # clip the weights (of the discriminator) between -1 and 1
             for var in self.discriminator.trainable_variables:
                 var.assign(tf.clip_by_value(var, -1, 1))
         
         with tf.GradientTape() as gen_tape:
+            # get a fake sample 
             fake_sample = self.get_fake_sample(training=True)
+            # compute the loss gen_loss of the generator on this sample
             gen_loss = self.generator.loss(self.discriminator(fake_sample, training=True))
+        # apply gradient descent to the generator
         gradients_of_generator = gen_tape.gradient(gen_loss, self.generator.trainable_variables)
         self.generator.optimizer.apply_gradients(zip(gradients_of_generator, self.generator.trainable_variables))
 
