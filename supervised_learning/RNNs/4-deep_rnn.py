@@ -38,9 +38,8 @@ def deep_rnn(rnn_cells, X, h_0):
             if layer == 0:
                 h_next_layer, y = rnn_cell.forward(h_prev_layer, x_t)
             else:
-                h_next_layer,
-                y = rnn_cell.forward(h_prev_layer,
-                                     H[step + 1][layer - 1])
+                h_next_layer, y = rnn_cell.forward(h_prev_layer,
+                                                   H[step + 1][layer - 1])
 
             # Store the hidden state for the current layer
             H[step + 1][layer] = h_next_layer
