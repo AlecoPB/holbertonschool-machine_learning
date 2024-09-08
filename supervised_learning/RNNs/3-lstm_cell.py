@@ -53,22 +53,22 @@ class LSTMCell:
 
         # Forget gate
         f_t = self.sigmoid(x_h_concat @ self.Wf + self.bf)
-        
+
         # Update gate
         u_t = self.sigmoid(x_h_concat @ self.Wu + self.bu)
-        
+
         # Candidate cell state
         c_tilde = np.tanh(x_h_concat @ self.Wc + self.bc)
-        
+
         # Next cell state
         c_next = f_t * c_prev + u_t * c_tilde
-        
+
         # Output gate
         o_t = self.sigmoid(x_h_concat @ self.Wo + self.bo)
-        
+
         # Next hidden state
         h_next = o_t * np.tanh(c_next)
-        
+
         # Output using softmax
         y_linear = h_next @ self.Wy + self.by
         y_exp = np.exp(y_linear - np.max(y_linear, axis=1, keepdims=True))
