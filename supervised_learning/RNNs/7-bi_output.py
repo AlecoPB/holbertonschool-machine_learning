@@ -58,7 +58,7 @@ class BidirectionalCell:
         Calculate all outputs for the RNN.
 
         Parameters:
-        H (ndarray): Concatenated hidden states from both directions, 
+        H (ndarray): Concatenated hidden states from both directions,
                      shape (t, m, 2 * h).
 
         Returns:
