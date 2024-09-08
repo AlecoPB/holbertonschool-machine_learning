@@ -72,6 +72,7 @@ class BidirectionalCell:
 
         return Y
 
+
 def bi_rnn(bi_cell, X, h_0, h_t):
     """
     Perform forward propagation for a bidirectional RNN.
