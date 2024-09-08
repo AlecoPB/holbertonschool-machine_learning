@@ -63,11 +63,14 @@ class BidirectionalCell:
         """Calculate all outputs for the RNN.
 
         Parameters:
-        H (ndarray): Concatenated hidden states from both directions, shape (t, m, 2 * h).
+        H (ndarray): Concatenated hidden states from both directions, excluding their initialized states, shape (t, m, 2 * h).
 
         Returns:
         Y (ndarray): Outputs, shape (t, m, o).
         """
         t, m, _ = H.shape
-        Y = H @ self.Wy + self.by
+
+        # Calculate the outputs for each time step
+        Y = np.tanh(H @ self.Wy + self.by)
+
         return Y
