@@ -77,10 +77,9 @@ def bi_rnn(bi_cell, X, h_0, h_t):
     Perform forward propagation for a bidirectional RNN.
 
     Parameters:
-    bi_cell (BidirectionalCell): Instance of BidirectionalCell for forward propagation.
     X (ndarray): Data input, shape (t, m, i).
     h_0 (ndarray): Initial hidden state in the forward direction, shape (m, h).
-    h_t (ndarray): Initial hidden state in the backward direction, shape (m, h).
+    h_t (ndarray): Initial hidden state in the backward direction, shape (m, h)
 
     Returns:
     H (ndarray): All concatenated hidden states, shape (t, m, 2 * h).
