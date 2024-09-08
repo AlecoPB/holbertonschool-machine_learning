@@ -1,50 +1,50 @@
 #!/usr/bin/env python3
-"""Module for deep RNN forward propagation."""
-import numpy as np
+"""Module to perform forward propagation for a deep RNN."""
 
+import numpy as np
 
 def deep_rnn(rnn_cells, X, h_0):
     """Performs forward propagation for a deep RNN.
 
     Parameters:
-    rnn_cells (list): List of RNNCell instances, one per layer.
-    X (ndarray): Data to be used, shape (t, m, i).
-    h_0 (ndarray): Initial hidden states, shape (l, m, h).
+    rnn_cells (list): List of RNNCell instances of length l (number of layers).
+    X (ndarray): Data input, shape (t, m, i).
+    h_0 (ndarray): Initial hidden state for all layers, shape (l, m, h).
 
     Returns:
-    H (ndarray): All hidden states, shape (l, t + 1, m, h).
+    H (ndarray): All hidden states, shape (t + 1, l, m, h).
     Y (ndarray): All outputs, shape (t, m, o).
     """
-    t, m, i = X.shape  # t: time steps, m: batch size, i: input size
+    t, m, i = X.shape  # t: number of time steps, m: batch size, i: input size
     l, _, h = h_0.shape  # l: number of layers, h: hidden state size
-    o = rnn_cells[-1].Wy.shape[1]  # Output size from the last RNN cell
 
-    # Initialize H to store hidden states for all layers and all time steps
-    H = np.zeros((l, t + 1, m, h))
-    H[:, 0, :, :] = h_0  # Set initial hidden states
+    # Initialize hidden states and outputs
+    H = np.zeros((t + 1, l, m, h))  # (t+1, l, m, h), including initial hidden state
+    H[0] = h_0  # Set the initial hidden state
 
-    # Initialize Y to store the outputs
-    Y = np.zeros((t, m, o))
+    # Get output dimensionality from the last RNNCell's Wy matrix
+    o = rnn_cells[-1].Wy.shape[1]
+    Y = np.zeros((t, m, o))  # (t, m, o) for outputs at each time step
 
-    # Perform forward propagation through each time step
+    # Forward propagation through each time step
     for step in range(t):
-        x_input = X[step]  # Input for the first layer is X at time step `step`
+        x_t = X[step]  # Input at time step t
+        h_prev = H[step]  # Hidden states at time step t for all layers
 
-        # Iterate over each layer in the RNN
         for layer in range(l):
-            h_prev = H[layer, step]  # Get the previous hidden state for this layer
             rnn_cell = rnn_cells[layer]
+            h_prev_layer = h_prev[layer]
 
-            # Forward pass for the current layer
-            h_next, y = rnn_cell.forward(h_prev, x_input)
+            # First layer takes X, other layers take the hidden state of the previous layer
+            if layer == 0:
+                h_next_layer, y = rnn_cell.forward(h_prev_layer, x_t)
+            else:
+                h_next_layer, y = rnn_cell.forward(h_prev_layer, H[step + 1][layer - 1])
 
-            # Store the next hidden state for this layer
-            H[layer, step + 1] = h_next
+            # Store the hidden state for the current layer
+            H[step + 1][layer] = h_next_layer
 
-            # The input for the next layer is the hidden state of the current layer
-            x_input = h_next
-
-        # The output from the last layer is stored in Y
+        # Store the output from the last layer
         Y[step] = y
 
     return H, Y
