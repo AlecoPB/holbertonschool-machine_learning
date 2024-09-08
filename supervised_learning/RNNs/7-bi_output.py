@@ -17,62 +17,54 @@ class BidirectionalCell:
         """
         self.Whf = np.random.normal(size=(i + h, h))  # Forward hidden weights
         self.Whb = np.random.normal(size=(i + h, h))  # Backward hidden weights
-        self.Wy = np.random.normal(size=(2 * h, o))   # Output weights (2*h since bidirectional)
+        self.Wy = np.random.normal(size=(2 * h, o))   # Output weights
 
         self.bhf = np.zeros((1, h))  # Forward hidden bias
         self.bhb = np.zeros((1, h))  # Backward hidden bias
         self.by = np.zeros((1, o))   # Output bias
 
     def forward(self, h_prev, x_t):
-        """Calculate the hidden state in the forward direction for one time step.
+        """
 
         Parameters:
         h_prev (ndarray): Previous hidden state, shape (m, h).
         x_t (ndarray): Data input for the cell, shape (m, i).
 
         Returns:
-        h_next (ndarray): Next hidden state in the forward direction, shape (m, h).
+        h_next (ndarray): Next hidden state in the forward direction.
         """
-        m, h = h_prev.shape
         x_h_concat = np.concatenate((h_prev, x_t), axis=1)
-
-        # Calculate the next hidden state in the forward direction
         h_next = np.tanh(x_h_concat @ self.Whf + self.bhf)
-
         return h_next
 
     def backward(self, h_next, x_t):
-        """Calculate the hidden state in the backward direction for one time step.
+        """
 
         Parameters:
         h_next (ndarray): Next hidden state, shape (m, h).
         x_t (ndarray): Data input for the cell, shape (m, i).
 
         Returns:
-        h_prev (ndarray): Previous hidden state in the backward direction, shape (m, h).
+        h_prev (ndarray): Previous hidden state in the backward direction.
         """
-        m, h = h_next.shape
         x_h_concat = np.concatenate((h_next, x_t), axis=1)
-
-        # Calculate the previous hidden state in the backward direction
         h_prev = np.tanh(x_h_concat @ self.Whb + self.bhb)
-
         return h_prev
 
     def output(self, H):
-        """Calculate all outputs for the RNN.
+        """
+        Calculates all outputs for the RNN.
 
         Parameters:
-        H (ndarray): Concatenated hidden states from both directions, shape (t, m, 2 * h).
-                     t: number of time steps
-                     m: batch size
-                     h: hidden state dimensionality
+        H (ndarray): Concatenated hidden states from both directions,
+                     shape (t, m, 2 * h), where:
+                     - t is the number of time steps
+                     - m is the batch size
+                     - 2 * h is the concatenated dimensionality of the hidden states.
 
         Returns:
-        Y (ndarray): Outputs, shape (t, m, o).
+        Y (ndarray): The output for each time step, shape (t, m, o).
         """
-        t, m, _ = H.shape
-        # Compute outputs using the concatenated hidden states from both directions
-        Y = np.tanh(H @ self.Wy + self.by)
-
+        t, m, _ = H.shape  # Extract the dimensions
+        Y = H @ self.Wy + self.by  # Calculate the outputs using weight and bias
         return Y
