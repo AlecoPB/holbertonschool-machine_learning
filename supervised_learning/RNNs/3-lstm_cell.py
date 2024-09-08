@@ -18,19 +18,19 @@ class LSTMCell:
         # Forget gate weights and biases
         self.Wf = np.random.normal(size=(i + h, h))
         self.bf = np.zeros((1, h))
-        
+
         # Update gate weights and biases
         self.Wu = np.random.normal(size=(i + h, h))
         self.bu = np.zeros((1, h))
-        
+
         # Intermediate cell state weights and biases
         self.Wc = np.random.normal(size=(i + h, h))
         self.bc = np.zeros((1, h))
-        
+
         # Output gate weights and biases
         self.Wo = np.random.normal(size=(i + h, h))
         self.bo = np.zeros((1, h))
-        
+
         # Output weights and biases
         self.Wy = np.random.normal(size=(h, o))
         self.by = np.zeros((1, o))
