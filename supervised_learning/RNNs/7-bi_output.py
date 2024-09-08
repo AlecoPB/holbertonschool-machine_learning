@@ -17,7 +17,7 @@ class BidirectionalCell:
         """
         self.Whf = np.random.normal(size=(i + h, h))  # Forward hidden weights
         self.Whb = np.random.normal(size=(i + h, h))  # Backward hidden weights
-        self.Wy = np.random.normal(size=(2 * h, o))   # Output weights
+        self.Wy = np.random.normal(size=(2 * h, o))
 
         self.bhf = np.zeros((1, h))  # Forward hidden bias
         self.bhb = np.zeros((1, h))  # Backward hidden bias
@@ -25,6 +25,7 @@ class BidirectionalCell:
 
     def forward(self, h_prev, x_t):
         """
+        Calculate the next hidden state in the forward direction.
 
         Parameters:
         h_prev (ndarray): Previous hidden state, shape (m, h).
@@ -39,6 +40,7 @@ class BidirectionalCell:
 
     def backward(self, h_next, x_t):
         """
+        Calculate the previous hidden state in the backward direction.
 
         Parameters:
         h_next (ndarray): Next hidden state, shape (m, h).
@@ -53,18 +55,19 @@ class BidirectionalCell:
 
     def output(self, H):
         """
-        Calculates all outputs for the RNN.
+        Calculate all outputs for the RNN.
 
         Parameters:
-        H (ndarray): Concatenated hidden states from both directions,
-                     shape (t, m, 2 * h), where:
-                     - t is the number of time steps
-                     - m is the batch size
-                     - 2 * h is the concatenated dimensionality of the hidden states.
+        H (ndarray): Concatenated hidden states from both directions, 
+                     shape (t, m, 2 * h).
 
         Returns:
-        Y (ndarray): The output for each time step, shape (t, m, o).
+        Y (ndarray): The outputs for each time step, shape (t, m, o).
         """
-        t, m, _ = H.shape  # Extract the dimensions
-        Y = H @ self.Wy + self.by  # Calculate the outputs using weight and bias
+        # Apply the output layer to all time steps
+        t, m, _ = H.shape
+        Y = H @ self.Wy + self.by  # Linear transformation
+        # Apply softmax to output the probabilities for each time step
+        Y = np.exp(Y) / np.sum(np.exp(Y), axis=2, keepdims=True)
+
         return Y
