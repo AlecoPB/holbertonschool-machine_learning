@@ -17,7 +17,7 @@ class GRUCell:
         """
         self.Wz = np.random.normal(size=(i + h, h))  # Update gate weights
         self.Wr = np.random.normal(size=(i + h, h))  # Reset gate weights
-        self.Wh = np.random.normal(size=(i + h, h))  # Intermediate hidden state weights
+        self.Wh = np.random.normal(size=(i + h, h))
         self.Wy = np.random.normal(size=(h, o))      # Output weights
 
         self.bz = np.zeros((1, h))  # Update gate biases
@@ -46,7 +46,8 @@ class GRUCell:
         r_t = self.sigmoid(x_h_concat @ self.Wr + self.br)
 
         # Intermediate hidden state
-        h_candidate = np.tanh(np.concatenate((r_t * h_prev, x_t), axis=1) @ self.Wh + self.bh)
+        h_candidate = np.tanh(np.concatenate((r_t * h_prev, x_t),
+                                             axis=1) @ self.Wh + self.bh)
 
         # Compute next hidden state
         h_next = (1 - z_t) * h_prev + z_t * h_candidate
