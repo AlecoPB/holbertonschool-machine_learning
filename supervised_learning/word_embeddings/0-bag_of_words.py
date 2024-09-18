@@ -30,7 +30,6 @@ def bag_of_words(sentences, vocab=None):
         for word in words:
             if word in vocab:
                 embeddings[i, vocab.index(word)] += 1
+    features_str = ' '.join(features)
     
-    features = ' '.join(features)
-    
-    return embeddings, list(features)
+    return embeddings, features_str
