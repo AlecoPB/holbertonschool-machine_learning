@@ -17,7 +17,7 @@ def bag_of_words(sentences, vocab=None):
         tokenized_sentences.append(sentence.split())
 
     if vocab is None:
-        vocab = set(word for sentence in tokenized_sentences for word in sentence.split())
+        vocab = set(word for sentence in tokenized_sentences for word in sentence)
     else:
         vocab = set(vocab)
     
