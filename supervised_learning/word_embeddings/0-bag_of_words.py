@@ -31,4 +31,4 @@ def bag_of_words(sentences, vocab=None):
             if word in vocab:
                 embeddings[i, vocab.index(word)] += 1
     
-    return embeddings, features
+    return embeddings, list(features)
