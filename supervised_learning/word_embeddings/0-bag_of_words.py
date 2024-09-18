@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-This is some documentation
+Bag of Words Implementation
 """
+
 import numpy as np
 import string
 
@@ -9,27 +10,32 @@ def bag_of_words(sentences, vocab=None):
     """
     Creates a bag of words embedding matrix.
     """
-    # Normalize and split sentences into words
-    sentences_cleaned = []
-    for sentence in sentences:
-        words = sentence.translate(str.maketrans("", "",
-                                                 string.punctuation)).lower().split()
-        sentences_cleaned.append(words)
+    # Tokenize sentences into words and normalize
+    def tokenize(sentence):
+        # Remove punctuation and convert to lowercase
+        translator = str.maketrans('', '', string.punctuation)
+        return sentence.translate(translator).lower().split()
 
-    # Determine the vocabulary (all unique words if vocab is None)
+    # Create a vocabulary if not provided
     if vocab is None:
-        vocab = sorted(set(word for sentence in sentences_cleaned for word in sentence))
-
-    # Create a feature map for words in the vocabulary
-    word_index = {word: i for i, word in enumerate(vocab)}
-
-    # Initialize the embedding matrix with zeros
-    embeddings = np.zeros((len(sentences), len(vocab)))
-
-    # Fill the embedding matrix
-    for i, sentence in enumerate(sentences_cleaned):
-        for word in sentence:
-            if word in word_index:
+        unique_words = set()
+        for sentence in sentences:
+            unique_words.update(tokenize(sentence))
+        vocab = sorted(list(unique_words))
+    
+    # Initialize the embedding matrix
+    s = len(sentences)  # Number of sentences
+    f = len(vocab)      # Number of features (vocabulary size)
+    embeddings = np.zeros((s, f), dtype=int)
+    
+    # Create a dictionary to map words to their column index
+    word_index = {word: idx for idx, word in enumerate(vocab)}
+    
+    # Populate the embeddings matrix
+    for i, sentence in enumerate(sentences):
+        words = tokenize(sentence)
+        for word in words:
+            if word in word_index:  # Only consider words in the vocabulary
                 embeddings[i, word_index[word]] += 1
 
     return embeddings, vocab
