@@ -1,41 +1,40 @@
 #!/usr/bin/env python3
-"""
-Bag of Words Implementation
-"""
-
 import numpy as np
-import string
+
 
 def bag_of_words(sentences, vocab=None):
     """
     Creates a bag of words embedding matrix.
-    """
-    # Tokenize sentences into words and normalize
-    def tokenize(sentence):
-        # Remove punctuation and convert to lowercase
-        translator = str.maketrans('', '', string.punctuation)
-        return sentence.translate(translator).lower().split()
 
-    # Create a vocabulary if not provided
+    Parameters:
+    sentences (list): A list of sentences to analyze.
+    vocab (list, optional): A list of vocabulary words to use for the analysis.
+                            If None, all words within sentences are used.
+
+    Returns:
+    embeddings (numpy.ndarray): A matrix of shape (s, f) containing the embeddings.
+    features (list): A list of the features used for embeddings.
+    """
     if vocab is None:
-        unique_words = set()
-        for sentence in sentences:
-            unique_words.update(tokenize(sentence))
-        vocab = sorted(list(unique_words))
+        # If vocab is not provided, use all unique words in sentences
+        vocab = set(word for sentence in sentences for word in sentence.split())
     
-    # Initialize the embedding matrix
-    s = len(sentences)  # Number of sentences
-    f = len(vocab)      # Number of features (vocabulary size)
-    embeddings = np.zeros((s, f), dtype=int)
+    # Create a dictionary to map words to indices
+    word_to_idx = {word: idx for idx, word in enumerate(vocab)}
     
-    # Create a dictionary to map words to their column index
-    word_index = {word: idx for idx, word in enumerate(vocab)}
+    # Initialize the embeddings matrix with zeros
+    s = len(sentences)
+    f = len(vocab)
+    embeddings = np.zeros((s, f))
     
     # Populate the embeddings matrix
-    for i, sentence in enumerate(sentences):
-        words = tokenize(sentence)
+    for idx, sentence in enumerate(sentences):
+        words = sentence.split()
         for word in words:
-            if word in word_index:  # Only consider words in the vocabulary
-                embeddings[i, word_index[word]] += 1
-
-    return embeddings, vocab
+            if word in word_to_idx:
+                embeddings[idx, word_to_idx[word]] += 1
+    
+    # Normalize the embeddings matrix
+    embeddings = embeddings / np.sum(embeddings, axis=1, keepdims=True)
+    
+    return embeddings, list(vocab)
