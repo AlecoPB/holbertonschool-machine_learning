@@ -15,7 +15,7 @@ def bag_of_words(sentences, vocab=None):
     for sentence in sentences:
         # Lowercase the sentence and remove punctuation
         sentence = sentence.lower().translate(str.maketrans("", "", string.punctuation))
-        # sentence = re.sub(r"'s\b", "", sentence)
+        sentence = re.sub(r"'s\b", "", sentence)
         tokenized_sentences.append(sentence.split())
 
     if vocab is None:
@@ -24,7 +24,8 @@ def bag_of_words(sentences, vocab=None):
         vocab = set(vocab)
     
     vocab = sorted(vocab)
-    features = np.array(vocab)
+    # features = np.array(vocab)
+    features = vocab
     embeddings = np.zeros((len(sentences), len(vocab)), dtype=int)
     
     for i, sentence in enumerate(sentences):
