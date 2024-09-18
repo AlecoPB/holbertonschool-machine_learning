@@ -10,13 +10,14 @@ def bag_of_words(sentences, vocab=None):
     """
     Creates a bag of words
     """
+    tokenized_sentences = []
     for sentence in sentences:
         # Lowercase the sentence and remove punctuation
         sentence = sentence.lower().translate(str.maketrans("", "", string.punctuation))
-        sentences.append(sentence.split())
+        tokenized_sentences.append(sentence.split())
 
     if vocab is None:
-        vocab = set(word for sentence in sentences for word in sentence.split())
+        vocab = set(word for sentence in tokenized_sentences for word in sentence.split())
     else:
         vocab = set(vocab)
     
