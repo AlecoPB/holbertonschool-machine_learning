@@ -4,6 +4,7 @@ Bad of Words
 """
 import numpy as np
 import string
+import re
 
 
 def bag_of_words(sentences, vocab=None):
@@ -15,6 +16,7 @@ def bag_of_words(sentences, vocab=None):
         # Lowercase the sentence and remove punctuation
         sentence = sentence.lower().translate(str.maketrans("", "", string.punctuation))
         tokenized_sentences.append(sentence.split())
+        sentence = re.sub(r"'s\b", "", sentence)
 
     if vocab is None:
         vocab = set(word for sentence in tokenized_sentences for word in sentence)
@@ -30,5 +32,5 @@ def bag_of_words(sentences, vocab=None):
         for word in words:
             if word in vocab:
                 embeddings[i, vocab.index(word)] += 1
-    
+
     return embeddings, features
