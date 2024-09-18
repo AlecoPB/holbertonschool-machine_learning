@@ -14,9 +14,9 @@ def bag_of_words(sentences, vocab=None):
     tokenized_sentences = []
     for sentence in sentences:
         # Lowercase the sentence and remove punctuation
+        sentence = re.sub(r"'s\b", "", sentence)
         sentence = sentence.lower().translate(str.maketrans("", "", string.punctuation))
         tokenized_sentences.append(sentence.split())
-        sentence = re.sub(r"'s\b", "", sentence)
 
     if vocab is None:
         vocab = set(word for sentence in tokenized_sentences for word in sentence)
