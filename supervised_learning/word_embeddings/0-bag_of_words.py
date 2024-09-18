@@ -22,7 +22,7 @@ def bag_of_words(sentences, vocab=None):
         vocab = set(vocab)
     
     vocab = sorted(vocab)
-    features = vocab
+    features = np.array(vocab)
     embeddings = np.zeros((len(sentences), len(vocab)), dtype=int)
     
     for i, sentence in enumerate(sentences):
@@ -30,6 +30,5 @@ def bag_of_words(sentences, vocab=None):
         for word in words:
             if word in vocab:
                 embeddings[i, vocab.index(word)] += 1
-    features_str = ' '.join(features)
     
-    return embeddings, features_str
+    return embeddings, features
