@@ -1,40 +1,39 @@
 #!/usr/bin/env python3
-import numpy as np
 
+import numpy as np
+from collections import Counter
+import re
 
 def bag_of_words(sentences, vocab=None):
-    """
-    Creates a bag of words embedding matrix.
-
-    Parameters:
-    sentences (list): A list of sentences to analyze.
-    vocab (list, optional): A list of vocabulary words to use for the analysis.
-                            If None, all words within sentences are used.
-
-    Returns:
-    embeddings (numpy.ndarray): A matrix of shape (s, f) containing the embeddings.
-    features (list): A list of the features used for embeddings.
-    """
+    # Helper function to tokenize and clean the sentence
+    def tokenize(sentence):
+        # Convert to lowercase and remove non-alphabetic characters
+        sentence = sentence.lower()
+        sentence = re.sub(r'[^a-z\s]', '', sentence)
+        # Tokenize by splitting on spaces
+        return sentence.split()
+    
+    # Tokenize all sentences
+    tokenized_sentences = [tokenize(sentence) for sentence in sentences]
+    
+    # If vocab is not provided, create it from the sentences
     if vocab is None:
-        # If vocab is not provided, use all unique words in sentences
-        vocab = set(word for sentence in sentences for word in sentence.split())
+        all_words = set(word for sentence in tokenized_sentences for word in sentence)
+        vocab = sorted(all_words)  # Sort to maintain consistent order
+    else:
+        vocab = sorted(vocab)  # Sort provided vocab for consistency
     
-    # Create a dictionary to map words to indices
-    word_to_idx = {word: idx for idx, word in enumerate(vocab)}
+    # Create a word-to-index mapping for the vocabulary
+    word_index = {word: idx for idx, word in enumerate(vocab)}
     
-    # Initialize the embeddings matrix with zeros
-    s = len(sentences)
-    f = len(vocab)
-    embeddings = np.zeros((s, f))
+    # Initialize the embeddings matrix
+    embeddings = np.zeros((len(sentences), len(vocab)), dtype=int)
     
-    # Populate the embeddings matrix
-    for idx, sentence in enumerate(sentences):
-        words = sentence.split()
-        for word in words:
-            if word in word_to_idx:
-                embeddings[idx, word_to_idx[word]] += 1
+    # Fill the matrix with word counts
+    for i, sentence in enumerate(tokenized_sentences):
+        word_counts = Counter(sentence)  # Get word counts for the sentence
+        for word, count in word_counts.items():
+            if word in word_index:  # Only include words from the vocabulary
+                embeddings[i, word_index[word]] = count
     
-    # Normalize the embeddings matrix
-    embeddings = embeddings / np.sum(embeddings, axis=1, keepdims=True)
-    
-    return embeddings, list(vocab)
+    return embeddings, vocab
