@@ -23,7 +23,7 @@ def bag_of_words(sentences, vocab=None):
     
     vocab = sorted(vocab)
     features = vocab
-    embeddings = np.zeros((len(sentences), len(vocab)))
+    embeddings = np.zeros((len(sentences), len(vocab), dtype=int))
     
     for i, sentence in enumerate(sentences):
         words = sentence.split()
