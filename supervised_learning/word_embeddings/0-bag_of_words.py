@@ -27,7 +27,7 @@ def bag_of_words(sentences, vocab=None):
     vocab = sorted(vocab)
     features = np.array(vocab)
 
-    vectorizer_ng2=CountVectorizer(ngram_range=range(1, 3), stop_words='english')
+    vectorizer_ng2=CountVectorizer(ngram_range=range(1,3), stop_words='english')
     embeddings = vectorizer_ng2.fit_transform(vocab)
 
     return embeddings, features
