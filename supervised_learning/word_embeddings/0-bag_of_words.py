@@ -9,8 +9,8 @@ def bag_of_words(sentences, vocab=None):
     """
     Creates a bag of words
     """
-    # bow = CountVectorizer(stop_words='english')
-    bow = CountVectorizer()
+    bow = CountVectorizer(stop_words='english')
+    # bow = CountVectorizer()
     bow.fit(sentences)
     features = bow.get_feature_names_out(vocab)
     features = sorted(features)
