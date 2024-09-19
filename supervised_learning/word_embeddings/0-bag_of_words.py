@@ -13,7 +13,7 @@ def bag_of_words(sentences, vocab=None):
     bow = CountVectorizer(vocabulary=vocab)
     bow.fit(sentences)
     features = bow.get_feature_names_out()
-    if vocab == None:
+    if vocab is None:
         features = sorted(features)
 
     bow_features = bow.transform(sentences)
