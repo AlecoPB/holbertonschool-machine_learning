@@ -3,15 +3,20 @@
 Bad of Words
 """
 from sklearn.feature_extraction.text import CountVectorizer
-import nltk
+import numpy as np
+import re
 
 
 def bag_of_words(sentences, vocab=None):
     """
     Creates a bag of words
     """
-    str_buffer=" ".join(sentences)
-    tokenized_sentences = nltk.word_tokenize(str_buffer)
+    tokenized_sentences = []
+    for sentence in sentences:
+        # Lowercase the sentence and remove punctuation
+        sentence = sentence.lower().translate(str.maketrans("", "", string.punctuation))
+        sentence = re.sub(r"'s\b", "", sentence)
+        tokenized_sentences.append(sentence.split())
 
     if vocab is None:
         vocab = set(word for sentence in tokenized_sentences for word in sentence)
@@ -19,8 +24,10 @@ def bag_of_words(sentences, vocab=None):
         vocab = set(vocab)
     
     vocab = sorted(vocab)
+    features = np.array(vocab)
 
     vectorizer_ng2=CountVectorizer(ngram_range=range(1, 3), stop_words='english')
     embeddings = vectorizer_ng2.fit_transform(vocab)
 
     return embeddings, vocab
+
