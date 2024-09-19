@@ -5,6 +5,7 @@ Bad of Words
 from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
 import re
+import string
 
 
 def bag_of_words(sentences, vocab=None):
