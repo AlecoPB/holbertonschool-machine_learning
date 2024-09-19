@@ -12,10 +12,9 @@ def bag_of_words(sentences, vocab=None):
     """
     bow = CountVectorizer(stop_words='english')
     bow.fit(sentences)
-    new_text = bow.get_feature_names_out(vocab)   
+    features = bow.get_feature_names_out(vocab)   
     
-    features = bow.transform(new_text)
-    embeddings = features.toarray()
-    
-    
+    bow_features = bow.transform(features)
+    embeddings = bow_features.toarray()
+
     return embeddings, features
