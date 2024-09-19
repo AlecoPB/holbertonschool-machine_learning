@@ -4,31 +4,18 @@ Bad of Words
 """
 from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
-import re
-import string
 
 
 def bag_of_words(sentences, vocab=None):
     """
     Creates a bag of words
     """
-    tokenized_sentences = []
-    for sentence in sentences:
-        # Lowercase the sentence and remove punctuation
-        sentence = sentence.lower().translate(str.maketrans("", "", string.punctuation))
-        sentence = re.sub(r"'s\b", "", sentence)
-        tokenized_sentences.append(sentence.split())
-
-    if vocab is None:
-        vocab = set(word for sentence in tokenized_sentences for word in sentence)
-    else:
-        vocab = set(vocab)
+    bow = CountVectorizer(stop_words='english')
+    bow.fit(sentences)
+    new_text = bow.get_feature_names_out(vocab)   
     
-    vocab = sorted(vocab)
-    features = np.array(vocab)
-
-    vectorizer_ng2=CountVectorizer(stop_words='english')
-    embeddings = vectorizer_ng2.fit_transform(vocab)
-
+    features = bow.transform(new_text)
+    embeddings = features.toarray()
+    
+    
     return embeddings, features
-
