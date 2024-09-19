@@ -14,7 +14,7 @@ def bag_of_words(sentences, vocab=None):
     features = bow.get_feature_names_out(vocab)
     features = sorted(features)
     
-    bow_features = bow.transform(features)
+    bow_features = bow.transform(sentences)
     embeddings = bow_features.toarray()
 
     return embeddings, features
