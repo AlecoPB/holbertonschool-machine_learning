@@ -7,7 +7,7 @@ import numpy as np
 import gensim
 
 
-def bag_of_words(sentences, vocab=None):
+def tf_idf(sentences, vocab=None):
     """
     Creates a bag of words
     """
