@@ -19,11 +19,8 @@ def uni_bleu(references, sentence):
     for i in range(len(reference_ngrams)):
         match_list.append(sum((sentence_ngrams & reference_ngrams[string(i)]).values()))
 
-    match = 
-
-    if match_list[i] == max(match_list):
-        match = match_list[i]
-        possible_ngrams = sum(reference_ngrams[string(i)].values())
+    match = max(match_list)
+    possible_ngrams = sum(reference_ngrams[string(match_list.index(match))].values())
 
     precision = match / possible_ngrams if possible_ngrams > 0 else 0
     
