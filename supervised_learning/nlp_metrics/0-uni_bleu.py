@@ -3,7 +3,7 @@
 Unigram BLEU score
 """
 from collections import Counter
-import string
+import math
 
 
 def uni_bleu(references, sentence):
@@ -13,6 +13,10 @@ def uni_bleu(references, sentence):
     reference_ngrams = {}
     sentence_ngrams = Counter(sentence)
     for i in range(len(references)):
+        ref_len = len(references[i])
+
+        # Update the maximum reference length
+        max_ref_len = max(max_ref_len, ref_len)
         reference_ngrams[i] = Counter(references[i])
 
     match_list = []
@@ -24,5 +28,8 @@ def uni_bleu(references, sentence):
 
 
     precision = match / possible_ngrams if possible_ngrams > 0 else 0
-    
+
+    bp = 1 if possible_ngrams <= max_ref_len else math.exp(1 - max_ref_len / possible_ngrams)
+    precision = bp * math.pow(precision, 1)
+
     return precision
