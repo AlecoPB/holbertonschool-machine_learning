@@ -1,32 +1,25 @@
 #!/usr/bin/env python3
 """
-Converting Gensim Word2Vec model to Keras Embedding Layer
+Converting Gensim Word2Vec model to Keras
+Embedding Layer (Without importing other libraries)
 """
-from keras.layers import Embedding
+import tensorflow as tf
 
 
-def gensim_to_keras(model):
+def gensim_to_keras(word_vectors):
     """
-    Converts a Gensim Word2Vec model to a Keras Embedding layer.
-
-    Args:
-        model (gensim.models.Word2Vec): Trained Gensim Word2Vec model.
-
-    Returns:
-        keras.layers.Embedding: A trainable Keras Embedding layer initialized with the Word2Vec weights.
+    Converts a set of word vectors (from a trained Gensim
+    Word2Vec model) to a Keras Embedding layer.
     """
-    # Get the word vectors and vocabulary size from the Word2Vec model
-    vocab_size, vector_size = model.wv.vectors.shape
-    
-    # Retrieve the embedding weights (word vectors) from the Gensim model
-    embedding_weights = model.wv.vectors
-    
+    # Retrieve the shape of the word vectors (vocab_size, vector_size)
+    vocab_size, vector_size = word_vectors.shape
+
     # Create a Keras Embedding layer with the weights from the Word2Vec model
-    embedding_layer = Embedding(
-        input_dim=vocab_size,         # Vocabulary size
-        output_dim=vector_size,       # Size of each embedding vector
-        weights=[embedding_weights],  # Set the weights from Word2Vec
-        trainable=True                # Ensure the layer is trainable in Keras
+    embedding_layer = tf.keras.layers.Embedding(
+        input_dim=vocab_size,       # Vocabulary size
+        output_dim=vector_size,     # Size of each embedding vector
+        embeddings_initializer=tf.keras.initializers.Constant(word_vectors),  # Initialize with Word2Vec weights
+        trainable=True              # Ensure the layer is trainable in Keras
     )
-    
+
     return embedding_layer
