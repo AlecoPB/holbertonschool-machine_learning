@@ -18,7 +18,7 @@ def fasttext_model(sentences, vector_size=100, min_count=5,
                                    negative=negative,
                                    sg=sg, seed=seed,
                                    workers=workers)
-    model.build_vocab(sentences, update=True)
+    model.build_vocab(sentences)
     model.train(sentences, total_examples=len(sentences),
                 epochs=epochs)
     return model
