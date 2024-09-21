@@ -11,15 +11,14 @@ def fasttext_model(sentences, vector_size=100, min_count=5,
     """
     Builds and trains a fast text model
     """
-    model = gensim.models.FastText(
-        sentences, 
-        vector_size=vector_size, 
-        min_count=min_count, 
-        negative=negative, 
-        window=window, 
-        cbow_mean_count=cbow, 
-        epochs=epochs, 
-        seed=seed, 
-        workers=workers
-    )
+    sg = 0 if cbow else 1  # CBOW if cbow is True, otherwise Skip-gram
+    model = gensim.models.FastText(vector_size=vector_size,
+                                   window=window,
+                                   min_count=min_count,
+                                   negative=negative,
+                                   sg=sg, seed=seed,
+                                   workers=workers)
+    model.build_vocab(sentences)
+    model.train(sentences, total_examples=len(sentences),
+                epochs=epochs, compute_loss=True)
     return model
