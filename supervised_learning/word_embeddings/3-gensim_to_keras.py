@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Converting Gensim Word2Vec model to Keras
-Embedding Layer (Without importing other libraries)
+Embedding Layer
 """
 import tensorflow as tf
 
