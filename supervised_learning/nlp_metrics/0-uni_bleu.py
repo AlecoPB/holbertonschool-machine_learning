@@ -22,6 +22,7 @@ def uni_bleu(references, sentence):
     match = max(match_list)
     possible_ngrams = sum(reference_ngrams[match_list.index(match)].values())
 
+    if 
     precision = match / possible_ngrams if possible_ngrams > 0 else 0
     
     return precision

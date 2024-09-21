@@ -1,28 +1,40 @@
 #!/usr/bin/env python3
 """
-Bad of Words
+TF-IDF Embedding Implementation
 """
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
-import gensim
-from gensim import corpora
 
 
 def tf_idf(sentences, vocab=None):
     """
-    Creates a bag of words
+    Creates a TF-IDF embedding matrix.
+
+    Args:
+        sentences (list of str): List of sentences to analyze.
+        vocab (list of str or None): List of vocabulary words to use for the analysis.
+                                     If None, all words within sentences are used.
+
+    Returns:
+        embeddings (numpy.ndarray): Matrix of shape (s, f) containing the TF-IDF embeddings,
+                                    where s is the number of sentences and f is the number of features.
+        features (numpy.ndarray): Sorted list of the features used for embeddings.
     """
-    # 1. Create Bag of Words (BoW) using CountVectorizer
-    bow = CountVectorizer(vocabulary=vocab)
-    bow_matrix = bow.fit_transform(sentences)
-    feature_names = bow.get_feature_names_out()
+    # Initialize TfidfVectorizer with the given vocab
+    vectorizer = TfidfVectorizer(vocabulary=vocab)
     
-    # 2. Convert BoW matrix to Gensim's BoW format
-    corpus = [list(zip(range(len(doc)), doc)) for doc in bow_matrix.toarray()]
+    # Fit the model and transform the sentences to a TF-IDF representation
+    vectorizer.fit(sentences)
+    tfidf_features = vectorizer.transform(sentences)
     
-    # 3. Apply TF-IDF transformation using gensim
-    gensim_dictionary = corpora.Dictionary.from_corpus(corpus, id2word=dict(enumerate(feature_names)))
-    tfidf_model = gensim.models.TfidfModel(corpus)
-    tfidf_corpus = [tfidf_model[doc] for doc in corpus]
+    # Get the feature names (vocabulary) used in the transformation
+    features = vectorizer.get_feature_names_out()
     
-    return tfidf_corpus, feature_names
+    # Sort the features alphabetically if vocab is None
+    if vocab is None:
+        features = sorted(features)
+
+    # Convert the sparse matrix to a dense matrix (embeddings)
+    embeddings = tfidf_features.toarray()
+
+    return embeddings, np.array(features)
