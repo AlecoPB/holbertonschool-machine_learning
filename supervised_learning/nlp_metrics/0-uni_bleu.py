@@ -42,4 +42,4 @@ def uni_bleu(references, sentence):
     # Calculate BLEU score
     bleu_score = precision * brevity_penalty
     
-    return precision
+    return bleu_score
