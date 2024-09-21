@@ -2,9 +2,7 @@
 """
 Word2Vec Model Training using Gensim
 """
-from gensim.models import Word2Vec
 import gensim
-import numpy as np
 
 
 def word2vec_model(sentences, vector_size=100, min_count=5,
@@ -19,7 +17,7 @@ def word2vec_model(sentences, vector_size=100, min_count=5,
     sg = 0 if cbow else 1
 
     # Initialize the Word2Vec model
-    model = Word2Vec(
+    model = gensim.models.Word2Vec(
         sentences=sentences,
         vector_size=vector_size,
         window=window,
