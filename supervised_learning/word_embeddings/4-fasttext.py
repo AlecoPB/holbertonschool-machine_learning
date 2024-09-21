@@ -2,7 +2,7 @@
 """
 FastText Model Training using Gensim
 """
-from gensim.models import FastText
+import gensim
 
 
 def fasttext_model(sentences, vector_size=100, min_count=5,
@@ -18,7 +18,7 @@ def fasttext_model(sentences, vector_size=100, min_count=5,
     sg = 0 if cbow else 1
 
     # Initialize the FastText model
-    model = FastText(
+    model = gensim.models.FastText(
         vector_size=vector_size,  # Embedding size
         window=window,            # Context window size
         min_count=min_count,      # Minimum word frequency
