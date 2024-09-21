@@ -16,6 +16,7 @@ def uni_bleu(references, sentence):
     # Initialize variables to store the maximum matches and the total possible n-grams
     max_matches = 0
     total_possible_ngrams = 0
+    closest_reference_length = float('inf')
     
     # Iterate over each reference translation
     for reference in references:
