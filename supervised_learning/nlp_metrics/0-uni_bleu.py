@@ -35,7 +35,7 @@ def uni_bleu(references, sentence):
     if word_count > closest_ref_length:
         brevity_penalty = 1
     else:
-        brevity_penalty = word_count / closest_ref_length
+        brevity_penalty = math.exp(1 - closest_ref_length / word_count)
     
     # Calculate unigram BLEU score
     bleu_score = brevity_penalty * precision
