@@ -3,6 +3,7 @@
 Unigram BLEU score
 """
 from collections import Counter
+import string
 import math
 
 
@@ -29,17 +30,18 @@ def uni_bleu(references, sentence):
         if matches > max_matches:
             max_matches = matches
             total_possible_ngrams = sum(reference_ngrams.values())
-
+        
+        # Find the reference length closest to the sentence length
         reference_length = len(reference)
         if abs(reference_length - len(sentence)) < abs(closest_reference_length - len(sentence)):
             closest_reference_length = reference_length
     
     # Calculate precision
     precision = max_matches / total_possible_ngrams if total_possible_ngrams > 0 else 0
-
+    
     # Calculate brevity penalty
     brevity_penalty = math.exp(1 - closest_reference_length / len(sentence)) if len(sentence) < closest_reference_length else 1
-
+    
     # Calculate BLEU score
     bleu_score = precision * brevity_penalty
     
