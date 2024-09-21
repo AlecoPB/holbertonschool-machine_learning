@@ -31,14 +31,17 @@ def ngram_bleu(references, sentence, n):
     # Count the number of matching n-grams
     match_count = 0
     for ngram in sentence_ngram_counts:
-        match_count += min(sentence_ngram_counts[ngram], reference_ngram_counts[ngram])
+        match_count += min(sentence_ngram_counts[ngram],
+                           reference_ngram_counts[ngram])
 
     # Calculate precision
     precision = match_count / len(sentence_ngrams)
 
     # Calculate brevity penalty
     ref_lengths = [len(ref) for ref in references]
-    closest_ref_length = min(ref_lengths, key=lambda ref_len: (abs(ref_len - len(sentence)), ref_len))
+    closest_ref_length = min(ref_lengths,
+                             key=lambda ref_len: (abs(ref_len - len(sentence)),
+                                                  ref_len))
     if len(sentence) > closest_ref_length:
         brevity_penalty = 1
     else:
