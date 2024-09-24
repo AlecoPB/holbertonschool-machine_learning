@@ -24,10 +24,15 @@ class RNNEncoder(tf.keras.layers.Layer):
                                        recurrent_initializer='glorot_uniform')
 
     def initialize_hidden_state(self):
-        # Initializes the hidden state to a tensor of zeros
+        """"
+        Initializes the hidden state to a tensor of zeros
+        """
         return tf.zeros((self.batch, self.units))
 
     def call(self, x, initial):
+        """
+        Sequence of outputs and last hidden state
+        """
         # Pass input through the embedding layer
         x = self.embedding(x)
 
