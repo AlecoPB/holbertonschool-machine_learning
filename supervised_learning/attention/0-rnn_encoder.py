@@ -1,5 +1,7 @@
+#!/usr/bin/env python3
 import tensorflow as tf
 from tensorflow.keras import layers
+
 
 class RNNEncoder(layers.Layer):
     def __init__(self, vocab, embedding, units, batch):
