@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
+"""
+RNN encoder
+"""
 import tensorflow as tf
 from tensorflow.keras import layers
 
 
 class RNNEncoder(layers.Layer):
+    """
+    RRN Encoder class
+    """
     def __init__(self, vocab, embedding, units, batch):
         super(RNNEncoder, self).__init__()
         
