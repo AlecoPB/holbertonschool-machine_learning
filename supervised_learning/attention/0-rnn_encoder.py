@@ -3,10 +3,9 @@
 RNN encoder
 """
 import tensorflow as tf
-from tensorflow.keras import layers
 
 
-class RNNEncoder(layers.Layer):
+class RNNEncoder(tf.keras.layers.Layer):
     """
     RRN Encoder class
     """
@@ -16,10 +15,10 @@ class RNNEncoder(layers.Layer):
         # Public instance attributes
         self.batch = batch
         self.units = units
-        self.embedding = layers.Embedding(vocab, embedding)
+        self.embedding = tf.keras.layers.Embedding(vocab, embedding)
         
         # GRU layer with glorot_uniform initializer
-        self.gru = layers.GRU(units, 
+        self.gru = tf.keras.layers.GRU(units, 
                               return_sequences=True, 
                               return_state=True,
                               recurrent_initializer='glorot_uniform')
