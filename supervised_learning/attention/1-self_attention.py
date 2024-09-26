@@ -1,37 +1,61 @@
 #!/usr/bin/env python3
 """
-Some documentation
+RNNDecoder for machine translation.
 """
+
 import tensorflow as tf
+SelfAttention = __import__('1-self_attention').SelfAttention
 
 
-class SelfAttention(tf.keras.layers.Layer):
+class RNNDecoder(tf.keras.layers.Layer):
     """
-    Self attention class
+    RNNDecoder class that inherits from tensorflow.keras.layers.Layer
+    for decoding machine translation sequences.
     """
-    def __init__(self, units):
-        super(SelfAttention, self).__init__()
 
-        # Public instance attributes (Dense layers)
-        self.W = tf.keras.layers.Dense(units)
-        self.U = tf.keras.layers.Dense(units)
-        self.V = tf.keras.layers.Dense(1)
-
-    def call(self, s_prev, hidden_states):
+    def __init__(self, vocab, embedding, units, batch):
         """
-        Call method that returns context vector and attention weights
+        Class constructor
+
+        Args:
+            vocab: Integer representing the size of the output vocabulary.
+            embedding: Integer representing the dimensionality of the embedding vector.
+            units: Integer representing the number of hidden units in the RNN cell.
+            batch: Integer representing the batch size.
         """
-        # Expand the s_prev shape to match the hidden states for broadcasting
-        s_prev_expanded = tf.expand_dims(s_prev, axis=1)
+        super(RNNDecoder, self).__init__()
 
-        # Apply W to s_prev and U to hidden_states
-        score = self.V(tf.nn.tanh(self.W(s_prev_expanded
-                                         ) + self.U(hidden_states)))
+        # Public instance attributes
+        self.embedding = tf.keras.layers.Embedding(vocab, embedding)
+        self.gru = tf.keras.layers.GRU(units,
+                                       return_sequences=True,
+                                       return_state=True,
+                                       recurrent_initializer='glorot_uniform')
+        self.F = tf.keras.layers.Dense(vocab)
 
-        # Calculate attention weights with softmax
-        weights = tf.nn.softmax(score, axis=1)
+        # SelfAttention instance
+        self.attention = SelfAttention(units)
 
-        # Compute context vector as the weighted sum of hidden_states
-        context = tf.reduce_sum(weights * hidden_states, axis=1)
+    def call(self, x, s_prev, hidden_states):
+        """
+        Public instance method that performs the forward pass of the RNNDecoder.
+        """
+        # Compute the context vector using self-attention mechanism
+        context, _ = self.attention(s_prev, hidden_states)
 
-        return context, weights
+        # Embed the input word x into an embedding vector
+        x = self.embedding(x)
+
+        # Concatenate the context vector and the embedding vector of x
+        x = tf.concat([tf.expand_dims(context, 1), x], axis=-1)
+
+        # Pass concatenated vector through the GRU
+        output, s = self.gru(x, initial_state=s_prev)
+
+        # Reshape output for Dense layer processing
+        output = tf.reshape(output, (-1, output.shape[2]))
+
+        # Pass the output through the Dense layer to get the final word probabilities
+        y = self.F(output)
+
+        return y, s
