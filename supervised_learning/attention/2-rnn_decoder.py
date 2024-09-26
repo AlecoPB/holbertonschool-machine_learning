@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import tensorflow as tf
-#from tensorflow.keras import layers
 SelfAttention = __import__('1-self_attention').SelfAttention
 
 class RNNDecoder(tf.keras.layers.Layer):
