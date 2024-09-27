@@ -7,12 +7,12 @@ class RNNDecoder(tf.keras.layers.Layer):
         super(RNNDecoder, self).__init__()
 
         # Public instance attributes
-        self.embedding = tf.keras.layers.Embedding(vocab, embedding)
+        self.embedding = tf.keras.layers.Embedding(vocab, embedding)  # Embedding layer for target vocabulary
         self.gru = tf.keras.layers.GRU(units, 
                               return_sequences=True, 
                               return_state=True,
-                              recurrent_initializer='glorot_uniform')
-        self.F = tf.keras.layers.Dense(vocab)
+                              recurrent_initializer='glorot_uniform')  # GRU layer with glorot_uniform initializer
+        self.F = tf.keras.layers.Dense(vocab)  # Dense layer for output, mapping to vocab size
 
         # Instantiate SelfAttention layer
         self.attention = SelfAttention(units)
