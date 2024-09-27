@@ -27,7 +27,7 @@ class RNNDecoder(tf.keras.layers.Layer):
         x = self.embedding(x)  # Shape: (batch, 1, embedding_dim)
 
         # Step 3: Concatenate the context vector with the embedded input word
-        x = tf.concat([tf.expand_dims(context, 1), x], axis=-1)
+        x = tf.concat([context, x], axis=-1)
 
         # Step 4: Pass the concatenated input through the GRU layer
         output, s = self.gru(x, initial_state=s_prev)
@@ -35,7 +35,7 @@ class RNNDecoder(tf.keras.layers.Layer):
         # Step 5: Pass the GRU output through the Dense layer to get the final predicted word
         y = self.F(output)  # Shape: (batch, 1, vocab)
 
-        # Step 6: Remove the sequence dimension (1) from the output y
-        y = tf.reshape(y, (-1, y.shape[2]))
+        # # Step 6: Remove the sequence dimension (1) from the output y
+        # y = tf.reshape(y, (-1, y.shape[2]))
 
         return y, s
