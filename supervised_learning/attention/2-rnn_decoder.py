@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import tensorflow as tf
 SelfAttention = __import__('1-self_attention').SelfAttention
 
@@ -17,11 +16,6 @@ class RNNDecoder(tf.keras.layers.Layer):
 
         # Instantiate SelfAttention layer
         self.attention = SelfAttention(units)
-
-        print(type(self.embedding), vocab, embedding)
-        print(type(self.gru), units)
-        print(type(self.F), vocab)
-
 
     def call(self, x, s_prev, hidden_states):
         # Step 1: Calculate the context vector using the attention mechanism
