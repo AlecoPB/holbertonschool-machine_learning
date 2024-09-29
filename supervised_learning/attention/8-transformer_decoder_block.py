@@ -33,7 +33,8 @@ class DecoderBlock(tf.keras.layers.Layer):
         out1 = self.layernorm1(x + attn1)
 
         # Apply the second multi-head attention (with encoder output)
-        attn2, attn_weights_block2 = self.mha2(out1, encoder_output, encoder_output, padding_mask)
+        attn2, attn_weights_block2 = self.mha2(out1, encoder_output,
+                                               encoder_output, padding_mask)
         attn2 = self.dropout2(attn2, training=training)
         out2 = self.layernorm2(out1 + attn2)
 
