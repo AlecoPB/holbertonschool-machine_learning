@@ -14,8 +14,8 @@ class RNNDecoder(tf.keras.layers.Layer):
         super(RNNDecoder, self).__init__()
 
         # Public instance attributes
-        self.embedding = tf.keras.layers.Embedding(input_dim = vocab,
-                                                   output_dim = embedding)
+        self.embedding = tf.keras.layers.Embedding(input_dim=vocab,
+                                                   output_dim=embedding)
         self.gru = tf.keras.layers.GRU(units,
                                        return_sequences=True,
                                        return_state=True,
