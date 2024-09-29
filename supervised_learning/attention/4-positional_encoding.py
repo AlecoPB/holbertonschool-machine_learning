@@ -7,16 +7,13 @@ import numpy as np
 
 def positional_encoding(max_seq_len, dm):
     """
-    Initialize the positional encoding matrix
+    Calculate the positional encoding for a transformer.
     """
-    pos_enc = np.zeros((max_seq_len, dm))
-
-    # Calculate positional encoding values for each position
+    pe = np.zeros((max_seq_len, dm))
     for pos in range(max_seq_len):
-        for i in range(0, dm, 2):
-            angle = pos / np.power(10000, (2 * i) / dm)
-            pos_enc[pos, i] = np.sin(angle)
-            if i + 1 < dm:
-                pos_enc[pos, i + 1] = np.cos(angle)
-
-    return pos_enc
+        for i in range(dm):
+            if i % 2 == 0:
+                pe[pos, i] = np.sin(pos / (10000 ** (i // 2 / dm)))
+            else:
+                pe[pos, i] = np.cos(pos / (10000 ** ((i - 1) // 2 / dm)))
+    return pe
