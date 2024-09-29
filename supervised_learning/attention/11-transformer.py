@@ -33,6 +33,6 @@ class Transformer(tf.keras.Model):
                                       look_ahead_mask, decoder_mask)
 
         # Apply the final linear layer
-        output = self.linear(decoder_output)  # (batch, target_seq_len, target_vocab)
+        output = self.linear(decoder_output)
 
         return output
