@@ -16,8 +16,8 @@ class RNNDecoder(tf.keras.layers.Layer):
         # Public instance attributes
         self.embedding = tf.keras.layers.Embedding(input_dim = vocab,
                                                    output_dim = embedding)
-        self.gru = tf.keras.layers.GRU(units, 
-                                       return_sequences=True, 
+        self.gru = tf.keras.layers.GRU(units,
+                                       return_sequences=True,
                                        return_state=True,
                                        recurrent_initializer='glorot_uniform')
         self.F = tf.keras.layers.Dense(units = vocab)
