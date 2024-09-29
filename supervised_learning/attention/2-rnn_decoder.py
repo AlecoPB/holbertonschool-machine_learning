@@ -29,18 +29,20 @@ class RNNDecoder(tf.keras.layers.Layer):
         """
         Call function
         """
-        # Step 1: Calculate the context vector using attention
-        context, _ = self.attention(s_prev, hidden_states)
+        # Apply the embedding layer to the input x
+        x = self.embedding(x)
 
-        # Step 2: Embed the input word x into a dense vector
-        x = self.embedding(x)  # Shape: (batch, 1, embedding_dim)
+        # Apply self-attention to get the context vector
+        context_vector, _ = self.attention(s_prev, hidden_states)
 
-        # Step 3: Concatenate the context vector with input word
-        x = tf.concat([context, x], axis=-1)
+        # Concatenate the context vector with x
+        x = tf.concat([tf.expand_dims(context_vector, 1), x], axis=-1)
 
-        # Step 4: Pass the concatenated input through the GRU layer
-        output, s = self.gru(x, initial_state=s_prev)
+        # Pass the concatenated vector to the GRU
+        output, state = self.gru(x, initial_state=s_prev)
 
-        y = self.F(output)  # Shape: (batch, 1, vocab)
+        # Pass the GRU output through the dense layer to get the final output
+        output = tf.reshape(output, (-1, output.shape[2]))
+        y = self.F(output)
 
-        return y, s
+        return y, state
