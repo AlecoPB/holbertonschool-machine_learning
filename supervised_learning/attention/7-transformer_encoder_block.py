@@ -3,7 +3,6 @@
 This is some documentation
 """
 import tensorflow as tf
-# from tensorflow.keras.layers import Dense, Dropout, LayerNormalization
 MultiHeadAttention = __import__('6-multihead_attention').MultiHeadAttention
 
 
