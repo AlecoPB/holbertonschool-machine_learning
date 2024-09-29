@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
+"""
+This is some documentation
+"""
 import tensorflow as tf
 SelfAttention = __import__('1-self_attention').SelfAttention
 
 
 class RNNDecoder(tf.keras.layers.Layer):
+    """
+    RNNDecoder
+    """
     def __init__(self, vocab, embedding, units, batch):
         super(RNNDecoder, self).__init__()
 
@@ -20,22 +26,21 @@ class RNNDecoder(tf.keras.layers.Layer):
         self.attention = SelfAttention(units)
 
     def call(self, x, s_prev, hidden_states):
-        # Step 1: Calculate the context vector using the attention mechanism
+        """
+        Call function
+        """
+        # Step 1: Calculate the context vector using attention
         context, _ = self.attention(s_prev, hidden_states)
 
-        # Step 2: Embed the input word x (shape: (batch, 1)) into a dense vector
+        # Step 2: Embed the input word x into a dense vector
         x = self.embedding(x)  # Shape: (batch, 1, embedding_dim)
 
-        # Step 3: Concatenate the context vector with the embedded input word
+        # Step 3: Concatenate the context vector with input word
         x = tf.concat([context, x], axis=-1)
 
         # Step 4: Pass the concatenated input through the GRU layer
         output, s = self.gru(x, initial_state=s_prev)
 
-        # Step 5: Pass the GRU output through the Dense layer to get the final predicted word
         y = self.F(output)  # Shape: (batch, 1, vocab)
-
-        # # Step 6: Remove the sequence dimension (1) from the output y
-        # y = tf.reshape(y, (-1, y.shape[2]))
 
         return y, s
