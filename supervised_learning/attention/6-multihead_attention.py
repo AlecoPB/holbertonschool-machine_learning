@@ -27,12 +27,14 @@ class MultiHeadAttention(tf.keras.layers.Layer):
     def split_heads(self, x, batch_size):
         """
         Split the last dimension into (h, depth).
-        Transpose the result such that the shape is (batch_size, h, seq_len, depth)
         """
         x = tf.reshape(x, (batch_size, -1, self.h, self.depth))
         return tf.transpose(x, perm=[0, 2, 1, 3])
 
     def call(self, Q, K, V, mask):
+        """
+        Call method
+        """
         batch_size = tf.shape(Q)[0]
 
         # Generate Q, K, V matrices
@@ -41,16 +43,18 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         V = self.Wv(V)  # (batch_size, seq_len_v, dm)
 
         # Split and transpose Q, K, V for multi-head attention
-        Q = self.split_heads(Q, batch_size)  # (batch_size, h, seq_len_q, depth)
-        K = self.split_heads(K, batch_size)  # (batch_size, h, seq_len_v, depth)
-        V = self.split_heads(V, batch_size)  # (batch_size, h, seq_len_v, depth)
+        Q = self.split_heads(Q, batch_size)
+        K = self.split_heads(K, batch_size)
+        V = self.split_heads(V, batch_size)
 
         # Apply scaled dot product attention
         scaled_attention, attention_weights = sdp_attention(Q, K, V, mask)
 
         # Transpose and reshape the attention output
-        scaled_attention = tf.transpose(scaled_attention, perm=[0, 2, 1, 3])  # (batch_size, seq_len_q, h, depth)
-        concat_attention = tf.reshape(scaled_attention, (batch_size, -1, self.dm))  # (batch_size, seq_len_q, dm)
+        scaled_attention = tf.transpose(scaled_attention, perm=[0, 2, 1, 3])
+        concat_attention = tf.reshape(scaled_attention, (batch_size,
+                                                         -1,
+                                                         self.dm))
 
         # Apply the final dense layer
         output = self.linear(concat_attention)  # (batch_size, seq_len_q, dm)
