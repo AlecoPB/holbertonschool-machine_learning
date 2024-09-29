@@ -8,6 +8,9 @@ EncoderBlock = __import__('7-transformer_encoder_block').EncoderBlock
 
 
 class Encoder(tf.keras.layers.Layer):
+    """
+    Encoder class
+    """
     def __init__(self, N, dm, h, hidden,
                  input_vocab, max_seq_len,
                  drop_rate=0.1):
@@ -24,6 +27,9 @@ class Encoder(tf.keras.layers.Layer):
         self.dropout = tf.keras.layers.Dropout(drop_rate)
 
     def call(self, x, training, mask):
+        """
+        Call function
+        """
         seq_len = tf.shape(x)[1]
 
         # Generate the embeddings and add the positional encodings
