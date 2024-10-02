@@ -11,30 +11,36 @@ class Dataset:
     Dataset class
     """
     def __init__(self):
-        """Initializes the Dataset class by loading the training and validation datasets."""
-        # Load the TED translation dataset from TensorFlow Datasets
-        self.data_train = tfds.load('ted_hrlr_translate/pt_to_en', split='train', as_supervised=True)
-        self.data_valid = tfds.load('ted_hrlr_translate/pt_to_en', split='validation', as_supervised=True)
-
-        # Tokenize the datasets to create the tokenizers for Portuguese and English
+        self.data_train, self.data_valid = tfds.load(
+            'ted_hrlr_translate/pt_to_en',
+            split=['train', 'validation'],
+            as_supervised=True
+        )
         self.tokenizer_pt, self.tokenizer_en = self.tokenize_dataset(self.data_train)
 
     def tokenize_dataset(self, data):
         """
-        Creates sub-word tokenizers for the dataset using pre-trained models from Hugging Face's Transformers.
-
-        Args:
-            data: tf.data.Dataset whose examples are formatted as a tuple (pt, en).
-
-        Returns:
-            tokenizer_pt: Portuguese tokenizer (BERT-based).
-            tokenizer_en: English tokenizer (BERT-based).
+        Method to tokenize a dataset
         """
-        # Portuguese tokenizer using a pre-trained BERT model from Hugging Face
+        # Load pre-trained BERT tokenizers
         tokenizer_pt = transformers.BertTokenizer.from_pretrained('neuralmind/bert-base-portuguese-cased')
-        
-        # English tokenizer using a pre-trained BERT model from Hugging Face
         tokenizer_en = transformers.BertTokenizer.from_pretrained('bert-base-uncased')
 
-        # Return the tokenizers for both languages
+        # Tokenize the dataset
+        def tokenize_pt_en(pt, en):
+            """
+            Portuguese tokenizer
+            """
+            pt = tokenizer_pt.encode(pt.numpy().decode('utf-8'), add_special_tokens=True, truncation=True, max_length=2**13)
+            en = tokenizer_en.encode(en.numpy().decode('utf-8'), add_special_tokens=True, truncation=True, max_length=2**13)
+            return pt, en
+
+        def tf_tokenize_pt_en(pt, en):
+            pt, en = tf.py_function(tokenize_pt_en, [pt, en], [tf.int32, tf.int32])
+            pt.set_shape([None])
+            en.set_shape([None])
+            return pt, en
+
+        data = data.map(tf_tokenize_pt_en, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+
         return tokenizer_pt, tokenizer_en
