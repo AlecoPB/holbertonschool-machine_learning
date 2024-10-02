@@ -29,5 +29,10 @@ class Dataset:
             from_pretrained('bert-base-uncased')
         tokenizer_pt = transformers.BertTokenizer.\
             from_pretrained('neuralmind/bert-base-portuguese-cased')
+        # Optional: Set max vocab size, although BERT tokenizers are pretrained and fixed
+        tokenizer_pt.train_new_from_iterator((pt.numpy() for pt, en in data),
+                                             vocab_size=2**13)
+        tokenizer_en.train_new_from_iterator((en.numpy() for pt, en in data),
+                                             vocab_size=2**13)
 
         return tokenizer_pt, tokenizer_en
