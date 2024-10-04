@@ -8,7 +8,7 @@ import transformers
 
 class Dataset:
     """
-    Dataset class to load and prep a dataset for machine translation.
+    Dataset class to load and prep a dataset for machine translation.z
     """
 
     def __init__(self):
