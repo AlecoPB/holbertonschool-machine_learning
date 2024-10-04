@@ -33,7 +33,7 @@ class Dataset:
         vocab_en = list(tokenizer_en.vocab.keys())
 
         # Define the desired vocabulary size
-        vocab_size = 30000
+        vocab_size = 2**13
 
         # Filter out less frequent tokens
         vocab_pt = vocab_pt[:vocab_size]
