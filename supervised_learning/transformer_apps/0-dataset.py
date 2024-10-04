@@ -38,7 +38,7 @@ class Dataset:
                 yield pt.numpy().decode('utf-8')
 
         tokenizer_pt = tokenizer_pt.\
-            train_new_from_iterator(get_training_corpus_pt(), vocab_size=2**13)
+            train_new_from_iterator(get_training_corpus_pt(), vocab_size=2**12)
         tokenizer_en = tokenizer_en.\
-            train_new_from_iterator(get_training_corpus_en(), vocab_size=2**13)
+            train_new_from_iterator(get_training_corpus_en(), vocab_size=2**12)
         return tokenizer_pt, tokenizer_en
