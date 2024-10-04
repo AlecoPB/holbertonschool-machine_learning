@@ -15,9 +15,17 @@ class Dataset:
         """
         Initializes the Dataset instance.
         """
-        self.data_train, self.data_valid = tfds.load('ted_hrlr_translate/pt_to_en',
-                                                     split=['train', 'validation'],
-                                                     as_supervised=True)
+        # self.data_train = tfds.load('ted_hrlr_translate/pt_to_en',
+        #                             split='train', as_supervised=True)
+        # self.data_valid = tfds.load('ted_hrlr_translate/pt_to_en',
+        #                             split='validation', as_supervised=True)
+        dataset, metadata = tfds.load('ted_hrlr_translate/pt_to_en', as_supervised=True, with_info=True)
+        train_size = int(0.8 * metadata.splits['train'].num_examples)
+        test_size = metadata.splits['train'].num_examples - train_size
+
+        self.data_train = dataset.take(train_size)
+        self.data_valid = dataset.skip(train_size)
+        self.tokenizer_pt, self.tokenizer_en = self.tokenize_dataset(self.data_train)
 
     def tokenize_dataset(self, data):
         """
