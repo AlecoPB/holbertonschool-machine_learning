@@ -21,11 +21,12 @@ class Dataset:
 
     def tokenize_dataset(self, data):
         """
-        Creates sub-word tokenizers for the dataset.
+        Instance method
         """
-        tokenizer_pt = transformers.BertTokenizer.\
-            from_pretrained('neuralmind/bert-base-portuguese-case')
-        tokenizer_en = transformers.BertTokenizer.\
+
+        tokenizer_pt = transformers.AutoTokenizer.\
+            from_pretrained('neuralmind/bert-base-portuguese-cased')
+        tokenizer_en = transformers.AutoTokenizer.\
             from_pretrained('bert-base-uncased')
 
         def get_training_corpus_en():
@@ -37,7 +38,14 @@ class Dataset:
                 yield pt.numpy().decode('utf-8')
 
         tokenizer_pt = tokenizer_pt.\
-            train_new_from_iterator(get_training_corpus_pt(), vocab_size=2**13)
+            train_new_from_iterator(get_training_corpus_pt(), vocab_size=8192)
         tokenizer_en = tokenizer_en.\
-            train_new_from_iterator(get_training_corpus_en(), vocab_size=2**13)
+            train_new_from_iterator(get_training_corpus_en(), vocab_size=8192)
         return tokenizer_pt, tokenizer_en
+
+    def encode(self, pt, en):
+        """
+        Instance method
+        """
+        print("encode", pt, en)
+        return None
