@@ -42,10 +42,3 @@ class Dataset:
         tokenizer_en = tokenizer_en.\
             train_new_from_iterator(get_training_corpus_en(), vocab_size=8192)
         return tokenizer_pt, tokenizer_en
-
-    def encode(self, pt, en):
-        """
-        Instance method
-        """
-        print("encode", pt, en)
-        return None
