@@ -18,24 +18,14 @@ class Dataset:
         self.data_train = tfds.load('ted_hrlr_translate/pt_to_en', split='train', as_supervised=True)
         self.data_valid = tfds.load('ted_hrlr_translate/pt_to_en', split='validation', as_supervised=True)
         self.tokenizer_pt, self.tokenizer_en = self.tokenize_dataset(self.data_train)
-        
-        self.data_train, _ = tfds.load('ted_hrlr_translate/pt_to_en',
-                                       split='train', with_info=True,
-                                       as_supervised=True)
-
-        self.data_valid, _ = tfds.load('ted_hrlr_translate/pt_to_en',
-                                       split='validation', with_info=True,
-                                       as_supervised=True)
-        self.tokenizer_pt, self.tokenizer_en =\
-            self.tokenize_dataset(self.data_train)
 
     def tokenize_dataset(self, data):
         """
         Creates sub-word tokenizers for the dataset.
         """
-        tokenizer_pt = transformers.AutoTokenizer.\
+        tokenizer_pt = transformers.BertTokenizer.\
             from_pretrained('neuralmind/bert-base-portuguese-case')
-        tokenizer_en = transformers.AutoTokenizer.\
+        tokenizer_en = transformers.BertTokenizer.\
             from_pretrained('bert-base-uncased')
 
         def get_training_corpus_en():
