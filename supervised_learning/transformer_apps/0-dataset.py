@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Dataset module for loading and preparing a dataset for machine translation.
+This is some documentation
 """
 import tensorflow_datasets as tfds
 import transformers
@@ -8,20 +8,23 @@ import transformers
 
 class Dataset:
     """
-    Dataset class to load and prep a dataset for machine translation.z
+    Dataset class to load and prep a dataset for machine translation.
     """
 
     def __init__(self):
         """
         Initializes the Dataset instance.
         """
-        self.data_train = tfds.load('ted_hrlr_translate/pt_to_en', split='train', as_supervised=True)
-        self.data_valid = tfds.load('ted_hrlr_translate/pt_to_en', split='validation', as_supervised=True)
-        self.tokenizer_pt, self.tokenizer_en = self.tokenize_dataset(self.data_train)
+        self.data_train = tfds.load('ted_hrlr_translate/pt_to_en',
+                                    split='train', as_supervised=True)
+        self.data_valid = tfds.load('ted_hrlr_translate/pt_to_en',
+                                    split='validation', as_supervised=True)
+        self.tokenizer_pt, self.tokenizer_en =\
+            self.tokenize_dataset(self.data_train)
 
     def tokenize_dataset(self, data):
         """
-        Instance method
+        Generate sub-word tokenizers
         """
 
         tokenizer_pt = transformers.AutoTokenizer.\
