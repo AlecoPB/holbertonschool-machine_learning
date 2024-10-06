@@ -1,22 +1,23 @@
 #!/usr/bin/env python3
 """
-This is some documentation
+Transformer Applications project
+By Ced, performing NLP tasks
 """
 import tensorflow_datasets as tfds
 import transformers
 import tensorflow as tf
 
 
-class Dataset:
+class Dataset():
     """
-    Dataset class to load and prep a dataset for machine translation.
+    Class Dataset that loads and preps a dataset for machine translation
+    then tokenizes the data for the transformer model
     """
-
     def __init__(self, batch_size, max_len):
         """
         Class constructor
         """
-        self.batch_size = batch_size
+        self.bacth_size = batch_size
         self.max_len = max_len
 
         self.data_train = tfds.load(
@@ -54,23 +55,26 @@ class Dataset:
         self.data_train = self.data_train.cache()
         self.data_train = self.data_train.shuffle(buffer_size=20000)
 
+        # padded batch est une variante de batch qui permet de
+        # de definir une taille fixe pour les sequences
         self.data_train = self.data_train.padded_batch(self.bacth_size)
-
+        # AUTOTUNE ajuste automatiquement la taille du buffer
+        # prefetch: précharge les données pour accélérer le traitement
         self.data_train = self.data_train.prefetch(
             tf.data.experimental.AUTOTUNE)
 
+        # moins d'operations pour le data_valid
         self.data_valid = self.data_valid.filter(mask_maxlen)
         self.data_valid = self.data_valid.padded_batch(self.bacth_size)
 
     def tokenize_dataset(self, data):
         """
-        Generate sub-word tokenizers
+        Instance method
         """
-
-        tokenizer_pt = transformers.AutoTokenizer.\
-            from_pretrained('neuralmind/bert-base-portuguese-cased')
-        tokenizer_en = transformers.AutoTokenizer.\
-            from_pretrained('bert-base-uncased')
+        tokenizer_pt = transformers.AutoTokenizer.from_pretrained(
+            'neuralmind/bert-base-portuguese-cased')
+        tokenizer_en = transformers.AutoTokenizer.from_pretrained(
+            'bert-base-uncased')
 
         def get_training_corpus_en():
             for _, en in data:
@@ -80,44 +84,57 @@ class Dataset:
             for pt, _ in data:
                 yield pt.numpy().decode('utf-8')
 
-        tokenizer_pt = tokenizer_pt.\
-            train_new_from_iterator(get_training_corpus_pt(), vocab_size=2**13)
-        tokenizer_en = tokenizer_en.\
-            train_new_from_iterator(get_training_corpus_en(), vocab_size=2**13)
+        #  How to tokenize a sentence
+        #  sentences = "i love you madly"
+        #  tokens = tokenizer_en.tokenize(sentences)
+        #  print(tokens)
+
+        tokenizer_pt = tokenizer_pt.train_new_from_iterator(
+            get_training_corpus_pt(), vocab_size=8192
+        )
+        tokenizer_en = tokenizer_en.train_new_from_iterator(
+            get_training_corpus_en(), vocab_size=8192
+        )
         return tokenizer_pt, tokenizer_en
 
     def encode(self, pt, en):
         """
-        Encode the Portuguese and English sentences using the tokenizers.
+        Instance method
         """
         if tf.is_tensor(pt):
             pt = pt.numpy().decode('utf-8')
         if tf.is_tensor(en):
             en = en.numpy().decode('utf-8')
 
+        # nouveaux indexs pour les tokens CLS et SEP
         nouveau_cls_id = 8192
         nouveau_sep_id = 8193
 
+        # Exemple de tokenization manuelle avec vos propres IDs
         pt_tokens = ([nouveau_cls_id] +
                      self.tokenizer_pt.encode(pt, add_special_tokens=False) +
                      [nouveau_sep_id])
         en_tokens = ([nouveau_cls_id] +
                      self.tokenizer_en.encode(en, add_special_tokens=False) +
                      [nouveau_sep_id])
+        # print("encode en", self.tokenizer_en.encode(en))
         return pt_tokens, en_tokens
 
     def tf_encode(self, pt, en):
         """
-        TensorFlow wrapper for the encode instance method.
+        associé avec la fonction map de TensorFlow
+        permet de tokeniser le data_train et data_valid
         """
-        # Apply encode using tf.py_function
+
         encoder = tf.py_function(func=self.encode, inp=[pt, en],
                                  Tout=[tf.int64, tf.int64])
 
-        # Set shape of the tensors after tokenization
+        # attention, tf.py_function ne renvoie pas un tensor mais un tuple
+        # print("encoder type", type(encoder))
+
+        # [None] indique "un vecteur 1D de longueur variable"
         pt_tensor = tf.ensure_shape(encoder[0], [None])
         en_tensor = tf.ensure_shape(encoder[1], [None])
-
-        print("pt_tensor type", type(pt_tensor))
-
+        # ensure_shape reconstruit le tensor avec la shape donnée
+        # print("pt_tensor type", type(pt_tensor))
         return pt_tensor, en_tensor
