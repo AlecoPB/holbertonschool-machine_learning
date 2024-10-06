@@ -49,42 +49,36 @@ class Dataset:
 
     def encode(self, pt, en):
         """
-        Instance method
+        Encode the Portuguese and English sentences using the tokenizers.
         """
         if tf.is_tensor(pt):
             pt = pt.numpy().decode('utf-8')
         if tf.is_tensor(en):
             en = en.numpy().decode('utf-8')
 
-        # nouveaux indexs pour les tokens CLS et SEP
         nouveau_cls_id = 8192
         nouveau_sep_id = 8193
 
-        # Exemple de tokenization manuelle avec vos propres IDs
         pt_tokens = ([nouveau_cls_id] +
                      self.tokenizer_pt.encode(pt, add_special_tokens=False) +
                      [nouveau_sep_id])
         en_tokens = ([nouveau_cls_id] +
                      self.tokenizer_en.encode(en, add_special_tokens=False) +
                      [nouveau_sep_id])
-        # print("encode en", self.tokenizer_en.encode(en))
         return pt_tokens, en_tokens
 
     def tf_encode(self, pt, en):
         """
-        associé avec la fonction map de TensorFlow
-        permet de tokeniser le data_train et data_valid
+        TensorFlow wrapper for the encode instance method.
         """
-
+        # Apply encode using tf.py_function
         encoder = tf.py_function(func=self.encode, inp=[pt, en],
                                  Tout=[tf.int64, tf.int64])
 
-        # attention, tf.py_function ne renvoie pas un tensor mais un tuple
-        # print("encoder type", type(encoder))
-
-        # [None] indique "un vecteur 1D de longueur variable"
+        # Set shape of the tensors after tokenization
         pt_tensor = tf.ensure_shape(encoder[0], [None])
         en_tensor = tf.ensure_shape(encoder[1], [None])
-        # ebsure_shape reconstruit le tensor avec la shape donnée
+
         print("pt_tensor type", type(pt_tensor))
+
         return pt_tensor, en_tensor
