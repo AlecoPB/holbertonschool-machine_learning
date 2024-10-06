@@ -14,18 +14,23 @@ class Dataset:
 
     def __init__(self, batch_size, max_len):
         """
-        Initializes the Dataset instance.
+        Class constructor
         """
         self.batch_size = batch_size
         self.max_len = max_len
 
-        self.data_train = tfds.load('ted_hrlr_translate/pt_to_en',
-                                    split='train', as_supervised=True)
-        self.data_valid = tfds.load('ted_hrlr_translate/pt_to_en',
-                                    split='validation', as_supervised=True)
-        self.tokenizer_pt, self.tokenizer_en =\
+        self.data_train = tfds.load(
+            'ted_hrlr_translate/pt_to_en', split='train', as_supervised=True)
+        self.data_valid = tfds.load(
+            'ted_hrlr_translate/pt_to_en',
+            split='validation', as_supervised=True)
+        self.tokenizer_pt, self.tokenizer_en = (
             self.tokenize_dataset(self.data_train)
+        )
 
+        #  map est une fonction tres utile dans TensorFlow qui permet
+        #  d'appliquer une transformation à chaque élément d'un dataset
+        # a la maniere de map python
         self.data_train = self.data_train.map(self.tf_encode)
         self.data_valid = self.data_valid.map(self.tf_encode)
 
