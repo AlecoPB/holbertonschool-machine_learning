@@ -23,6 +23,10 @@ class Dataset:
         self.tokenizer_pt, self.tokenizer_en =\
             self.tokenize_dataset(self.data_train)
 
+        self.data_train = self.data_train.map(self.tf_encode)
+        self.data_valid = self.data_valid.map(self.tf_encode)
+
+
     def tokenize_dataset(self, data):
         """
         Generate sub-word tokenizers
