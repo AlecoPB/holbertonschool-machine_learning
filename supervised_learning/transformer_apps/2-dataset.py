@@ -79,4 +79,6 @@ class Dataset:
         pt_tokens = tf.ensure_shape(encoder[0], [None])
         en_tokens = tf.ensure_shape(encoder[1], [None])
 
+        print("pt_tensor type", type(pt_tokens))
+
         return pt_tokens, en_tokens
