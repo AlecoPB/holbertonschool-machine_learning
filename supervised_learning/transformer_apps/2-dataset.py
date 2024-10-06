@@ -47,25 +47,41 @@ class Dataset:
             train_new_from_iterator(get_training_corpus_en(), vocab_size=2**13)
         return tokenizer_pt, tokenizer_en
 
+    def encode(self, pt, en):
+        """
+        Encode the Portuguese and English sentences using the tokenizers.
+        """
+        pt_encoded = self.tokenizer_pt.encode_plus(
+            pt.numpy().decode('utf-8'),
+            max_length=512,
+            padding='max_length',
+            truncation=True,
+            return_attention_mask=True,
+            return_tensors='np'
+        )
+
+        en_encoded = self.tokenizer_en.encode_plus(
+            en.numpy().decode('utf-8'),
+            max_length=512,
+            padding='max_length',
+            truncation=True,
+            return_attention_mask=True,
+            return_tensors='np'
+        )
+
+        return pt_encoded['input_ids'].flatten(), en_encoded['input_ids'].flatten()
+
     def tf_encode(self, pt, en):
         """
         TensorFlow wrapper for the encode instance method.
-
-        Parameters:
-        - pt: tf.Tensor containing the Portuguese sentence.
-        - en: tf.Tensor containing the English sentence.
-
-        Returns:
-        - pt_tokens: tf.Tensor containing the tokenized Portuguese sentence.
-        - en_tokens: tf.Tensor containing the tokenized English sentence.
         """
         # Apply encode using tf.py_function, making sure the output is int64
         pt_tokens, en_tokens = tf.py_function(self.encode, [pt, en], 
                                             [tf.TensorSpec(shape=[None], dtype=tf.int64), 
                                             tf.TensorSpec(shape=[None], dtype=tf.int64)])
 
-        # # Set shape of the tensors after tokenization
-        # pt_tokens.set_shape([None])
-        # en_tokens.set_shape([None])
+        # Set shape of the tensors after tokenization
+        pt_tokens.set_shape([None])
+        en_tokens.set_shape([None])
 
         return pt_tokens, en_tokens
