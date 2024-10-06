@@ -51,25 +51,21 @@ class Dataset:
         """
         Encode the Portuguese and English sentences using the tokenizers.
         """
-        pt_encoded = self.tokenizer_pt.encode_plus(
-            pt.numpy().decode('utf-8'),
-            max_length=512,
-            padding='max_length',
-            truncation=True,
-            return_attention_mask=True,
-            return_tensors='np'
-        )
+        if tf.is_tensor(pt):
+            pt = pt.numpy().decode('utf-8')
+        if tf.is_tensor(en):
+            en = en.numpy().decode('utf-8')
 
-        en_encoded = self.tokenizer_en.encode_plus(
-            en.numpy().decode('utf-8'),
-            max_length=512,
-            padding='max_length',
-            truncation=True,
-            return_attention_mask=True,
-            return_tensors='np'
-        )
+        nouveau_cls_id = 8192
+        nouveau_sep_id = 8193
 
-        return pt_encoded['input_ids'].flatten(), en_encoded['input_ids'].flatten()
+        pt_tokens = ([nouveau_cls_id] +
+                     self.tokenizer_pt.encode(pt, add_special_tokens=False) +
+                     [nouveau_sep_id])
+        en_tokens = ([nouveau_cls_id] +
+                     self.tokenizer_en.encode(en, add_special_tokens=False) +
+                     [nouveau_sep_id])
+        return pt_tokens, en_tokens
 
     def tf_encode(self, pt, en):
         """
