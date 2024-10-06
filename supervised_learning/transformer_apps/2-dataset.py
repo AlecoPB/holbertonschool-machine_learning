@@ -60,7 +60,9 @@ class Dataset:
         - en_tokens: tf.Tensor containing the tokenized English sentence.
         """
         # Apply encode using tf.py_function, making sure the output is int64
-        pt_tokens, en_tokens = tf.py_function(self.encode, [pt, en], [tf.int64, tf.int64])
+        pt_tokens, en_tokens = tf.py_function(self.encode, [pt, en], 
+                                            [tf.TensorSpec(shape=[None], dtype=tf.int64), 
+                                            tf.TensorSpec(shape=[None], dtype=tf.int64)])
 
         # Set shape of the tensors after tokenization
         pt_tokens.set_shape([None])
