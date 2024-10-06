@@ -83,8 +83,4 @@ class Dataset:
         pt_tokens.set_shape([None])
         en_tokens.set_shape([None])
 
-        # Ensure the output is cast to tf.int64
-        pt_tokens = tf.cast(pt_tokens, tf.int64)
-        en_tokens = tf.cast(en_tokens, tf.int64)
-
         return pt_tokens, en_tokens

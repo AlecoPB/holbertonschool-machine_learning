@@ -59,24 +59,11 @@ class Dataset:
         - pt_tokens: np.ndarray containing the Portuguese tokens.
         - en_tokens: np.ndarray containing the English tokens.
         """
-        # Convert tensors to strings
-        pt_sentence = pt.numpy().decode('utf-8')
-        en_sentence = en.numpy().decode('utf-8')
+        nouveau_cls_id = 8192
+        nouveau_sep_id = 8193
 
-        # Tokenize the sentences
-        pt_tokens = self.tokenizer_pt.encode(pt_sentence)
-        en_tokens = self.tokenizer_en.encode(en_sentence)
-
-        # Get vocab size for adding special tokens
-        pt_vocab_size = self.tokenizer_pt.vocab_size
-        en_vocab_size = self.tokenizer_en.vocab_size
-
-        # Add start and end tokens
-        pt_tokens = [pt_vocab_size] + pt_tokens + [pt_vocab_size + 1]
-        en_tokens = [en_vocab_size] + en_tokens + [en_vocab_size + 1]
-
-        # Convert to numpy arrays
-        pt_tokens = np.array(pt_tokens, dtype=np.int32)
-        en_tokens = np.array(en_tokens, dtype=np.int32)
-
+        # Exemple de tokenization manuelle avec vos propres IDs
+        pt_tokens = [nouveau_cls_id] + self.tokenizer_pt.encode(pt.numpy().decode('utf-8'), add_special_tokens=False) + [nouveau_sep_id]
+        en_tokens = [nouveau_cls_id] + self.tokenizer_en.encode(en.numpy().decode('utf-8'), add_special_tokens=False) + [nouveau_sep_id]
+        #print("encode en", self.tokenizer_en.encode(en))
         return pt_tokens, en_tokens
