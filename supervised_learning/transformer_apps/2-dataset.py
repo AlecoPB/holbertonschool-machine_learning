@@ -75,13 +75,16 @@ class Dataset:
         """
         TensorFlow wrapper for the encode instance method.
         """
-        # Apply encode using tf.py_function, making sure the output is int64
+        # Apply encode using tf.py_function
         pt_tokens, en_tokens = tf.py_function(self.encode, [pt, en], 
-                                            [tf.TensorSpec(shape=[None], dtype=tf.int64), 
-                                            tf.TensorSpec(shape=[None], dtype=tf.int64)])
+                                                [tf.int64, tf.int64])
 
         # Set shape of the tensors after tokenization
         pt_tokens.set_shape([None])
         en_tokens.set_shape([None])
+
+        # Ensure the output is cast to tf.int64
+        pt_tokens = tf.cast(pt_tokens, tf.int64)
+        en_tokens = tf.cast(en_tokens, tf.int64)
 
         return pt_tokens, en_tokens
