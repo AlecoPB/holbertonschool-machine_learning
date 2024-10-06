@@ -66,4 +66,7 @@ class Dataset:
         pt_tokens.set_shape([None])
         en_tokens.set_shape([None])
 
+        pt_tokens = tf.strings.to_number(pt_tokens, out_type=tf.int64)
+        en_tokens = tf.strings.to_number(en_tokens, out_type=tf.int64)
+
         return pt_tokens, en_tokens
