@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-Transformer Applications project
-By Ced, performing NLP tasks
+This is some documentation
 """
 import tensorflow_datasets as tfds
 import transformers
