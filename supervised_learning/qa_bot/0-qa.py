@@ -42,8 +42,6 @@ def question_answer(question, reference):
         start_logits[0, 1:sequence_length-1], output_type=tf.int32).numpy() + 1
     end_idx = tf.math.argmax(
         end_logits[0, 1:sequence_length-1], output_type=tf.int32).numpy() + 1
-    # start_idx = tf.argmax(start_logits, axis=1).numpy()[0]
-    # end_idx = tf.argmax(end_logits, axis=1).numpy()[0]
 
     # Error handling
     if start_idx > end_idx:
