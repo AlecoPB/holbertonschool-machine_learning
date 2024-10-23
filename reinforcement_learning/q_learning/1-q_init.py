@@ -12,6 +12,6 @@ def q_init(env):
     """
     actions = env.action_space.n
     states = env.observation_space.n 
-    return np.zeros(states, actions)
+    return np.zeros(actions, states)
 
 
