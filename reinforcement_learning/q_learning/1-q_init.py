@@ -10,5 +10,6 @@ def q_init(env):
     """
     Initializes a q table with zeros
     """
-    h, w = env.shape()
-    return np.zeros(h, w)
+    states, actions = env.observation_space.n, env.action_space.n
+    return np.zeros(states, actions)
+
