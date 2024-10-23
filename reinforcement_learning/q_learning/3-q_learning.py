@@ -3,7 +3,6 @@
 This is some documentation
 """
 import numpy as np
-import gymnasium as gym
 epsilon_greedy = __import__('2-epsilon_greedy').epsilon_greedy
 
 
@@ -13,28 +12,31 @@ def train(env, Q, episodes=5000, max_steps=100,
     """
     Training function
     """
-    env.reset()
-
-    actions = env.action_space.n
-    states = env.observation_space.n
     total_rewards = []
 
     for episode in range(episodes):
-        # Random state
-        state = np.random.randint(0, states)
+        state, _ = env.reset()
+        episode_reward = 0
 
-        action = epsilon_greedy(Q, state, epsilon)
+        for _ in range (max_steps):
+            action = epsilon_greedy(Q, state, epsilon)
 
-        next_state, reward = env.step(action)
+            # Take action and observe next state, reward, and done flag
+            next_state, reward, done, _= env.step(action)
 
-        reward = -1 if reward != 1 else 1
+            if done and reward == 0:
+                reward = -1
 
-        total_rewards.append[reward]
+            Q[state, action] += alpha * (reward + gamma * np.max(Q[next_state]) - Q[state, action])
 
-        Q[state, action] += alpha * (reward + gamma * np.max(Q[next_state]) - Q[state, action])
+            state = next_state
+            episode_reward += reward
 
-        state = next_state
+            if done:
+                break
 
-        epsilon -= epsilon_decay
+        total_rewards.append(episode_reward)
+
+        epsilon = max(min_epsilon, epsilon - epsilon_decay)
 
     return Q, total_rewards
