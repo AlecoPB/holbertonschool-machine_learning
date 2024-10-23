@@ -13,6 +13,8 @@ def train(env, Q, episodes=5000, max_steps=100,
     """
     Training function
     """
+    env.reset()
+
     actions = env.action_space.n
     states = env.observation_space.n
     total_rewards = []
