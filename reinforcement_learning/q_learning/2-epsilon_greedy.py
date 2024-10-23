@@ -10,7 +10,7 @@ def epsilon_greedy(Q, state, epsilon):
     Epsilon greedy implementation
     """
     # Random number to decide if explore or exploit
-    p = np.random.uniform
+    p = np.random.uniform(0, Q.shape[0])
 
     # Check if p is less than our epsilon hyperparamenter
     if p < epsilon:
