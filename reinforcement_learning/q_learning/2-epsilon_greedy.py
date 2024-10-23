@@ -14,8 +14,8 @@ def epsilon_greedy(Q, state, epsilon):
 
     # Check if p is less than our epsilon hyperparamenter
     if p < epsilon:
-        action = np.random.randint(0, Q.shape[1]) # Explore
+        action = np.random.randint(0, Q.shape[1])  # Explore
     else:
-        action = np.argmax(Q[state]) # Eploit
+        action = np.argmax(Q[state])  # Eploit
 
     return action
