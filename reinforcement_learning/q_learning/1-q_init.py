@@ -2,7 +2,6 @@
 """
 This is some documentation
 """
-import gymnasium as gym
 import numpy as np
 # load_frozen_lake =  '0-load_env'.load_frozen_lake
 
