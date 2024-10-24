@@ -18,19 +18,19 @@ def train(env, Q, episodes=5000, max_steps=100,
         state, _ = env.reset()
         episode_reward = 0
 
-        for _ in range (max_steps):
+        for _ in range(max_steps):
             action = epsilon_greedy(Q, state, epsilon)
 
             # Take action and observe new state and reward
-            # Update to unpack 5 values and combine terminated and truncated to done
-            next_state, reward, terminated, truncated, _ = env.step(action) 
-            done = terminated or truncated # done is True if either terminated or truncated is True
-
+            next_state, reward, terminated, truncated, _ = env.step(action)
+            done = terminated or truncated
 
             if done and reward == 0:
                 reward = -1
 
-            Q[state, action] += alpha * (reward + gamma * np.max(Q[next_state]) - Q[state, action])
+            Q[state, action] += alpha * (reward + gamma *
+                                         np.max(Q[next_state]) -
+                                         Q[state, action])
 
             state = next_state
             episode_reward += reward
