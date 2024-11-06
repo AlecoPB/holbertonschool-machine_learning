@@ -19,29 +19,21 @@ def monte_carlo(env, V, policy, episodes=5000, max_steps=100, alpha=0.1, gamma=0
         Updated value function V.
     """
 
-    for episode in range(episodes):
+    for _ in range(episodes):
         state = env.reset()
-        # Handle environments returning a tuple (state, info)
-        if isinstance(state, tuple):
-            state = state[0]
-
-        episode_data = []  # Store (state, reward) tuples
+        episode_data = []
 
         # Generate an episode
-        for t in range(max_steps):
+        for _ in range(max_steps):
             action = policy(state)  # Get action from policy
-            step_output = env.step(action)
-
-            # Unpack environment output to handle single or multiple returns
-            next_state = step_output[0]
-            reward = step_output[1]
-            done = step_output[2] if len(step_output) > 2 else False
+            next_state, reward, done, _, _ = env.step(action)
 
             episode_data.append((state, reward))  # Record (state, reward) pair
-            state = next_state  # Update state
 
             if done:
                 break  # End episode if 'done' signal is received
+
+            state = next_state  # Update state
 
         # Process the episode to calculate returns and update V
         G = 0  # Initialize return (G_t) as 0
