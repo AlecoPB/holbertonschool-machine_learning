@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
+"""
+This is some documentation
+"""
 import numpy as np
 
 
-def monte_carlo(env, V, policy, episodes=5000, max_steps=100, alpha=0.1, gamma=0.99):
+def monte_carlo(env, V, policy, episodes=5000,
+                max_steps=100, alpha=0.1, gamma=0.99):
     """
-    Monte Carlo policy evaluation to estimate the value function V under a given policy.
+    Monte Carlo policy evaluation to estimate the value
+    function V under a given policy.
 
     Parameters:
         env: Environment with `reset` and `step` methods.
@@ -26,8 +31,8 @@ def monte_carlo(env, V, policy, episodes=5000, max_steps=100, alpha=0.1, gamma=0
         # Generate an episode
         for t in range(max_steps):
             action = policy(state)  # Get action from policy
-            #Take action
-            next_state, reward, done, truncated, _= env.step(action)
+            # Take action
+            next_state, reward, done, truncated, _ = env.step(action)
 
             episode_data.append((state, reward))  # Record (state, reward) pair
             state = next_state  # Update state
