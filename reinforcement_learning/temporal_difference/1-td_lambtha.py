@@ -49,4 +49,4 @@ def td_lambtha(env, V, policy, lambtha, episodes=5000,
             if done:
                 break  # End episode if 'done' signal is received
 
-    return 
+    return V
