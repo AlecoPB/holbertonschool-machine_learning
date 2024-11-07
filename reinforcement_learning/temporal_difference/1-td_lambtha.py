@@ -25,7 +25,7 @@ def td_lambtha(env, V, policy, lambtha, episodes=5000,
     """
     
     for episode in range(episodes):
-        state = env.reset()
+        state = env.reset()[0]
 
         # Initialize eligibility to 0
         trace = np.zeros_like(V)
