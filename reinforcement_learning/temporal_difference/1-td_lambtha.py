@@ -23,7 +23,7 @@ def td_lambtha(env, V, policy, lambtha, episodes=5000,
     Returns:
     - V (numpy.ndarray): updated value estimate
     """
-    
+
     for episode in range(episodes):
         state = env.reset()[0]
 
@@ -39,7 +39,10 @@ def td_lambtha(env, V, policy, lambtha, episodes=5000,
 
             # Calculate TD error (delta)
             delta = reward + gamma * V[next_state] * (1 - int(done)) - V[state]
-            trace[state] += 1            
+            trace[state] += 1
+
+            # Update the value for all states
+            V += alpha * delta * trace
 
             # Update the estimates for all states 
             trace *= gamma * lambtha
