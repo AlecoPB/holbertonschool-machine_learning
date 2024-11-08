@@ -38,7 +38,7 @@ def td_lambtha(env, V, policy, lambtha, episodes=5000,
             next_state, reward, done, truncated, _ = env.step(action)
 
             # Calculate TD error (delta)
-            delta = reward + gamma * V[next_state] * (1 - int(done)) - V[state]
+            delta = reward + gamma * V[next_state] - V[state]
             trace[state] += 1
 
             # Update the value for all states
