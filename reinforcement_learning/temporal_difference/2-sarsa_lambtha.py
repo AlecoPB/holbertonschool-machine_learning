@@ -12,10 +12,13 @@ def epsilon_greedy(Q, state, epsilon):
     else:
         return np.argmax(Q[state])  # Greedy action
 
-def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100, alpha=0.1, gamma=0.99, epsilon=1, min_epsilon=0.1, epsilon_decay=0.05):
+
+def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100,
+                  alpha=0.1, gamma=0.99, epsilon=1, min_epsilon=0.1,
+                  epsilon_decay=0.05):
     """
     Perform SARSA(λ) algorithm with epsilon-greedy exploration.
-    
+
     Parameters:
     - env: environment instance
     - Q (numpy.ndarray): array of shape (s, a) with state-action values
@@ -27,11 +30,11 @@ def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100, alpha=0.1, gamm
     - epsilon (float): initial epsilon value for epsilon-greedy
     - min_epsilon (float): minimum epsilon value
     - epsilon_decay (float): rate of epsilon decay per episode
-    
+
     Returns:
     - Q (numpy.ndarray): updated Q table
     """
-    
+
     initial_epsilon = epsilon
 
     for episode in range(episodes):
