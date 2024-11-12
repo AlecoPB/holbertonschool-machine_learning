@@ -25,9 +25,10 @@ def policy(matrix, weight):
 
     # Apply softmax to each row to interpret
     # results as probabilities
-    exp_values = np.exp(policy_output - 
+    exp_values = np.exp(policy_output -
                         np.max(policy_output,
-                               axis=1, keepdims=True))  # For numerical stability
+                               axis=1,
+                               keepdims=True))
     policy_probabilities = exp_values / np.sum(exp_values,
                                                axis=1,
                                                keepdims=True)
