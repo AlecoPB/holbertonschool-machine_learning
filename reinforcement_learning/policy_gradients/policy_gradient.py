@@ -5,21 +5,22 @@ This is some documenation
 import numpy as np
 
 
-def compute_policy(state: np.ndarray, weight_matrix: np.ndarray) -> np.ndarray:
+def policy(matrix, weight):
     """
-    Compute a policy action based on a state and a weight matrix.
+    Compute a policy action based on a state matrix and a weight matrix.
     
     Parameters:
-    - state: np.ndarray, the input state vector.
-    - weight_matrix: np.ndarray, the matrix of weights to apply to the state.
+    - matrix: np.ndarray, the input matrix of state vectors (each row as a state).
+    - weight: np.ndarray, the matrix of weights to apply to each state vector.
     
     Returns:
-    - np.ndarray: the computed action or policy decision.
+    - np.ndarray: the computed actions or policy probabilities for each state.
     """
-    # Compute the policy by applying the weight matrix to the state
-    policy_output = np.dot(weight_matrix, state)
+    # Compute the dot product of each state in 'matrix' with 'weight'
+    policy_output = np.dot(matrix, weight)
     
-    # Apply a softmax function to make it a probabilistic policy (if applicable)
-    policy_probabilities = np.exp(policy_output) / np.sum(np.exp(policy_output))
+    # Apply softmax to each row to interpret results as probabilities
+    exp_values = np.exp(policy_output - np.max(policy_output, axis=1, keepdims=True))  # For numerical stability
+    policy_probabilities = exp_values / np.sum(exp_values, axis=1, keepdims=True)
     
     return policy_probabilities
