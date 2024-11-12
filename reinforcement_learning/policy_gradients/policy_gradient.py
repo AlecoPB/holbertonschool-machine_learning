@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
-
+"""
+This is some documenation
+"""
 import numpy as np
+
 
 def compute_policy(state: np.ndarray, weight_matrix: np.ndarray) -> np.ndarray:
     """
