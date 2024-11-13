@@ -26,6 +26,7 @@ def policy(matrix, weight):
 
     return policy_probabilities
 
+
 def policy_gradient(state, weight):
     """
     Compute the Monte-Carlo policy gradient based on a
