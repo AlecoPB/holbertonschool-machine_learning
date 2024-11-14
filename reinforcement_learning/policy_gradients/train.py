@@ -16,7 +16,7 @@ def train(env, nb_episodes, alpha=0.000045, gamma=0.98):
         gamma (float, optional): discount factor. Defaults to 0.98.
 
     Returns:
-        _type_: _description_
+        sum of all rewards during one episode loop
     """
     
-    return 0
+    return 0 
