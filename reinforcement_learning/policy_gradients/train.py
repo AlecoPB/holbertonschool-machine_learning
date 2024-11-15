@@ -27,7 +27,7 @@ def train(env, nb_episodes, alpha=0.000045, gamma=0.98):
     num_actions = env.action_space.n
 
     # Generate a random weight matrix
-    weight = np.random.randn(num_actions, state_size)
+    weight = np.random.randn(state_size, num_actions)
 
     for episode in range(nb_episodes):
         
