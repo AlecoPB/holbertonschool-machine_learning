@@ -3,7 +3,6 @@
 This is some documenation
 """
 import numpy as np
-import random
 policy_gradient = __import__('Policy_gradient').policy_gradient
 
 
@@ -19,7 +18,7 @@ def train(env, nb_episodes, alpha=0.000045, gamma=0.98):
     Returns:
         sum of all rewards during one episode loop
     """
-    scores, l_G = [], []
+    scores = []
     # Determine the max episode steps
     max_steps = env.spec.max_episode_steps
 
@@ -31,35 +30,42 @@ def train(env, nb_episodes, alpha=0.000045, gamma=0.98):
     weight = np.random.randn(num_actions, state_size)
 
     for episode in range(nb_episodes):
-        state = env.reset()[0]
-        rewards, states, gradients = [], [state], []
         
+        state = env.reset()[0]
+        rewards, rewards, gradients = [], [], []
+        ep_rewards = []
+
         # Initialize and reset G
         G = 0
 
-        for _ in range(max_steps):
+        done = False
+
+        while not done:
             # Decide action and gradient using policy_gradient
             action, gradient = policy_gradient(state, weight)
 
             # Take step and record state and rewards
             new_state, reward, done, truncated, _ = env.step(action)
-            states.append(new_state)
             rewards.append(reward)
+            ep_rewards.append(reward)
             gradients.append(gradient)
 
             # Update state
             state = new_state
 
         # Compute total reward for the episode
-        scores.append(sum(rewards))
+        scores.append(sum(ep_rewards))
+
+        # Print current episode and score
+        print(f'Episode: {episode + 1} Score: {sum(ep_rewards)}')        
 
         # Calculate Discounted Reward (G)
         for r in reversed(rewards):
             G = r + gamma * G
             # print(f'G is currently: {}', G)
-            l_G.insert(0, G)
+            gradients.insert(0, G)
 
-        for gradient, G in zip(gradients, l_G):
+        for gradient, G in zip(gradients, gradients):
             weight += alpha * gradient * G
 
     return scores
