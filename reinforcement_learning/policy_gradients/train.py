@@ -30,7 +30,7 @@ def train(env, nb_episodes, alpha=0.000045, gamma=0.98, show_result=False):
         state = env.reset()[0]
         gradients, rewards = [], []
 
-        # We set done to False so it won't break the loop instantly  
+        # We set done to False so it won't break the loop instantly
         done = False
 
         while not done:
