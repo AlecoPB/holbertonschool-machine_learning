@@ -35,7 +35,7 @@ def train(env, nb_episodes, alpha=0.000045, gamma=0.98, show_result=False):
 
         while not done:
             # Decide action and gradient using policy_gradient
-            action, grad = policy_gradient(state, weights)
+            action, gradient = policy_gradient(state, weights)
 
             # Take step and record state and rewards
             new_state, reward, done, truncated, _ = env.step(action)
