@@ -7,19 +7,16 @@ policy_gradient = __import__('policy_gradient').policy_gradient
 
 
 def train(env, nb_episodes, alpha=0.000045, gamma=0.98, show_result=False):
-    """
-    Train the policy using Monte-Carlo policy gradient.
+    """Full training
 
-    Parameters:
+    Args:
         env: initial environment
-        nb_episodes: number of episodes used for training
-        alpha: the learning rate
-        gamma: the discount factor
-        show_result (boolean): if True, renders the environment every 1000
-            episodes. Defaults to False.
+        nb_episodes (int): number of episodes used for training
+        alpha (float, optional): learning rate. Defaults to 0.000045.
+        gamma (float, optional): discount factor. Defaults to 0.98.
 
     Returns:
-        list: Score values (rewards obtained during each episode)
+        sum of all rewards during one episode loop
     """
     # Initialize weights
     weights = np.random.rand(
@@ -31,38 +28,33 @@ def train(env, nb_episodes, alpha=0.000045, gamma=0.98, show_result=False):
     for episode in range(nb_episodes):
         # Reset the environment and get initial state
         state = env.reset()[0]
-        episode_gradients = []
-        episode_rewards = []
+        gradients, rewards = [], []
+
+        # We set done to False so it won't break the loop instantly        
         done = False
 
-        if show_result and episode % 1000 == 0:
-            env.render()
-
         while not done:
-            # Get action and gradient based on current policy
+            # Decide action and gradient using policy_gradient
             action, grad = policy_gradient(state, weights)
 
-            # Take action
-            next_state, reward, terminated, truncated, _ = env.step(action)
+            # Take step and record state and rewards
+            new_state, reward, done, truncated, _ = env.step(action)
+            rewards.append(reward)
+            gradients.append(gradient)
 
-            # Append reward and gradient to the episode history
-            episode_rewards.append(reward)
-            episode_gradients.append(grad)
+            state = new_state
+            done = done or truncated
 
-            state = next_state
-            done = terminated or truncated
+        # Compute total reward for the episode
+        scores.append(sum(rewards))
 
-        # Store the score for the episode
-        score = sum(episode_rewards)
-        scores.append(score)
-
-        # Print progress for every episode
-        print(f"Episode: {episode} Score: {score}")
+        # Print current episode and score
+        print(f'Episode: {episode} Score: {sum(rewards)}')
 
         # Update weights using the gradients and cumulative discounted rewards
-        for i, gradient in enumerate(episode_gradients):
+        for i, gradient in enumerate(gradients):
             # Calculate cumulative discounted rewards
-            reward = sum([R * gamma ** R for R in episode_rewards[i:]])
+            reward = sum([R * gamma ** R for R in rewards[i:]])
 
             # Update the weights
             weights += alpha * gradient * reward
