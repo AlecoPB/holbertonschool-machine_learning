@@ -3,6 +3,7 @@
 Training loop for MC policy gradient
 """
 import numpy as np
+import gymnasium as gym
 policy_gradient = __import__('policy_gradient').policy_gradient
 
 
@@ -26,6 +27,12 @@ def train(env, nb_episodes, alpha=0.000045, gamma=0.98, show_result=False):
     scores = []
 
     for episode in range(nb_episodes):
+        # Display every 1000 episodes if show_result is true
+        if show_result and i % 1000 == 0:
+            env = gym.make('CartPole-v1', render_mode="human")
+        else:
+            env = gym.make('CartPole-v1', render_mode=None)
+
         # Reset the environment and get initial state
         state = env.reset()[0]
         gradients, rewards = [], []
