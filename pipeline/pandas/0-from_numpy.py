@@ -11,5 +11,5 @@ def from_numpy(array):
     Args:
         array (np.ndarray): to transform into a DF
     """
-    columns = [chr(i) for i in range(65, 91)]
+    columns = [chr(i) for i in range(65, 65+len(array))]
     return pd.DataFrame(array, columns=columns)
