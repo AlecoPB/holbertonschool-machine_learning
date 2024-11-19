@@ -5,7 +5,7 @@ Function to create a DataFrame from a file
 import pandas as pd
 
 
-def from_numpy(filename, delimiter):
+def from_file(filename, delimiter):
     """Creates a pd.DataFrame from a np.ndarray
 
     Args:
