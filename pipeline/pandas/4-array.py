@@ -8,7 +8,7 @@ def rename(df):
     """Modify DF
 
     Args:
-        df (pd.DataFrame): DF to import
+        df (pd.DataFrame): DF to use
     """
     return df[['High'.tail(10),
                'Close'.tail(10)]].to_numpy()
