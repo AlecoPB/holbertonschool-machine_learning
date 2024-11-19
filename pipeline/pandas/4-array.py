@@ -10,5 +10,4 @@ def array(df):
     Args:
         df (pd.DataFrame): DF to use
     """
-    return df[['High'.tail(10),
-               'Close'.tail(10)]].to_numpy()
+    return df[['High', 'Close']].tail(10).to_numpy()
