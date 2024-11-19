@@ -6,7 +6,7 @@ import pandas as pd
 
 
 def from_file(filename, delimiter):
-    """Creates a pd.DataFrame from a np.file
+    """Creates a pd.DataFrame from a file
 
     Args:
         filename (string): file to load from
