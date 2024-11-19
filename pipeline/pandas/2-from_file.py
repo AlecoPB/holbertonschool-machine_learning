@@ -6,10 +6,11 @@ import pandas as pd
 
 
 def from_file(filename, delimiter):
-    """Creates a pd.DataFrame from a np.ndarray
+    """Creates a pd.DataFrame from a np.file
 
     Args:
-        array (np.ndarray): to transform into a DF
+        filename (string): file to load from
+        delimiter : column separator
     """
-    
+
     return pd.DataFrame(pd.read_csv(filename, delimiter=delimiter))
