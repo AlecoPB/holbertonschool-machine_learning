@@ -2,7 +2,6 @@
 """
 Function to create a DataFrame from a np.array
 """
-import numpy as np
 import pandas as pd
 
 
