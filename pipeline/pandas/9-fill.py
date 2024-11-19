@@ -17,4 +17,7 @@ def fill(df):
         'Open']] = df[['High',
                        'Low',
                        'Open']].apply(lambda x: x.fillna(df['Close']))
+    df[['Volume_(BTC)',
+        'Volume_(Currency)']] = df[['Volume_(BTC)',
+                                    'Volume_(Currency)']].fillna(0)
     return df
