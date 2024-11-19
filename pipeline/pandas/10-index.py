@@ -2,7 +2,6 @@
 """
 Sets a column as the index
 """
-import pandas as pd
 
 
 def index(df):
@@ -11,5 +10,5 @@ def index(df):
     Args:
         df (DataFrame)
     """
-    df.reindex(index=df['Timestamp'])
+    df.index(index=df['Timestamp'])
     return df
