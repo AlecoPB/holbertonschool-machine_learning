@@ -13,6 +13,6 @@ def rename(df):
     """
     new_df = pd.DataFrame(df)
     new_df.rename(columns={'Timestamp': 'Datetime'}, inplace=True)
-    new_df['DateTime'] = pd.to_datetime(new_df['DateTime'], unit='s')
+    new_df['Datetime'] = pd.to_datetime(new_df['Datetime'], unit='s')
 
-    return new_df[['DateTime', 'Close']]
+    return new_df[['Datetime', 'Close']]
