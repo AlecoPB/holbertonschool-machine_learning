@@ -10,4 +10,4 @@ def slice(df):
     Args:
         df (DataFrame)
     """
-    return df[['High', 'Low', 'Close', 'Volume_BTC']][::60]
+    return df[['High', 'Low', 'Close', 'Volume_(BTC)']][::60]
