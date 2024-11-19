@@ -11,6 +11,10 @@ def fill(df):
         df (DataFrame)
     """
     df.drop('Weighted_Price', axis=1, inplace=True)
-    df['Close'].ffill()
-    df[['High', 'Low', 'Open']].fillna(df['Close'])
+    df['Close'] = df['Close'].ffill()
+    df[['High',
+        'Low',
+        'Open']] = df[['High',
+                       'Low',
+                       'Open']].apply(lambda x: x.fillna(df['Close']))
     return df
