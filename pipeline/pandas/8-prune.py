@@ -4,7 +4,7 @@ Removes NaN values
 """
 
 
-def high(df):
+def prune(df):
     """Removes NaN values
 
     Args:
