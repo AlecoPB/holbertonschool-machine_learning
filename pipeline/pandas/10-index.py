@@ -10,5 +10,5 @@ def index(df):
     Args:
         df (DataFrame)
     """
-    df.reindex(df['Timestamp'])
+    df.set_index('Timestamp', inplace=True)
     return df
