@@ -4,7 +4,7 @@ Modifies a DF obtained from a file
 """
 
 
-def rename(df):
+def array(df):
     """Modify DF
 
     Args:
