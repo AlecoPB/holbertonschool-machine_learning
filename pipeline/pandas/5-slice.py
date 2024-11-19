@@ -2,7 +2,6 @@
 """
 Modifies a DF obtained from a file
 """
-import pandas as pd
 
 
 def slice(df):
