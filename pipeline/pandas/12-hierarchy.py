@@ -5,9 +5,10 @@ Indexes and concatenates two DataFrames with specified conditions.
 import pandas as pd
 index = __import__('10-index').index
 
-def hierarchy(df1: pd.DataFrame, df2: pd.DataFrame) -> pd.DataFrame:
+def hierarchy(df1, df2):
     """
-    Processes two DataFrames by rearranging indexes, filtering, concatenating, and sorting.
+    Processes two DataFrames by rearranging indexes,
+    filtering, concatenating, and sorting.
 
     Args:
         df1 (pd.DataFrame): Coinbase DataFrame.
