@@ -31,4 +31,7 @@ def hierarchy(df1: pd.DataFrame, df2: pd.DataFrame) -> pd.DataFrame:
     # Ensure the resulting DataFrame is sorted by Timestamp
     df.sort_index(level='Timestamp', inplace=True)
 
+    # Reset MultiIndex to move 'Timestamp' to the left, leaving 'Source' as a column
+    df = df.reset_index(level='Source')
+
     return df
