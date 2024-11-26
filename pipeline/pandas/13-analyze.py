@@ -6,7 +6,8 @@ Indexes two DF's
 
 def analyze(df):
     """
-    Computes descriptive statistics for all columns except the Timestamp column.
+    Computes descriptive statistics for all columns
+    except the Timestamp column.
 
     Args:
         df (pd.DataFrame): Input DataFrame.
