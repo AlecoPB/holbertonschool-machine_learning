@@ -2,8 +2,6 @@
 """
 Indexes two DF's
 """
-import pandas as pd
-index = __import__('10-index').index
 
 
 def analyze(df):
