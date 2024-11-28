@@ -20,7 +20,8 @@ def sentientPlanets():
                                     + str(i))
 
         # Check if residents list is empty
-        hosts_life = current_planet.json().get('residents').is_empty()
+        population = current_planet.json().get('population')
+        hosts_life = population != '0' if population is not None else None 
 
         # Add to list if life is present
         present.append(current_planet.json().get('name') if hosts_life else None)
