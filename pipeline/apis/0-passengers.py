@@ -5,7 +5,7 @@ This is some documentation
 import requests
 
 
-def avaliableShips(passengerCount):
+def availableShips(passengerCount):
     """Return a list of ships that can carry enough passengers
 
     Args:
