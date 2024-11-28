@@ -28,8 +28,9 @@ def availableShips(passengerCount):
         # Convert passengers to int and compare to the minimum
         if c_passengers is not None:
             c_passengers = c_passengers.replace(",", "")
-            c_passengers = int(c_passengers) if c_passengers.isnumeric() else None
-            if c_passengers >= passengerCount:
-                ship_n.append(c_name)
+            if c_passengers.isnumeric():
+
+                if int(c_passengers) >= passengerCount:
+                    ship_n.append(c_name)
 
     return ship_n
