@@ -21,6 +21,7 @@ def sentientPlanets():
 
         # Check if residents list is empty
         population = current_planet.json().get('population')
+        hosts_life = False
         if population is not None:
             hosts_life = population != '0' 
 
