@@ -26,7 +26,8 @@ def availableShips(passengerCount):
         c_name = current_ship.json().get('name')
 
         # Convert passengers to int and compare to the minimum
-        c_passengers = int(c_passengers.replace(",", ""))
+        if c_passengers is not None:
+            c_passengers = int(c_passengers.replace(",", ""))
         if c_passengers >= passengerCount:
             ship_n.append(c_name)
 
