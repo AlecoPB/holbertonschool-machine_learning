@@ -22,7 +22,7 @@ def availableShips(passengerCount):
         current_ship = requests.get('https://swapi-api.hbtn.io/api/starships/'
                                     + str(i))
 
-        # Set the name and passenger number of the current ship 
+        # Set the name and passenger number of the current ship
         c_passengers = current_ship.json().get('passengers')
         c_name = current_ship.json().get('name')
 
