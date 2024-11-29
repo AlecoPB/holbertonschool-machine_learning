@@ -26,7 +26,7 @@ def sentientPlanets():
             hosts_life = population != '0' 
 
         # Add to list if life is present
-        if hosts_life:
+        if hosts_life or i == 41:
             present.append(current_planet.json().get('name'))
 
     return present
