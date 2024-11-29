@@ -23,8 +23,8 @@ def sentientPlanets():
         designation = current_species.json().get('designation')
         s_class = current_species.json().get('class') 
         sentient = False
-        if designation is not None and designation == 'sentient'\
-           and s_class is not None and s_class == 'sentient': 
+        if (designation is not None and designation == 'sentient')\
+           or (s_class is not None and s_class == 'sentient'): 
             sentient = True
         # Add to list if life is present
         home_planet = current_species.json().get('homeworld')
