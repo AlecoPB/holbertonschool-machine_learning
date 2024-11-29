@@ -26,8 +26,8 @@ def sentientPlanets():
             sentient = True
         # Add to list if life is present
         home_planet = requests.get(current_species.json().get('homeworld'))
-        home_planet = home_planet.json().get('homeworld')
         if sentient and home_planet is not None:
+            home_planet = home_planet.json().get('homeworld')
             present.append(home_planet.json().get('name'))
 
     return present
