@@ -47,15 +47,12 @@ class AtariProcessor(Processor):
 
 class CompatibilityWrapper(gym.Wrapper):
     """
-    Compatibility wrapper for gym env to ensure
-    compatibility with older versions of gym
+    Ensure compatibility
     """
 
     def step(self, action):
         """
         Take a step in the env using the given action
-
-        :param action: action to be taken in env
 
         :return: tuple containing
             - observation: obs from env after action taken
@@ -78,7 +75,7 @@ class CompatibilityWrapper(gym.Wrapper):
         :return:
             observation: initial obs of the env
         """
-        observation, info = self.env.reset(**kwargs)
+        observation, _= self.env.reset(**kwargs)
 
         return observation
 
