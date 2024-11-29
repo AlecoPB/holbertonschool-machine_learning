@@ -17,11 +17,11 @@ def sentientPlanets():
     for i in range(70):
         # Get current species
         current_species = requests.get('https://swapi-api.hbtn.io/api/species/'
-                                    + str(i))
+                                       + str(i))
 
         # Check if residents list is empty
         designation = current_species.json().get('designation')
-        s_class = current_species.json().get('classification') 
+        s_class = current_species.json().get('classification')
 
         sentient = (designation is not None and designation == 'sentient')\
             or (s_class is not None and s_class == 'sentient')
