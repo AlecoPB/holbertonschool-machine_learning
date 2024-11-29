@@ -15,18 +15,17 @@ def sentientPlanets():
     present = []
 
     for i in range(70):
-        # Get current planet
-        current_planet = requests.get('https://swapi-api.hbtn.io/api/planets/'
+        # Get current species
+        current_species = requests.get('https://swapi-api.hbtn.io/api/species/'
                                     + str(i))
 
         # Check if residents list is empty
-        population = current_planet.json().get('population')
-        hosts_life = False
-        if population is not None:
-            hosts_life = population != '0' 
-
+        designation = current_species.json().get('designation')
+        sentient = False
+        if designation is not None and designation == 'sentient': 
+            sentient = True
         # Add to list if life is present
-        if hosts_life or i == 41:
-            present.append(current_planet.json().get('name'))
+        if sentient:
+            present.append(current_species.json().get('name'))
 
     return present
