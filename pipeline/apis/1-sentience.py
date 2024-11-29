@@ -22,14 +22,14 @@ def sentientPlanets():
         # Check if residents list is empty
         designation = current_species.json().get('designation')
         s_class = current_species.json().get('class') 
-        sentient = (designation is not None and designation == 'sentient') or (s_class is not None and s_class == 'sentient')
-        # if (designation is not None and designation == 'sentient')\
-        #     or (s_class is not None and s_class == 'sentient'): 
-        #     sentient = True
+        sentient = (designation is not None and designation == 'sentient')\
+            or (s_class is not None and s_class == 'sentient')
+
         # Add to list if life is present
-        home_planet = current_species.json().get('homeworld')
-        if sentient and home_planet is not None:
-            home_planet = requests.get(home_planet).json().get('name')
-            present.append(home_planet)
+        if sentient:
+            home_planet = current_species.json().get('homeworld')
+            if home_planet is not None:
+                c_home_planet = requests.get(home_planet).json().get('name')
+                present.append(c_home_planet)
 
     return present
