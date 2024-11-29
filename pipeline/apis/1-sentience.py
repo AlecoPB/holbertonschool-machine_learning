@@ -26,6 +26,6 @@ def sentientPlanets():
             sentient = True
         # Add to list if life is present
         if sentient:
-            present.append(current_species.json().get('name'))
+            present.append(current_species.json().get('homeworld'))
 
     return present
