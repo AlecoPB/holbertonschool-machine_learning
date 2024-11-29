@@ -68,12 +68,7 @@ class CompatibilityWrapper(gym.Wrapper):
 
     def reset(self, **kwargs):
         """
-        Reset env and return the initial obs
-
-        :param kwargs: additional args
-
-        :return:
-            observation: initial obs of the env
+        Reset environment
         """
         observation, _= self.env.reset(**kwargs)
 
