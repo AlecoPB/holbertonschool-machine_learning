@@ -5,6 +5,7 @@ This is some documentation
 import requests
 from collections import Counter
 
+
 def get_launches_per_rocket():
     """
     Write a script that displays the number of launces
@@ -34,6 +35,7 @@ def get_launches_per_rocket():
     # Print results
     for rocket_name, count in results:
         print(f"{rocket_name}: {count}")
+
 
 if __name__ == "__main__":
     get_launches_per_rocket()
