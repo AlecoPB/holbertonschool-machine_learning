@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
+"""
+This is some documentation
+"""
 import requests
 from collections import Counter
 
 def get_launches_per_rocket():
+    """
+    Write a script that displays the number of launces
+    """
     launches_url = "https://api.spacexdata.com/v4/launches"
     rockets_url = "https://api.spacexdata.com/v4/rockets"
 
