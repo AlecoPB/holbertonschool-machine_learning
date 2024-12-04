@@ -1,44 +1,44 @@
-
 #!/usr/bin/env python3
 """
-APIs project
-By Ced
+This is some documentation
 """
 import sys
-import time
 import requests
+from datetime import datetime
 
 
-def user_location(argument):
+def get_user_location(api_url):
+    """Shows location of a user
+
+    Args:
+        api_url (string): url of user
     """
-    This is a function that takes in a string argument
-    and returns the location of the user
-    no main.py is this exercice
-    """
-    # print(f"Voici l'argument passé : {argument}")
-    r = requests.get(argument)
-    # print(f"Voici le code de retour : {r.status_code}")
+    # Make a GET request to the GitHub API
+    response = requests.get(api_url)
 
-    # if error 403
-    if r.status_code == 403:
-        X = r.headers.get("X-RateLimit-Reset")
-        wait = int(X) - int(time.time())
-        wait_minute = wait // 60
-        print(f"Reset in {wait_minute} min")
+    # If user isn't found
+    if response.status_code == 404:
+        print("Not found")
 
-    # if error 404, wrong url
-    elif r.status_code == 404:
-        print(f"Not found")
+    elif response.status_code == 403:
+        # Handle rate limit exceeded
+        reset_time = response.headers.get("X-RateLimit-Reset")
+        if reset_time:
+            reset_time = int(reset_time)
+            reset_in_minutes = (datetime.fromtimestamp(reset_time)
+                                - datetime.now()).total_seconds() / 60
+            print(f"Reset in {int(reset_in_minutes)} min")
+        else:
+            print("Reset time unavailable")
 
-    elif r.status_code == 200:
+    elif response.status_code == 200:
         loc = r.json().get("location")
         print(loc)
 
-
 if __name__ == "__main__":
-
+    # Ensure the script receives the correct number of arguments
     if len(sys.argv) != 2:
-        print("Erreur : Un unique argument est requis.")
-
+        print("Usage: ./2-user_location.py <GitHub API URL>")
     else:
-        user_location(sys.argv[1])  # Le premier argument est `sys.argv[1]`
+        api_url = sys.argv[1]
+        get_user_location(api_url)
