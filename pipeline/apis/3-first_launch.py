@@ -15,7 +15,7 @@ def fetch_first_launch():
     launches = response.json()
 
     # Sort launches by date
-    launches.sort(key=lambda launch: launch.get("date_local", float("inf")))
+    launches.sort(key=lambda launch: launch.get("date_local"))
 
     # Take only the oldest one (the first)
     first_launch = launches[0]
