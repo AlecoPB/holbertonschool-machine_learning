@@ -35,6 +35,7 @@ def get_user_location(api_url):
         loc = response.json().get("location")
         print(loc)
 
+
 if __name__ == "__main__":
     # Ensure the script receives the correct number of arguments
     if len(sys.argv) != 2:
