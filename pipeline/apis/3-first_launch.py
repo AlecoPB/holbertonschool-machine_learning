@@ -23,12 +23,12 @@ def fetch_first_launch():
     launchpad_id = first_launch['launchpad']
 
     # Fetch rocket and launchpad details
-    rocket_response = requests.get\
-        (f"https://api.spacexdata.com/v4/rockets/{rocket_id}")
+    rocket_response =\
+        requests.get(f"https://api.spacexdata.com/v4/rockets/{rocket_id}")
     rocket_name = rocket_response.json()['name']
 
-    pad_response = requests.get\
-        (f"https://api.spacexdata.com/v4/launchpads/{launchpad_id}")
+    pad_response =\
+        requests.get(f"https://api.spacexdata.com/v4/launchpads/{launchpad_id}")
     launchpad_details = pad_response.json()
 
     # Format and print the result
