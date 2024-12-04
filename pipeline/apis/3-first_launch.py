@@ -18,7 +18,7 @@ def fetch_first_launch():
     launches.sort(key=lambda launch: launch.get("date_unix", float("inf")))
 
     # Take only the oldest one (the first)
-    first_launch = launches[0]
+    first_launch = launches[len(launches)-1]
 
     # Extract launch details
     name = first_launch['name']
