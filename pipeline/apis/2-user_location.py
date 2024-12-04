@@ -1,44 +1,44 @@
+
 #!/usr/bin/env python3
 """
-This is some documentation
+APIs project
+By Ced
 """
 import sys
+import time
 import requests
-from datetime import datetime
 
 
-def get_user_location(api_url):
-    """Shows location of a user
-
-    Args:
-        api_url (string): url of user
+def user_location(argument):
     """
-    # Make a GET request to the GitHub API
-    response = requests.get(api_url)
+    This is a function that takes in a string argument
+    and returns the location of the user
+    no main.py is this exercice
+    """
+    # print(f"Voici l'argument passé : {argument}")
+    r = requests.get(argument)
+    # print(f"Voici le code de retour : {r.status_code}")
 
-    # If user isn't found
-    if response.status_code == 404:
-        print("Not found")
+    # if error 403
+    if r.status_code == 403:
+        X = r.headers.get("X-RateLimit-Reset")
+        wait = int(X) - int(time.time())
+        wait_minute = wait // 60
+        print(f"Reset in {wait_minute} min")
 
-    elif response.status_code == 403:
-        # Handle rate limit exceeded
-        reset_time = response.headers.get("X-RateLimit-Reset")
-        if reset_time:
-            reset_time = int(reset_time)
-            reset_in_minutes = (datetime.fromtimestamp(reset_time)
-                                - datetime.now()).total_seconds() / 60
-            print(f"Reset in {int(reset_in_minutes)} min")
-        else:
-            print("Reset time unavailable")
+    # if error 404, wrong url
+    elif r.status_code == 404:
+        print(f"Not found")
 
-    elif response.status_code == 200:
+    elif r.status_code == 200:
         loc = r.json().get("location")
         print(loc)
 
+
 if __name__ == "__main__":
-    # Ensure the script receives the correct number of arguments
+
     if len(sys.argv) != 2:
-        print("Usage: ./2-user_location.py <GitHub API URL>")
+        print("Erreur : Un unique argument est requis.")
+
     else:
-        api_url = sys.argv[1]
-        get_user_location(api_url)
+        user_location(sys.argv[1])  # Le premier argument est `sys.argv[1]`
