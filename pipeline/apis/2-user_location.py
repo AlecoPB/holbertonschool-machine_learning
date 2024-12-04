@@ -32,7 +32,7 @@ def get_user_location(api_url):
             print("Reset time unavailable")
 
     elif response.status_code == 200:
-        loc = r.json().get("location")
+        loc = response.json().get("location")
         print(loc)
 
 if __name__ == "__main__":
