@@ -10,7 +10,7 @@ def fetch_first_launch():
     Display the first launch
     """
     # Fetch all launches
-    response = requests.get("https://api.spacexdata.com/v4/launches")
+    response = requests.get("https://api.spacexdata.com/v4/launches/upcoming")
 
     launches = response.json()
 
@@ -36,6 +36,7 @@ def fetch_first_launch():
     # Print the formatted information
     print(f"{name} ({date_local}) {rocket_name} - {launchpad_name}"
           f" ({launchpad_locality})")
+
 
 if __name__ == "__main__":
     fetch_first_launch()
