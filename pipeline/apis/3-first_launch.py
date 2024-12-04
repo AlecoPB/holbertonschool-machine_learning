@@ -1,43 +1,39 @@
 #!/usr/bin/env python3
 """
-APIs project
-By Ced
+This is some documentation
 """
 import requests
 
 
-def main():
+def fetch_first_launch():
     """
-    main function
+    Display the first launch
     """
-    r = requests.get('https://api.spacexdata.com/v5/launches/')
-    launches = r.json()
-    for i in range(len(launches)):
+    # Fetch all launches
+    response = requests.get("https://api.spacexdata.com/v4/launches")
 
-        if launches[i].get('name') == "Galaxy 33 (15R) & 34 (12R)":
-            launch_name = launches[i].get('name')
-            date = launches[i].get('date_local')
+    launches = response.json()
 
-            rocket_id = launches[i].get('rocket')
-            launcher_id = launches[i].get('launchpad')
+    first_launch = min(launches, key=lambda x: x['date_unix'])
 
-    r2 = requests.get('https://api.spacexdata.com/v4/rockets/')
-    rockets = r2.json()
-    for i in range(len(rockets)):
-        if rockets[i].get('id') == rocket_id:
-            rocket_name = rockets[i].get('name')
+    # Extract launch details
+    name = first_launch['name']
+    date_local = first_launch['date_local']
+    rocket_id = first_launch['rocket']
+    launchpad_id = first_launch['launchpad']
 
-    r3 = requests.get('https://api.spacexdata.com/v4/launchpads/')
-    launchpads = r3.json()
-    for i in range(len(launchpads)):
-        if launchpads[i].get('id') == launcher_id:
-            launchpad_name = launchpads[i].get('name')
-            launchpad_loc = launchpads[i].get('locality')
+    # Fetch rocket and launchpad details
+    rocket_response = requests.get(f"https://api.spacexdata.com/v4/rockets/{rocket_id}")
+    rocket_name = rocket_response.json().get("name")
 
-    print(f"{launch_name} ({date}) {rocket_name} "
-          f"- {launchpad_name} ({launchpad_loc})")
+    pad_response = requests.get(f"https://api.spacexdata.com/v4/launchpads/{launchpad_id}")
+    launchpad_details = pad_response.json()
+
+    # Format and print the result
+    launchpad_name = launchpad_details.get("name")
+    launchpad_locality = launchpad_details.get("locality")
+    print(f"{name} ({date_local}) {rocket_name} - {launchpad_name} ({launchpad_locality})")
 
 
 if __name__ == "__main__":
-
-    main()
+    fetch_first_launch()
