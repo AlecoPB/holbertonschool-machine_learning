@@ -22,11 +22,10 @@ def fetch_first_launch():
     first_launch = launches[0]
 
     # Extract launch details
-    name = first_launch.get("name")
-    date_unix = first_launch.get("date_unix")
-    date = datetime.fromtimestamp(date_unix).strftime("%Y-%m-%d %H:%M:%S") if date_unix else "Unknown"
-    rocket_id = first_launch.get("rocket")
-    launchpad_id = first_launch.get("launchpad")
+    name = first_launch['name']
+    date_local = first_launch['date_local']
+    rocket_id = first_launch['rocket']
+    launchpad_id = first_launch['launchpad']
 
     # Fetch rocket and launchpad details
     response = requests.get(f"https://api.spacexdata.com/v4/rockets/{rocket_id}")
@@ -38,7 +37,7 @@ def fetch_first_launch():
     # Format and print the result
     launchpad_name = launchpad_details.get("name")
     launchpad_locality = launchpad_details.get("locality")
-    print(f"{name} ({date}) {rocket_name} - {launchpad_name} ({launchpad_locality})")
+    print(f"{name} ({date_local}) {rocket_name} - {launchpad_name} ({launchpad_locality})")
 
 
 def fetch_rocket_name(rocket_id):
