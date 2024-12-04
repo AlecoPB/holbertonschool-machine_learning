@@ -8,6 +8,11 @@ from datetime import datetime
 
 
 def get_user_location(api_url):
+    """Shows location of a user
+
+    Args:
+        api_url (string): url of user
+    """
     try:
         # Make a GET request to the GitHub API
         response = requests.get(api_url)
