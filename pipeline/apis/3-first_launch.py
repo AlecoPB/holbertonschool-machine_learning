@@ -45,6 +45,9 @@ def fetch_first_launch():
 
 
 def fetch_rocket_name(rocket_id):
+    """
+    Fetch the name of the rocket
+    """
     if not rocket_id:
         return "Unknown"
     try:
@@ -56,6 +59,9 @@ def fetch_rocket_name(rocket_id):
         return "Unknown"
 
 def fetch_launchpad_details(launchpad_id):
+    """
+    Fetch the launchpad details (duh)
+    """
     if not launchpad_id:
         return {"name": "Unknown", "locality": "Unknown"}
     try:
