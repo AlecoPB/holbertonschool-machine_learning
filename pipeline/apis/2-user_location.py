@@ -17,16 +17,10 @@ def get_user_location(api_url):
         # Make a GET request to the GitHub API
         response = requests.get(api_url)
 
-        if response.status_code == 200:
-            user_data = response.json()
-            # Check if the location field exists
-            location = user_data.get("location")
-            if location:
-                print(location)
-            else:
-                print("Location not specified")
-        elif response.status_code == 404:
+        # If user isn't found
+        if response.status_code == 404:
             print("Not found")
+
         elif response.status_code == 403:
             # Handle rate limit exceeded
             reset_time = response.headers.get("X-RateLimit-Reset")
@@ -37,6 +31,18 @@ def get_user_location(api_url):
                 print(f"Reset in {int(reset_in_minutes)} min")
             else:
                 print("Reset time unavailable")
+
+        elif response.status_code == 200:
+            user_data = response.json()
+            # Check if the location field exists
+            location = user_data.get("location")
+
+            if location:
+                print(location)
+            else:
+                print("Location not found")
+
+
         else:
             print(f"Unexpected status code: {response.status_code}")
     except requests.RequestException as e:
