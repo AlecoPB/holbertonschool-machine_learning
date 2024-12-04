@@ -32,8 +32,10 @@ def fetch_first_launch():
     # Format and print the result
     launchpad_name = launchpad_details['name']
     launchpad_locality = launchpad_details['locality']
-    print(f"{name} ({date_local}) {rocket_name} - {launchpad_name} ({launchpad_locality})")
 
+    # Print the formatted information
+    print(f"{name} ({date_local}) {rocket_name} - {launchpad_name}"
+          f" ({launchpad_locality})")
 
 if __name__ == "__main__":
     fetch_first_launch()
