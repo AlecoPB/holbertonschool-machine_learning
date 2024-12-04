@@ -13,40 +13,27 @@ def get_user_location(api_url):
     Args:
         api_url (string): url of user
     """
-    try:
-        # Make a GET request to the GitHub API
-        response = requests.get(api_url)
+    # Make a GET request to the GitHub API
+    response = requests.get(api_url)
 
-        # If user isn't found
-        if response.status_code == 404:
-            print("Not found")
+    # If user isn't found
+    if response.status_code == 404:
+        print("Not found")
 
-        elif response.status_code == 403:
-            # Handle rate limit exceeded
-            reset_time = response.headers.get("X-RateLimit-Reset")
-            if reset_time:
-                reset_time = int(reset_time)
-                reset_in_minutes = (datetime.fromtimestamp(reset_time)
-                                    - datetime.now()).total_seconds() / 60
-                print(f"Reset in {int(reset_in_minutes)} min")
-            else:
-                print("Reset time unavailable")
-
-        elif response.status_code == 200:
-            user_data = response.json()
-            # Check if the location field exists
-            location = user_data.get("location")
-
-            if location:
-                print(location)
-            else:
-                print("Location not found")
-
-
+    elif response.status_code == 403:
+        # Handle rate limit exceeded
+        reset_time = response.headers.get("X-RateLimit-Reset")
+        if reset_time:
+            reset_time = int(reset_time)
+            reset_in_minutes = (datetime.fromtimestamp(reset_time)
+                                - datetime.now()).total_seconds() / 60
+            print(f"Reset in {int(reset_in_minutes)} min")
         else:
-            print(f"Unexpected status code: {response.status_code}")
-    except requests.RequestException as e:
-        print(f"Request failed: {e}")
+            print("Reset time unavailable")
+
+    elif response.status_code == 200:
+        loc = r.json().get("location")
+        print(loc)
 
 if __name__ == "__main__":
     # Ensure the script receives the correct number of arguments
