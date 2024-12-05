@@ -1,4 +1,4 @@
 -- select scores over 10
-SELECT score
+SELECT *
 FROM second_table
 WHERE score >= 10;
