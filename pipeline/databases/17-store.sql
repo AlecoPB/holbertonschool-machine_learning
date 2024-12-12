@@ -1,6 +1,6 @@
 -- trigger that decreases the quantity items after order
 
-CREATE TRIGGER decrease_quantity_after_order
+CREATE TRIGGER decrease_item_quantity
 AFTER INSERT ON orders
 FOR EACH ROW
     UPDATE items
