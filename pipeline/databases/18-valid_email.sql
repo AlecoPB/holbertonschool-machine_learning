@@ -1,6 +1,6 @@
 -- trigger that resets the attribute valid_email
 
-DELIMITTER //
+DELIMITER //
 
 CREATE TRIGGER reset_valid_email_on_change
 BEFORE UPDATE ON users
@@ -11,4 +11,4 @@ BEGIN
     END IF;
 END //
 
-DELIMITTER;
+DELIMITER;
