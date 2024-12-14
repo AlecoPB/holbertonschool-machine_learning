@@ -21,8 +21,11 @@ def log_stats(logs_collection):
         print(f"\tmethod {method}: {count}")
 
     # Logs with method=GET and path=/status
-    get_status_logs = logs_collection.count_documents({"method": "GET", "path": "/status"})
-    print(f"{get_status_logs} status check logs")
+    get_status_count = logs_collection.count_documents({"method": "GET", "path": "/status"})
+    print(f"{get_status_count} status check logs")
 
 if __name__ == "__main__":
-    log_stats()
+    client = MongoClient('mongodb://127.0.0.1:27017')
+    logs_collection = client.logs.nginx
+    log_stats(logs_collection)
+ 
