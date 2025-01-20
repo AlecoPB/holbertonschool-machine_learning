@@ -30,12 +30,10 @@ class Node:
         """
         if self.is_leaf:
             return self.depth
-        else:
-            left_depth = self.left_child.max_depth_below()\
-                         if self.left_child else self.depth
-            right_depth = self.right_child.max_depth_below()\
-                if self.right_child else self.depth
-            return max(left_depth, right_depth)
+
+        return max(self.left_child.max_depth_below(),
+                   self.right_child.max_depth_below())
+
 
     def count_nodes_below(self, only_leaves=False):
         """
@@ -108,6 +106,9 @@ class Leaf(Node):
         Count nodes for leaves
         """
         return 1
+
+    def __str__(self):
+        return (f"-> leaf [value={self.value}]")
 
 
 class Decision_Tree():
