@@ -7,7 +7,7 @@ import tensorflow.compat.v1 as tf
 
 def evaluate(X, Y, save_path):
     """evaluate
-    
+
     X: data to evaluate
     Y: one_hot labels for X
     save_path: location of the model
