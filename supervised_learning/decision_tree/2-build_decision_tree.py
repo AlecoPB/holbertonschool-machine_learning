@@ -34,7 +34,6 @@ class Node:
         return max(self.left_child.max_depth_below(),
                    self.right_child.max_depth_below())
 
-
     def count_nodes_below(self, only_leaves=False):
         """
         We're counting the nodes present
@@ -48,7 +47,6 @@ class Node:
             return self.left_child.count_nodes_below(only_leaves=only_leaves)\
                 + self.right_child.count_nodes_below(only_leaves=only_leaves)\
                 + (not only_leaves)
-
 
     def __str__(self):
         """
