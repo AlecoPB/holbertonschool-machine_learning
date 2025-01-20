@@ -40,12 +40,14 @@ class Node:
         We're counting the nodes present
         We have the option to just count the leaves
         """
-        ToN = 0 if only_leaves else 1
-        if self.left_child:
-            ToN += self.left_child.count_nodes_below(only_leaves)
-        if self.right_child:
-            ToN += self.right_child.count_nodes_below(only_leaves)
-        return ToN
+        if only_leaves and self.is_leaf:
+            return 1
+
+        if not self.is_leaf:
+            # NOTE Counting the current node only if only_leaves == False
+            return self.left_child.count_nodes_below(only_leaves=only_leaves)\
+                + self.right_child.count_nodes_below(only_leaves=only_leaves)\
+                + (not only_leaves)
 
 
     def __str__(self):
@@ -80,8 +82,7 @@ class Node:
         new_text = "    +--" + lines[0] + "\n"
         for x in lines[1:]:
             new_text += ("       " + x) + "\n"
-        # NOTE Had to strip the extra newline after right node
-        # There may be better alternatives
+
         return (new_text.rstrip())
 
 
