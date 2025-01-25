@@ -262,24 +262,25 @@ class Decision_Tree():
         self.predict = lambda A: np.array([self.root.pred(x) for x in A])
 
     def fit(self, explanatory, target, verbose=0):
-        if self.split_criterion == "random": 
-                self.split_criterion = self.random_split_criterion
-        else: 
-                self.split_criterion = self.Gini_split_criterion
+        if self.split_criterion == "random":
+            self.split_criterion = self.random_split_criterion
+        else:
+            self.split_criterion = self.Gini_split_criterion
         self.explanatory = explanatory
-        self.target      = target
-        self.root.sub_population = np.ones_like(self.target,dtype='bool')
+        self.target = target
+        self.root.sub_population = np.ones_like(self.target, dtype='bool')
 
         self.fit_node(self.root)
 
         self.update_predict()
 
-        if verbose==1:
+        if verbose == 1:
             print(f"""  Training finished.
     - Depth                     : { self.depth()}
     - Number of nodes           : { self.count_nodes()}
     - Number of leaves          : { self.count_nodes(only_leaves=True)}
-    - Accuracy on training data : { self.accuracy(self.explanatory,self.target)}""")
+    - Accuracy on training data : { self.accuracy(self.explanatory,
+    self.target)}""")
 
     def np_extrema(self, arr):
         """
@@ -303,8 +304,9 @@ class Decision_Tree():
 
     def fit_node(self, node):
         """
-        Fit a single node of the decision tree. Split the population of the node
-        into left and right subpopulations based on the splitting criterion.
+        Fit a single node of the decision tree.
+        Split the population of the node into left
+        and right subpopulations based on the splitting criterion.
         """
         # Determine the feature and threshold for splitting
         node.feature, node.threshold = self.split_criterion(node)
@@ -318,7 +320,9 @@ class Decision_Tree():
 
         # Function to check if a node is a leaf
         def is_leaf(population, depth):
-            return (depth == self.max_depth - 1) or (np.sum(population) <= self.min_pop) or (np.unique(self.target[population]).size == 1)
+            return ((depth == self.max_depth - 1) or
+                    (np.sum(population) <= self.min_pop) or
+                    (np.unique(self.target[population]).size == 1))
 
         # Process left child
         if is_leaf(left_population, node.depth):
@@ -337,7 +341,8 @@ class Decision_Tree():
     def get_leaf_child(self, node, sub_population):
         """
         Create and return a leaf node.
-        The value of the leaf is the most represented class in the sub_population.
+        The value of the leaf is the most represented
+        class in the sub_population.
         """
         # Determine the most represented class in the sub_population
         value = np.argmax(np.bincount(self.target[sub_population]))
