@@ -142,7 +142,7 @@ class Node:
         self.indicator = lambda x: np.logical_and(is_large_enough(x),
                                                   is_small_enough(x))
 
-    def pred(self,x):
+    def pred(self, x):
         """
         Predicts a label
         """
@@ -252,7 +252,7 @@ class Decision_Tree():
 
     def update_predict(self):
         """
-        Computes the prediction function 
+        Computes the prediction function
         """
         self.update_bounds()
         leaves = self.get_leaves()
