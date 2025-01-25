@@ -33,7 +33,7 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
         A_prev = cache[f"A{l - 1}"]
 
         # L2 regularization term
-        l2_reg = (lambtha / m) * weights[f"W{i}"]
+        l2_reg = (lambtha / m) * weights[f"W{l}"]
 
         # Gradient of loss with respect to weights and biases
         dW = (1 / m) * np.matmul(dZ, A_prev.T) + l2_reg
