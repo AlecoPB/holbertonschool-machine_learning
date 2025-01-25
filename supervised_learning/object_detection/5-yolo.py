@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-This is some documentation
+YOLO Object Detection Module
 """
 import os
 from glob import iglob
@@ -26,27 +26,13 @@ class Yolo:
             anchors (numpy.ndarray): Anchor box dimensions.
         """
         self.model = K.models.load_model(model_path)
-        self.class_names = self._load_classes(classes_path)
+        with open(classes_path, 'r') as file:
+            self.class_names = [line.strip() for line in file]
         self.class_t = class_t
         self.nms_t = nms_t
         self.anchors = anchors
 
-    @staticmethod
-    def _load_classes(path):
-        """
-        Reads class names from a file.
-
-        Args:
-            path (str): File path to class names.
-
-        Returns:
-            list: List of class names.
-        """
-        with open(path, 'r') as file:
-            return [line.strip() for line in file if line.strip()]
-
-    @staticmethod
-    def sigmoid(x):
+    def sigmoid(self, x):
         """
         Applies the sigmoid function.
 
@@ -64,77 +50,75 @@ class Yolo:
 
         Args:
             outputs (list): List of model output arrays.
-            image_size (tuple): Original image size (height, width).
+            image_size (numpy.ndarray): Original image size [image_height, image_width].
 
         Returns:
             tuple: Processed boxes, confidences, and class probabilities.
         """
         image_height, image_width = image_size
-        boxes, confidences, class_probs = [], [], []
+        boxes, box_confidences, box_class_probs = [], [], []
 
         for i, output in enumerate(outputs):
             grid_height, grid_width = output.shape[:2]
 
-            # Extract box parameters
-            t_x, t_y, t_w, t_h = output[..., 0], output[..., 1], output[..., 2], output[..., 3]
+            t_x = output[..., 0]
+            t_y = output[..., 1]
+            t_w = output[..., 2]
+            t_h = output[..., 3]
 
-            # Generate grid cell coordinates
             c_x, c_y = np.meshgrid(np.arange(grid_width), np.arange(grid_height))
-            c_x, c_y = c_x[..., np.newaxis], c_y[..., np.newaxis]
+            c_x = c_x[..., np.newaxis]
+            c_y = c_y[..., np.newaxis]
 
-            # Decode box coordinates
             bx = (self.sigmoid(t_x) + c_x) / grid_width
             by = (self.sigmoid(t_y) + c_y) / grid_height
             bw = (np.exp(t_w) * self.anchors[i, :, 0]) / self.model.input.shape[1]
             bh = (np.exp(t_h) * self.anchors[i, :, 1]) / self.model.input.shape[2]
 
-            # Convert to image scale
             x1 = (bx - bw / 2) * image_width
             y1 = (by - bh / 2) * image_height
             x2 = (bx + bw / 2) * image_width
             y2 = (by + bh / 2) * image_height
 
             boxes.append(np.stack([x1, y1, x2, y2], axis=-1))
-            confidences.append(self.sigmoid(output[..., 4:5]))
-            class_probs.append(self.sigmoid(output[..., 5:]))
+            box_confidences.append(self.sigmoid(output[..., 4:5]))
+            box_class_probs.append(self.sigmoid(output[..., 5:]))
 
-        return boxes, confidences, class_probs
+        return boxes, box_confidences, box_class_probs
 
-    def filter_boxes(self, boxes, confidences, class_probs):
+    def filter_boxes(self, boxes, box_confidences, box_class_probs):
         """
         Filters boxes based on confidence and class thresholds.
 
         Args:
             boxes (list): List of bounding boxes.
-            confidences (list): List of box confidences.
-            class_probs (list): List of class probabilities.
+            box_confidences (list): List of box confidences.
+            box_class_probs (list): List of class probabilities.
 
         Returns:
             tuple: Filtered boxes, class IDs, and scores.
         """
         filtered_boxes, box_classes, box_scores = [], [], []
 
-        for box, confidence, class_prob in zip(boxes, confidences, class_probs):
-            scores = confidence * class_prob
-            class_ids = np.argmax(scores, axis=-1)
-            max_scores = np.max(scores, axis=-1)
+        for box, box_confidence, box_class_prob in zip(boxes, box_confidences, box_class_probs):
+            box_score = box_confidence * box_class_prob
+            box_class = np.argmax(box_score, axis=-1)
+            box_score = np.max(box_score, axis=-1)
 
-            mask = max_scores >= self.class_t
-
+            mask = box_score >= self.class_t
             filtered_boxes.append(box[mask])
-            box_classes.append(class_ids[mask])
-            box_scores.append(max_scores[mask])
+            box_classes.append(box_class[mask])
+            box_scores.append(box_score[mask])
 
-        return (
-            np.concatenate(filtered_boxes, axis=0),
-            np.concatenate(box_classes, axis=0),
-            np.concatenate(box_scores, axis=0),
-        )
+        filtered_boxes = np.concatenate(filtered_boxes, axis=0)
+        box_classes = np.concatenate(box_classes, axis=0)
+        box_scores = np.concatenate(box_scores, axis=0)
 
-    @staticmethod
-    def iou(box1, boxes):
+        return filtered_boxes, box_classes, box_scores
+
+    def iou(self, box1, boxes):
         """
-        Computes IoU between a box and multiple boxes.
+        Calculates the Intersection Over Union (IoU) between a box and an array of boxes.
 
         Args:
             box1 (numpy.ndarray): Single bounding box.
@@ -147,7 +131,7 @@ class Yolo:
         box1_area = (x2 - x1) * (y2 - y1)
 
         x1s, y1s, x2s, y2s = boxes[:, 0], boxes[:, 1], boxes[:, 2], boxes[:, 3]
-        box_areas = (x2s - x1s) * (y2s - y1s)
+        boxes_area = (x2s - x1s) * (y2s - y1s)
 
         inter_x1 = np.maximum(x1, x1s)
         inter_y1 = np.maximum(y1, y1s)
@@ -155,53 +139,50 @@ class Yolo:
         inter_y2 = np.minimum(y2, y2s)
 
         inter_area = np.maximum(inter_x2 - inter_x1, 0) * np.maximum(inter_y2 - inter_y1, 0)
-        union_area = box1_area + box_areas - inter_area
+        union_area = box1_area + boxes_area - inter_area
 
         return inter_area / union_area
 
-    def non_max_suppression(self, boxes, classes, scores):
+    def non_max_suppression(self, filtered_boxes, box_classes, box_scores):
         """
         Applies Non-Max Suppression (NMS).
 
         Args:
-            boxes (numpy.ndarray): Bounding boxes.
-            classes (numpy.ndarray): Class IDs for each box.
-            scores (numpy.ndarray): Confidence scores for each box.
+            filtered_boxes (numpy.ndarray): Bounding boxes.
+            box_classes (numpy.ndarray): Class IDs for each box.
+            box_scores (numpy.ndarray): Confidence scores for each box.
 
         Returns:
             tuple: Filtered boxes, class IDs, and scores.
         """
-        unique_classes = np.unique(classes)
-        final_boxes, final_classes, final_scores = [], [], []
+        unique_classes = np.unique(box_classes)
+        box_predictions, predicted_box_classes, predicted_box_scores = [], [], []
 
         for cls in unique_classes:
-            cls_mask = classes == cls
-            cls_boxes = boxes[cls_mask]
-            cls_scores = scores[cls_mask]
+            cls_mask = box_classes == cls
+            cls_boxes = filtered_boxes[cls_mask]
+            cls_scores = box_scores[cls_mask]
 
             sorted_indices = np.argsort(-cls_scores)
             cls_boxes = cls_boxes[sorted_indices]
             cls_scores = cls_scores[sorted_indices]
 
             while len(cls_boxes) > 0:
-                box = cls_boxes[0]
-                score = cls_scores[0]
-
-                final_boxes.append(box)
-                final_classes.append(cls)
-                final_scores.append(score)
+                box_predictions.append(cls_boxes[0])
+                predicted_box_classes.append(cls)
+                predicted_box_scores.append(cls_scores[0])
 
                 if len(cls_boxes) == 1:
                     break
 
-                ious = self.iou(box, cls_boxes[1:])
+                ious = self.iou(cls_boxes[0], cls_boxes[1:])
                 cls_boxes = cls_boxes[1:][ious < self.nms_t]
                 cls_scores = cls_scores[1:][ious < self.nms_t]
 
         return (
-            np.array(final_boxes),
-            np.array(final_classes),
-            np.array(final_scores),
+            np.array(box_predictions),
+            np.array(predicted_box_classes),
+            np.array(predicted_box_scores),
         )
 
     @staticmethod
