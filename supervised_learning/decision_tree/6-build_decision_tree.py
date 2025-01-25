@@ -142,6 +142,15 @@ class Node:
         self.indicator = lambda x: np.logical_and(is_large_enough(x),
                                                   is_small_enough(x))
 
+    def pred(self,x) :
+        """
+        Predicts a label
+        """
+        if x[self.feature]>self.threshold :
+            return self.left_child.pred(x)
+        else :
+            return self.right_child.pred(x)
+
 
 class Leaf(Node):
     """
@@ -179,6 +188,12 @@ class Leaf(Node):
         Passes
         """
         pass
+
+    def pred(self,x) :
+        """
+        Returns self
+        """
+        return self.value
 
 
 class Decision_Tree():
@@ -228,6 +243,12 @@ class Decision_Tree():
         Updates bounds
         """
         self.root.update_bounds_below()
+
+    def pred(self,x) :
+        """
+        Starts prediction from root
+        """
+        return self.root.pred(x)
 
     def update_predict(self):
         """
