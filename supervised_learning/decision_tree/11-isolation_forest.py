@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
+
 """
-This is some documentation
+This is the 11-isolation_forest module.
 """
+
 import numpy as np
 Isolation_Random_Tree = __import__('10-isolation_tree').Isolation_Random_Tree
 
 
-class Isolation_Forest:
+class Isolation_Random_Forest():
     """
-    Implementation of the Isolation Forest for detecting outliers.
+    Random forest class, using Isolation Trees.
     """
-    def __init__(self, n_trees=100, max_depth=10, seed=0):
+    def __init__(self, n_trees=100, max_depth=10, min_pop=1, seed=0):
         self.numpy_predicts = []
         self.target = None
         self.numpy_preds = None
@@ -20,18 +22,23 @@ class Isolation_Forest:
 
     def predict(self, explanatory):
         """
-        Average prediciton for each tree
+        Returns an array of the average prediction for each tree in
+        numpy_preds, based on the given explanatory variables.
         """
         predictions = np.array([f(explanatory) for f in self.numpy_preds])
         return predictions.mean(axis=0)
 
     def fit(self, explanatory, n_trees=100, verbose=0):
         """
-        Train the Isolation Forest on the dataset by creating multiple
-        Isolation Random Trees.
+        Fit the Isolation Forest model to the given explanatory variables.
 
         Args:
-            explanatory (np.ndarray): The dataset to train the forest on.
+            explanatory (numpy.ndarray): The explanatory variables.
+            n_trees (int): The number of trees in the forest (default=100).
+            verbose (int): Verbosity mode. 0 = silent, 1 = verbose (default=0).
+
+        Returns:
+            None
         """
         self.explanatory = explanatory
         self.numpy_preds = []
@@ -54,17 +61,12 @@ class Isolation_Forest:
 
     def suspects(self, explanatory, n_suspects):
         """
-        Identify the top n_suspects likely to be outliers based on
-        minimum average depths.
-
-        Args:
-            explanatory (np.ndarray): The dataset to evaluate.
-            n_suspects (int): Number of top suspects to return.
-
-        Returns:
-            np.ndarray: Indices of the n_suspects most likely to be outliers.
+        Returns the n_suspects rows in explanatory that have the
+        smallest mean depth.
         """
         depths = self.predict(explanatory)
+        # NOTE Getting indices that would sort the depths array in asc. order
+        # (sorted based on their predicted depth)
         sorted_indices = np.argsort(depths)
 
         # Using these indices to get the corresponding suspect rows in
