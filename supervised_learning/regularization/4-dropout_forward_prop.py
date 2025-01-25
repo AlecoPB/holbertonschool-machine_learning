@@ -11,13 +11,16 @@ def dropout_forward_prop(X, weights, L, keep_prob):
 
     Parameters:
     X (numpy.ndarray): Input data for the network with shape (nx, m),
-    where nx is the number of input features and m is the number of data points.
-    weights (dict): A dictionary containing the weights and biases of the neural network.
+    where nx is the number of input features and m is the number of
+    data points.
+    weights (dict): A dictionary containing the weights and biases
+    of the neural network.
     L (int): The total number of layers in the network.
     keep_prob (float): The probability that a neuron will be retained.
 
     Returns:
-    dict: A dictionary containing the outputs of each layer and the dropout masks used.
+    dict: A dictionary containing the outputs of each layer and the
+    dropout masks used.
     """
     # Initialize the cache with the input for the first layer
     cache = {'A0': X}
