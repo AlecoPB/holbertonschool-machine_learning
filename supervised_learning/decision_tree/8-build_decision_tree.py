@@ -370,3 +370,69 @@ class Decision_Tree():
         """
         predictions = self.predict(test_explanatory)
         return np.sum(np.equal(predictions, test_target)) / test_target.size
+
+    def possible_thresholds(self, node, feature):
+        """
+        Compute the possible thresholds for splitting the population of a node
+        along a given feature. The thresholds are the midpoints between unique
+        feature values within the sub_population.
+        """
+        values = np.unique(self.explanatory[node.sub_population, feature])
+        return (values[1:] + values[:-1]) / 2
+
+    def Gini_split_criterion_one_feature(self, node, feature):
+        """
+        Compute the Gini impurity and corresponding threshold for a single feature
+        that minimizes the average Gini impurity of the child nodes.
+        """
+        sub_population = node.sub_population
+        classes = np.unique(self.target[sub_population])  # Unique class labels
+        thresholds = self.possible_thresholds(node, feature)
+
+        # Get the feature values for the sub_population
+        feature_values = self.explanatory[sub_population, feature]
+        n = sub_population.shape[0]  # Number of individuals
+
+        # Create an array of shape (n, t, c) for Left_F
+        Left_F = np.array([
+            (feature_values[:, None] > thresholds)[:, :, None] &
+            (self.target[sub_population][:, None] == cls)
+            for cls in classes
+        ])  # Shape: (c, n, t)
+        Left_F = np.transpose(Left_F, (1, 2, 0))  # Shape: (n, t, c)
+
+        # Calculate Gini impurities for the left child
+        left_counts = np.sum(Left_F, axis=0)  # Shape: (t, c)
+        left_totals = np.sum(left_counts, axis=1)  # Shape: (t,)
+        left_probs = left_counts / left_totals[:, None]
+        left_gini = 1 - np.sum(left_probs**2, axis=1)  # Shape: (t,)
+
+        # Calculate Gini impurities for the right child
+        right_counts = np.sum(~Left_F, axis=0)  # Shape: (t, c)
+        right_totals = np.sum(right_counts, axis=1)  # Shape: (t,)
+        right_probs = right_counts / right_totals[:, None]
+        right_gini = 1 - np.sum(right_probs**2, axis=1)  # Shape: (t,)
+
+        # Compute weighted Gini average for all thresholds
+        weights_left = left_totals / n
+        weights_right = right_totals / n
+        gini_avg = weights_left * left_gini + weights_right * right_gini  # Shape: (t,)
+
+        # Find the threshold that minimizes the Gini average
+        min_idx = np.argmin(gini_avg)
+        return thresholds[min_idx], gini_avg[min_idx]
+
+    def Gini_split_criterion(self, node):
+        """
+        Compute the best splitting feature and threshold for a given node
+        based on the Gini impurity.
+        """
+        # Compute Gini impurities for all features
+        X = np.array([
+            self.Gini_split_criterion_one_feature(node, feature)
+            for feature in range(self.explanatory.shape[1])
+        ])  # Shape: (n_features, 2)
+
+        # Find the feature with the minimum Gini average
+        best_feature_idx = np.argmin(X[:, 1])
+        return best_feature_idx, X[best_feature_idx, 0]
