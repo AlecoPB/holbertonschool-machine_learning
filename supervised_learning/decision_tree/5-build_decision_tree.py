@@ -139,7 +139,8 @@ class Node:
                            threshold in self.upper.items()], axis=0)
 
         # The indicator is True for individuals who satisfy both conditions
-        self.indicator = lambda x: np.logical_and(is_large_enough(x), is_small_enough(x))
+        self.indicator = lambda x: np.logical_and(is_large_enough(x),
+                                                  is_small_enough(x))
 
 
 class Leaf(Node):
