@@ -6,7 +6,8 @@ This is some documentation
 
 class Poisson:
     """Class that represents a Poisson distribution."""
-
+    e = 2.7182818285
+    
     def __init__(self, data=None, lambtha=1.):
         """Initialize a Poisson distribution instance.
 
