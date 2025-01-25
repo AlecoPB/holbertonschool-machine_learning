@@ -25,7 +25,8 @@ class Poisson:
 
         Args:
             data (list, optional): Data used to estimate the distribution.
-            lambtha (float): Expected number of occurrences in a given time frame.
+            lambtha (float): Expected number of occurrences in a given time
+            frame.
 
         Raises:
             TypeError: If data is not a list.
