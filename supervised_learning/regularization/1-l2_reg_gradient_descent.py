@@ -17,25 +17,25 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
     lambtha (float): The L2 regularization parameter.
     L (int): The number of layers of the network.
     """
-    m = Y.shape[1]
-    dZ = cache[f"A{L}"] - Y
+    m = Y.shape[1]  # Number of data points
+    dZ = cache[f"A{L}"] - Y  # Compute the difference for the output layer
 
-    # In reverse layer order :
+    # Iterate through layers in reverse order:
     for i in range(L, 0, -1):
-        # Previous layer activation output
+        # Get the activation output from the previous layer
         prev_A = cache[f"A{i - 1}"]
 
-        # L2 regularization term
+        # Calculate the L2 regularization term for the current layer's weights
         l2_reg = (lambtha / m) * weights[f"W{i}"]
 
-        # Gradient of loss with respect to weights and biases
-        dW = (1 / m) * np.matmul(dZ, prev_A.T) + l2_reg
+        # Compute the gradients for weights and biases
+        dW = (1 / m) * np.dot(dZ, prev_A.T) + l2_reg
         db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
 
         if i > 1:
-            # Gradient of the activation function (tanh)
-            dZ = np.matmul(weights[f"W{i}"].T, dZ) * (1 - np.square(prev_A))
+            # Calculate the gradient of the activation function (tanh)
+            dZ = np.dot(weights[f"W{i}"].T, dZ) * (1 - np.square(prev_A))
 
-        # Updating weights and biases
+        # Update the weights and biases in place
         weights[f"W{i}"] -= alpha * dW
         weights[f"b{i}"] -= alpha * db
