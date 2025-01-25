@@ -18,31 +18,24 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
     L (int): The number of layers of the network.
     """
     m = Y.shape[1]
-    A = cache[f"A{L}"]
+    dZ = cache[f"A{L}"] - Y
 
-    # Calculate the gradient for the output layer (softmax)
-    dZ = A - Y
-
-    # Update weights and biases for the last layer
-    weights['W' + str(L)] -= alpha * (np.dot(dZ, cache['A' + str(L - 1)].T)
-                                      / m + (lambtha / m) * weights['W' + str(L)])
-    weights['b' + str(L)] -= alpha * np.sum(dZ, axis=1, keepdims=True) / m
-
-    # Backpropagation for the hidden layers
-    for l in range(L, 0, -1):
-        A_prev = cache[f"A{l - 1}"]
+    # In reverse layer order :
+    for i in range(L, 0, -1):
+        # Previous layer activation output
+        prev_A = cache[f"A{i - 1}"]
 
         # L2 regularization term
-        l2_reg = (lambtha / m) * weights[f"W{l}"]
+        l2_reg = (lambtha / m) * weights[f"W{i}"]
 
         # Gradient of loss with respect to weights and biases
-        dW = (1 / m) * np.matmul(dZ, A_prev.T) + l2_reg
+        dW = (1 / m) * np.matmul(dZ, prev_A.T) + l2_reg
         db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
 
-        if l > 1:
+        if i > 1:
             # Gradient of the activation function (tanh)
-            dZ = np.matmul(weights[f"W{l}"].T, dZ) * (1 - np.square(A_prev))
+            dZ = np.matmul(weights[f"W{i}"].T, dZ) * (1 - np.square(prev_A))
 
         # Updating weights and biases
-        weights[f"W{l}"] -= alpha * dW
-        weights[f"b{l}"] -= alpha * db
+        weights[f"W{i}"] -= alpha * dW
+        weights[f"b{i}"] -= alpha * db
