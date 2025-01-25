@@ -1,15 +1,26 @@
 #!/usr/bin/env python3
-from tensorflow.keras.models import load_model
-import tensorflow.keras.backend as K
+import tensorflow as tf
 
-# Load the model
-model = load_model('model_reg.h5')
+def l2_reg_cost(cost, model):
+    """
+    Calculates the total cost of a neural network with L2 regularization.
 
-# Assume `cost` is the unregularized cost (cross-entropy loss) calculated elsewhere
-cost = K.variable(0.5)  # Example tensor value for base cost
+    Parameters:
+    cost (tensor): A tensor containing the cost of the network without L2 regularization.
+    model (tf.keras.Model): A Keras model with layers that include L2 regularization.
 
-# Calculate the total cost with L2 regularization
-total_cost = l2_reg_cost(cost, model)
+    Returns:
+    tensor: A tensor containing the total cost including L2 regularization.
+    """
+    # Initialize the regularization cost
+    reg_cost = 0
 
-# Evaluate the result (e.g., during training)
-print("Total Cost with L2 Regularization:", K.eval(total_cost))
+    # Iterate over the layers of the model
+    for layer in model.layers:
+        if hasattr(layer, 'kernel_regularizer') and layer.kernel_regularizer is not None:
+            # Add the regularization contribution of the layer
+            reg_cost += tf.reduce_sum(layer.kernel_regularizer(layer.kernel))
+
+    # Total cost = base cost + regularization cost
+    total_cost = cost + reg_cost
+    return total_cost
