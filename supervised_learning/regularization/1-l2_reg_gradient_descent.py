@@ -17,7 +17,7 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
     lambtha (float): The L2 regularization parameter.
     L (int): The number of layers of the network.
     """
-    m = Y.shape[1]  # Number of data points
+    m = Y.shape[1]
     A = cache['A' + str(L)]
 
     # Calculate the gradient for the output layer (softmax)
@@ -29,7 +29,7 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
     weights['b' + str(L)] -= alpha * np.sum(dZ, axis=1, keepdims=True) / m
 
     # Backpropagation for the hidden layers
-    for l in range(L - 1, 0, -1):
+    for l in range(L, 0, -1):
         A_prev = cache['A' + str(l - 1)] if l > 1 else cache['A0']
         W = weights['W' + str(l + 1)]
         dA = np.dot(W.T, dZ)
