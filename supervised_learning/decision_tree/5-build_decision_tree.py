@@ -115,25 +115,28 @@ class Node:
 
     def update_indicator(self):
         """
-        Compute the indicator function from the Node.lower and Node.upper dictionaries
-        and store it in the Node.indicator attribute.
+        Compute the indicator function from the Node.lower
+        and Node.upper dictionaries and store it in the
+        Node.indicator attribute.
         """
 
         def is_large_enough(x):
             """
-            Returns a 1D numpy array of size n_individuals, where the i-th element is True
-            if the i-th individual's features are >= the corresponding lower bounds.
+            Returns a 1D numpy array of size n_individuals,
+            where the i-th element is True if the i-th individual's
+            features are >= the corresponding lower bounds.
             """
-            # Check if each feature in x is >= the lower bound for all keys in self.lower
-            return np.all([x[:, feature] >= threshold for feature, threshold in self.lower.items()], axis=0)
+            return np.all([x[:, feature] >= threshold for feature,
+                           threshold in self.lower.items()], axis=0)
 
         def is_small_enough(x):
             """
-            Returns a 1D numpy array of size n_individuals, where the i-th element is True
-            if the i-th individual's features are <= the corresponding upper bounds.
+            Returns a 1D numpy array of size n_individuals,
+            where the i-th element is True if the i-th individual's
+            features are <= the corresponding upper bounds.
             """
-            # Check if each feature in x is <= the upper bound for all keys in self.upper
-            return np.all([x[:, feature] <= threshold for feature, threshold in self.upper.items()], axis=0)
+            return np.all([x[:, feature] <= threshold for feature,
+                           threshold in self.upper.items()], axis=0)
 
         # The indicator is True for individuals who satisfy both conditions
         self.indicator = lambda x: np.logical_and(is_large_enough(x), is_small_enough(x))
