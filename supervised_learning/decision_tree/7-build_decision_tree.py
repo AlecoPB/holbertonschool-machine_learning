@@ -306,34 +306,29 @@ class Decision_Tree():
         Fit a single node of the decision tree. Split the population of the node
         into left and right subpopulations based on the splitting criterion.
         """
-        # Determine the best splitting feature and threshold for the node
+        # Determine the feature and threshold for splitting
         node.feature, node.threshold = self.split_criterion(node)
 
-        # Split the population into left and right based on the threshold
-        left_population = node.sub_population[node.sub_population[:, node.feature] > node.threshold]
-        right_population = node.sub_population[node.sub_population[:, node.feature] <= node.threshold]
+        # Create a boolean mask for the maximum criterion
+        max_criterion = self.explanatory[:, node.feature] > node.threshold
 
-        # Check if the left child is a leaf
-        is_left_leaf = (
-            left_population.shape[0] < self.min_pop or
-            node.depth + 1 >= self.max_depth or
-            np.all(left_population[:, -1] == left_population[0, -1])
-        )
+        # Identify populations for left and right nodes
+        left_population = node.sub_population & max_criterion
+        right_population = node.sub_population & ~max_criterion
 
-        if is_left_leaf:
+        # Function to check if a node is a leaf
+        def is_leaf(population, depth):
+            return (depth == self.max_depth - 1) or (np.sum(population) <= self.min_pop) or (np.unique(self.target[population]).size == 1)
+
+        # Process left child
+        if is_leaf(left_population, node.depth):
             node.left_child = self.get_leaf_child(node, left_population)
         else:
             node.left_child = self.get_node_child(node, left_population)
             self.fit_node(node.left_child)
 
-        # Check if the right child is a leaf
-        is_right_leaf = (
-            right_population.shape[0] < self.min_pop or
-            node.depth + 1 >= self.max_depth or
-            np.all(right_population[:, -1] == right_population[0, -1])
-        )
-
-        if is_right_leaf:
+        # Process right child
+        if is_leaf(right_population, node.depth):
             node.right_child = self.get_leaf_child(node, right_population)
         else:
             node.right_child = self.get_node_child(node, right_population)
