@@ -1,8 +1,15 @@
+#!/usr/bin/env python3
+"""
+This is some documentation
+"""
 import numpy as np
 from scipy.stats import mode
 Decision_Tree = __import__('8-build_decision_tree').Decision_Tree
 
 class Random_Forest():
+    """
+    Class that defines a builds a random forest
+    """
     def __init__(self, n_trees=100, max_depth=10, min_pop=1, seed=0):
         self.numpy_predicts = []  # List of individual tree prediction functions
         self.target = None  # Training target
