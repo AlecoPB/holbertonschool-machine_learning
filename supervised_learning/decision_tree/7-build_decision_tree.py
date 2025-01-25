@@ -340,13 +340,11 @@ class Decision_Tree():
         The value of the leaf is the most represented class in the sub_population.
         """
         # Determine the most represented class in the sub_population
-        unique_classes, counts = np.unique(sub_population[:, -1], return_counts=True)
-        value = unique_classes[np.argmax(counts)]  # Class with the highest count
-
-        # Create and return the leaf node
+        value = np.argmax(np.bincount(self.target[sub_population]))
         leaf_child = Leaf(value)
         leaf_child.depth = node.depth + 1
-        leaf_child.sub_population = sub_population
+        # NOTE this should be leaf_child.subpopulation_leaf
+        leaf_child.subpopulation = sub_population
         return leaf_child
 
     def get_node_child(self, node, sub_population):
