@@ -6,7 +6,7 @@ import numpy as np
 Isolation_Random_Tree = __import__('10-isolation_tree').Isolation_Random_Tree
 
 
-class Isolation_Forest:
+class Isolation_Random_Forest:
     """
     Implementation of the Isolation Forest for detecting outliers.
     """
