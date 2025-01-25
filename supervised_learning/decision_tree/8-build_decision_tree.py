@@ -416,11 +416,14 @@ class Decision_Tree():
         gini_left = 1 - np.sum(np.square
                                (np.sum(left_class_mask,
                                        axis=0)), axis=0) / (np.sum(filter_left,
-                                                                   axis=0) * div)
+                                                                   axis=0)
+                                                            * div)
         gini_right = 1 - np.sum(np.square
                                 (np.sum(right_class_mask,
-                                        axis=0)), axis=0) / (np.sum(filter_right,
-                                                                    axis=0) * div)
+                                        axis=0)), axis=0) / (np.sum
+                                                             (filter_right,
+                                                                    axis=0)
+                                                             * div)
 
         # Compute total Gini impurity
         gini_sum = gini_left + gini_right
