@@ -2,6 +2,7 @@
 """
 This is some documentation
 """
+import math
 
 
 class Poisson:
