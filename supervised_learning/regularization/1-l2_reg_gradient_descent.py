@@ -18,7 +18,7 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
     L (int): The number of layers of the network.
     """
     m = Y.shape[1]
-    A = cache['A' + str(L)]
+    A = cache[f"A{L}"]
 
     # Calculate the gradient for the output layer (softmax)
     dZ = A - Y
