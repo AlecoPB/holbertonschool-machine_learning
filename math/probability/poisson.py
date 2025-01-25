@@ -2,7 +2,6 @@
 """
 This is some documentation
 """
-import math
 
 
 class Poisson:
@@ -13,8 +12,7 @@ class Poisson:
 
         Args:
             data (list, optional): Data used to estimate the distribution.
-            lambtha (float): Expected number of occurrences in a given
-            time frame.
+            lambtha (float): Expected number of occurrences in a given time frame.
 
         Raises:
             TypeError: If data is not a list.
@@ -44,4 +42,17 @@ class Poisson:
         k = int(k)  # Convert k to an integer if not already
         if k < 0:
             return 0
-        return (math.exp(-self.lambtha) * (self.lambtha ** k)) / math.factorial(k)
+
+        # Calculate e^(-lambtha) manually
+        e_neg_lambtha = 1
+        term = 1
+        for i in range(1, 101):  # Approximation with 100 terms of the series
+            term *= -self.lambtha / i
+            e_neg_lambtha += term
+
+        # Calculate factorial manually
+        factorial_k = 1
+        for i in range(1, k + 1):
+            factorial_k *= i
+
+        return (e_neg_lambtha * (self.lambtha ** k)) / factorial_k
