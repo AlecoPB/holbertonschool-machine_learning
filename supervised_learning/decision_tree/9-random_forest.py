@@ -13,7 +13,7 @@ class Random_Forest():
     """
     def __init__(self, n_trees=100, max_depth=10,
                  min_pop=1, seed=0):
-        self.numpy_predicts = []  # List of individual tree prediction functions
+        self.numpy_predicts = []
         self.target = None  # Training target
         self.numpy_preds = None  # Placeholder for predictions
         self.n_trees = n_trees  # Number of trees in the forest
@@ -27,7 +27,7 @@ class Random_Forest():
         by taking the mode of the predictions from all trees.
         """
         # Collect predictions from all trees
-        predictions = np.array([tree(explanatory) for 
+        predictions = np.array([tree(explanatory) for
                                 tree in self.numpy_preds])
 
         # Calculate the mode (most frequent prediction) along the tree axis
