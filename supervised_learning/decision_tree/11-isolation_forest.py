@@ -5,25 +5,27 @@ This is some documentation
 import numpy as np
 Isolation_Random_Tree = __import__('10-isolation_tree').Isolation_Random_Tree
 
+
 class Isolation_Forest:
     """
     Implementation of the Isolation Forest for detecting outliers.
     """
     def __init__(self, n_trees=100, max_depth=10, seed=0):
-        """
-        Initialize the Isolation Forest.
-
-        Args:
-            n_trees (int): Number of trees in the forest.
-            max_depth (int): Maximum depth of each tree.
-            seed (int): Random seed for reproducibility.
-        """
+        self.numpy_predicts = []
+        self.target = None
+        self.numpy_preds = None
         self.n_trees = n_trees
         self.max_depth = max_depth
         self.seed = seed
-        self.trees = []
 
-    def fit(self, explanatory):
+    def predict(self, explanatory):
+        """
+        Average prediciton for each tree
+        """
+        predictions = np.array([f(explanatory) for f in self.numpy_preds])
+        return predictions.mean(axis=0)
+
+    def fit(self, explanatory, n_trees=100, verbose=0):
         """
         Train the Isolation Forest on the dataset by creating multiple
         Isolation Random Trees.
@@ -32,32 +34,23 @@ class Isolation_Forest:
             explanatory (np.ndarray): The dataset to train the forest on.
         """
         self.explanatory = explanatory
-        self.trees = []
-
-        for i in range(self.n_trees):
-            tree = Isolation_Random_Tree(
-                max_depth=self.max_depth,
-                seed=self.seed + i
-            )
-            tree.fit(explanatory)
-            self.trees.append(tree)
-
-    def average_depths(self, explanatory):
-        """
-        Compute the average depths of individuals in the forest.
-
-        Args:
-            explanatory (np.ndarray): The dataset to compute depths for.
-
-        Returns:
-            np.ndarray: An array of average depths for each individual.
-        """
-        depths = np.zeros((len(self.trees), explanatory.shape[0]))
-
-        for i, tree in enumerate(self.trees):
-            depths[i] = tree.predict(explanatory)
-
-        return np.mean(depths, axis=0)
+        self.numpy_preds = []
+        depths = []
+        nodes = []
+        leaves = []
+        for i in range(n_trees):
+            T = Isolation_Random_Tree(
+                max_depth=self.max_depth, seed=self.seed+i)
+            T.fit(explanatory)
+            self.numpy_preds.append(T.predict)
+            depths.append(T.depth())
+            nodes.append(T.count_nodes())
+            leaves.append(T.count_nodes(only_leaves=True))
+        if verbose == 1:
+            print(f"""  Training finished.
+    - Mean depth                     : { np.array(depths).mean()      }
+    - Mean number of nodes           : { np.array(nodes).mean()       }
+    - Mean number of leaves          : { np.array(leaves).mean()      }""")
 
     def suspects(self, explanatory, n_suspects):
         """
@@ -71,11 +64,10 @@ class Isolation_Forest:
         Returns:
             np.ndarray: Indices of the n_suspects most likely to be outliers.
         """
-        # Compute average depths
-        avg_depths = self.average_depths(explanatory)
+        depths = self.predict(explanatory)
+        sorted_indices = np.argsort(depths)
 
-        # Sort individuals by increasing average depth (outliers have low depth)
-        sorted_indices = np.argsort(avg_depths)
-
-        # Return the top n_suspects indices
-        return sorted_indices[:n_suspects]
+        # Using these indices to get the corresponding suspect rows in
+        # explanatory (the dataset) and their depths (the predictions)
+        return explanatory[sorted_indices[:n_suspects]], \
+            depths[sorted_indices[:n_suspects]]
