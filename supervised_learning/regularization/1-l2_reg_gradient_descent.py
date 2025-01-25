@@ -30,7 +30,7 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
 
     # Backpropagation for the hidden layers
     for l in range(L, 0, -1):
-        A_prev = cache['A' + str(l - 1)] if l > 1 else cache['A0']
+        A_prev = cache[f"A{l - 1}"]
         W = weights['W' + str(l + 1)]
         dA = np.dot(W.T, dZ)
 
