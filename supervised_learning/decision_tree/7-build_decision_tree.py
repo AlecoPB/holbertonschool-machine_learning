@@ -261,21 +261,21 @@ class Decision_Tree():
 
         self.predict = lambda A: np.array([self.root.pred(x) for x in A])
 
-    def fit(self,explanatory, target,verbose=0) :
-            if self.split_criterion == "random" : 
-                    self.split_criterion = self.random_split_criterion
-            else : 
-                    self.split_criterion = self.Gini_split_criterion
-            self.explanatory = explanatory
-            self.target      = target
-            self.root.sub_population = np.ones_like(self.target,dtype='bool')
+    def fit(self, explanatory, target, verbose=0) :
+        if self.split_criterion == "random" : 
+                self.split_criterion = self.random_split_criterion
+        else : 
+                self.split_criterion = self.Gini_split_criterion
+        self.explanatory = explanatory
+        self.target      = target
+        self.root.sub_population = np.ones_like(self.target,dtype='bool')
 
-            self.fit_node(self.root)
+        self.fit_node(self.root)
 
-            self.update_predict()
+        self.update_predict()
 
-            if verbose==1 :
-                    print(f"""  Training finished.
+        if verbose==1 :
+            print(f"""  Training finished.
     - Depth                     : { self.depth()}
     - Number of nodes           : { self.count_nodes()}
     - Number of leaves          : { self.count_nodes(only_leaves=True)}
