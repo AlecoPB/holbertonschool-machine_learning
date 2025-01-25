@@ -6,6 +6,7 @@ This is some documentation
 
 class Poisson:
     """Class that represents a Poisson distribution."""
+
     e = 2.7182818285
 
     def _factorial(self, n):
@@ -24,8 +25,7 @@ class Poisson:
 
         Args:
             data (list, optional): Data used to estimate the distribution.
-            lambtha (float): Expected number of occurrences in a given time
-            frame.
+            lambtha (float): Expected number of occurrences in a given time frame.
 
         Raises:
             TypeError: If data is not a list.
@@ -57,7 +57,22 @@ class Poisson:
             return 0
 
         e = Poisson.e
+        return (e ** -self.lambtha) * (self.lambtha ** k) / self._factorial(k)
+
+    def cdf(self, k):
+        """Calculate the CDF for a given number of successes k.
+
+        Args:
+            k (int): The number of successes.
+
+        Returns:
+            float: The CDF value for k.
+        """
+        k = int(k)  # Convert k to an integer if not already
         if k < 0:
             return 0
-        # PMF formula, for Poisson distribution
-        return (e ** -self.lambtha) * (self.lambtha ** k) / self._factorial(k)
+
+        cdf_value = 0
+        for i in range(k + 1):
+            cdf_value += self.pmf(i)
+        return cdf_value
