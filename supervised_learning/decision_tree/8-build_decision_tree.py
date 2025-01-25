@@ -382,8 +382,8 @@ class Decision_Tree():
 
     def Gini_split_criterion_one_feature(self, node, feature):
         """
-        Compute the Gini impurity and corresponding threshold for a single feature
-        that minimizes the average Gini impurity of the child nodes.
+        Compute the Gini impurity and corresponding threshold for a single
+        feature that minimizes the average Gini impurity of the child nodes.
         """
         # Retrieve possible thresholds for the given feature
         thresholds = self.possible_thresholds(node, feature)
@@ -413,8 +413,14 @@ class Decision_Tree():
         right_class_mask = classes_mask[:, :, None] & filter_right[:, None, :]
 
         # Calculate Gini impurities for left and right children
-        gini_left = 1 - np.sum(np.square(np.sum(left_class_mask, axis=0)), axis=0) / (np.sum(filter_left, axis=0) * div)
-        gini_right = 1 - np.sum(np.square(np.sum(right_class_mask, axis=0)), axis=0) / (np.sum(filter_right, axis=0) * div)
+        gini_left = 1 - np.sum(np.square
+                               (np.sum(left_class_mask,
+                                       axis=0)), axis=0) / (np.sum(filter_left,
+                                                                   axis=0) * div)
+        gini_right = 1 - np.sum(np.square
+                                (np.sum(right_class_mask,
+                                        axis=0)), axis=0) / (np.sum(filter_right,
+                                                                    axis=0) * div)
 
         # Compute total Gini impurity
         gini_sum = gini_left + gini_right
