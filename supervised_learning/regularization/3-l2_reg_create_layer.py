@@ -27,7 +27,9 @@ def l2_reg_create_layer(prev, n, activation, lambtha):
                                                     mode=('fan_avg'))    
 
     # Define the layer
-    layer = tf.keras.layers.Dense(n, activation=activation,
-                                  kernel_regularizer=regularizer)(prev)
+    layer = tf.keras.layers.Dense(n,
+                                  activation=activation,
+                                  kernel_initializer=weights,
+                                  kernel_regularizer=regularizer)
     
     return layer
