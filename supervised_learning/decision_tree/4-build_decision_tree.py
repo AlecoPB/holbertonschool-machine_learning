@@ -102,15 +102,16 @@ class Node:
             child.lower, child.upper = self.lower.copy(), self.upper.copy()
 
         self.left_child.lower[self.feature] = max(
-            self.threshold, self.left_child.lower.get(self.feature, self.threshold)
+            self.threshold,
+            self.left_child.lower.get(self.feature, self.threshold)
         )
         self.right_child.upper[self.feature] = min(
-            self.threshold, self.right_child.upper.get(self.feature, self.threshold)
+            self.threshold,
+            self.right_child.upper.get(self.feature, self.threshold)
         )
 
         self.left_child.update_bounds_below()
         self.right_child.update_bounds_below()
-
 
 
 class Leaf(Node):
@@ -149,6 +150,7 @@ class Leaf(Node):
         Passes
         """
         pass
+
 
 class Decision_Tree():
     """
@@ -192,8 +194,8 @@ class Decision_Tree():
         """
         return self.root.get_leaves_below()
 
-    def update_bounds(self) :
+    def update_bounds(self):
         """
         Updates bounds
         """
-        self.root.update_bounds_below() 
+        self.root.update_bounds_below()
