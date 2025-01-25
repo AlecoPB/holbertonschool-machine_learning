@@ -31,13 +31,18 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
     # Backpropagation for the hidden layers
     for l in range(L, 0, -1):
         A_prev = cache[f"A{l - 1}"]
-        W = weights['W' + str(l + 1)]
-        dA = np.dot(W.T, dZ)
 
-        # Activation function derivative (assuming tanh here, modify as needed)
-        dZ = dA * (1 - np.square(cache['A' + str(l)]))
+        # L2 regularization term
+        l2_reg = (lambtha / m) * weights[f"W{i}"]
 
-        # Update weights and biases for the current layer
-        weights['W' + str(l)] -= alpha * (np.dot(dZ, A_prev.T)
-                                          / m + (lambtha / m) * weights['W' + str(l)])
-        weights['b' + str(l)] -= alpha * np.sum(dZ, axis=1, keepdims=True) / m
+        # Gradient of loss with respect to weights and biases
+        dW = (1 / m) * np.matmul(dZ, A_prev.T) + l2_reg
+        db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
+
+        if l > 1:
+            # Gradient of the activation function (tanh)
+            dZ = np.matmul(weights[f"W{l}"].T, dZ) * (1 - np.square(A_prev))
+
+        # Updating weights and biases
+        weights[f"W{l}"] -= alpha * dW
+        weights[f"b{l}"] -= alpha * db
