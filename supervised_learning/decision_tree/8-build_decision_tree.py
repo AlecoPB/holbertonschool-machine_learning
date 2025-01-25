@@ -385,42 +385,44 @@ class Decision_Tree():
         Compute the Gini impurity and corresponding threshold for a single feature
         that minimizes the average Gini impurity of the child nodes.
         """
-        sub_population = node.sub_population
-        classes = np.unique(self.target[sub_population])  # Unique class labels
+        # Retrieve possible thresholds for the given feature
         thresholds = self.possible_thresholds(node, feature)
 
-        # Get the feature values for the sub_population
-        feature_values = self.explanatory[sub_population, feature]
-        n = sub_population.shape[0]  # Number of individuals
+        # Get indices of individuals in the node's sub_population
+        indices = np.nonzero(node.sub_population)[0]
+        div = indices.size  # Number of indices for later division
 
-        # Create an array of shape (n, t, c) for Left_F
-        Left_F = np.array([
-            (feature_values[:, None] > thresholds)[:, :, None] &
-            (self.target[sub_population][:, None] == cls)
-            for cls in classes
-        ])  # Shape: (c, n, t)
-        Left_F = np.transpose(Left_F, (1, 2, 0))  # Shape: (n, t, c)
+        # Extract feature values for individuals in the node's sub_population
+        feature_values = self.explanatory[node.sub_population, feature]
 
-        # Calculate Gini impurities for the left child
-        left_counts = np.sum(Left_F, axis=0)  # Shape: (t, c)
-        left_totals = np.sum(left_counts, axis=1)  # Shape: (t,)
-        left_probs = left_counts / left_totals[:, None]
-        left_gini = 1 - np.sum(left_probs**2, axis=1)  # Shape: (t,)
+        # Create filters for left and right child nodes
+        filter_left = feature_values[:, None] > thresholds[None, :]
+        filter_right = ~filter_left
 
-        # Calculate Gini impurities for the right child
-        right_counts = np.sum(~Left_F, axis=0)  # Shape: (t, c)
-        right_totals = np.sum(right_counts, axis=1)  # Shape: (t,)
-        right_probs = right_counts / right_totals[:, None]
-        right_gini = 1 - np.sum(right_probs**2, axis=1)  # Shape: (t,)
+        # Reduce target array to only include individuals in the sub_population
+        target_reduced = self.target[indices]
 
-        # Compute weighted Gini average for all thresholds
-        weights_left = left_totals / n
-        weights_right = right_totals / n
-        gini_avg = weights_left * left_gini + weights_right * right_gini  # Shape: (t,)
+        # Get unique classes from the target
+        classes = np.unique(target_reduced)
 
-        # Find the threshold that minimizes the Gini average
-        min_idx = np.argmin(gini_avg)
-        return thresholds[min_idx], gini_avg[min_idx]
+        # Create class masks for left and right children
+        classes_mask = (target_reduced[:, None] == classes)
+
+        # Compute class masks for left and right children
+        left_class_mask = classes_mask[:, :, None] & filter_left[:, None, :]
+        right_class_mask = classes_mask[:, :, None] & filter_right[:, None, :]
+
+        # Calculate Gini impurities for left and right children
+        gini_left = 1 - np.sum(np.square(np.sum(left_class_mask, axis=0)), axis=0) / (np.sum(filter_left, axis=0) * div)
+        gini_right = 1 - np.sum(np.square(np.sum(right_class_mask, axis=0)), axis=0) / (np.sum(filter_right, axis=0) * div)
+
+        # Compute total Gini impurity
+        gini_sum = gini_left + gini_right
+
+        # Find the index of the threshold with the smallest total impurity
+        gini_min_index = np.argmin(gini_sum)
+
+        return np.array([thresholds[gini_min_index], gini_sum[gini_min_index]])
 
     def Gini_split_criterion(self, node):
         """
