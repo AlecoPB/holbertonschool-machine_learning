@@ -46,11 +46,13 @@ class Yolo:
 
     def process_outputs(self, outputs, image_size):
         """
-        Processes model outputs into bounding boxes, confidences, and class probabilities.
+        Processes model outputs into bounding boxes,
+        confidences, and class probabilities.
 
         Args:
             outputs (list): List of model output arrays.
-            image_size (numpy.ndarray): Original image size [image_height, image_width].
+            image_size (numpy.ndarray): Original image
+            size [image_height, image_width].
 
         Returns:
             tuple: Processed boxes, confidences, and class probabilities.
@@ -66,14 +68,17 @@ class Yolo:
             t_w = output[..., 2]
             t_h = output[..., 3]
 
-            c_x, c_y = np.meshgrid(np.arange(grid_width), np.arange(grid_height))
+            c_x, c_y = np.meshgrid(np.arange(grid_width),
+                                   np.arange(grid_height))
             c_x = c_x[..., np.newaxis]
             c_y = c_y[..., np.newaxis]
 
             bx = (self.sigmoid(t_x) + c_x) / grid_width
             by = (self.sigmoid(t_y) + c_y) / grid_height
-            bw = (np.exp(t_w) * self.anchors[i, :, 0]) / self.model.input.shape[1]
-            bh = (np.exp(t_h) * self.anchors[i, :, 1]) / self.model.input.shape[2]
+            bw = ((np.exp(t_w) * self.anchors[i, :, 0])
+                  / self.model.input.shape[1])
+            bh = ((np.exp(t_h) * self.anchors[i, :, 1])
+                  / self.model.input.shape[2])
 
             x1 = (bx - bw / 2) * image_width
             y1 = (by - bh / 2) * image_height
@@ -100,7 +105,9 @@ class Yolo:
         """
         filtered_boxes, box_classes, box_scores = [], [], []
 
-        for box, box_confidence, box_class_prob in zip(boxes, box_confidences, box_class_probs):
+        for box, box_confidence, box_class_prob in zip(boxes,
+                                                       box_confidences,
+                                                       box_class_probs):
             box_score = box_confidence * box_class_prob
             box_class = np.argmax(box_score, axis=-1)
             box_score = np.max(box_score, axis=-1)
@@ -118,7 +125,8 @@ class Yolo:
 
     def iou(self, box1, boxes):
         """
-        Calculates the Intersection Over Union (IoU) between a box and an array of boxes.
+        Calculates the Intersection Over Union (IoU)
+        between a box and an array of boxes.
 
         Args:
             box1 (numpy.ndarray): Single bounding box.
@@ -138,7 +146,8 @@ class Yolo:
         inter_x2 = np.minimum(x2, x2s)
         inter_y2 = np.minimum(y2, y2s)
 
-        inter_area = np.maximum(inter_x2 - inter_x1, 0) * np.maximum(inter_y2 - inter_y1, 0)
+        inter_area = (np.maximum(inter_x2 - inter_x1, 0)
+                      * np.maximum(inter_y2 - inter_y1, 0))
         union_area = box1_area + boxes_area - inter_area
 
         return inter_area / union_area
@@ -156,7 +165,8 @@ class Yolo:
             tuple: Filtered boxes, class IDs, and scores.
         """
         unique_classes = np.unique(box_classes)
-        box_predictions, predicted_box_classes, predicted_box_scores = [], [], []
+        box_predictions, predicted_box_classes = [], []
+        predicted_box_scores = []
 
         for cls in unique_classes:
             cls_mask = box_classes == cls
