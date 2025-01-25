@@ -7,6 +7,17 @@ This is some documentation
 class Poisson:
     """Class that represents a Poisson distribution."""
     e = 2.7182818285
+
+    def _factorial(self, n):
+        """
+        Factorial function
+        """
+        if n == 0:
+            return 1
+        result = 1
+        for i in range(1, n + 1):
+            result *= i
+        return result
     
     def __init__(self, data=None, lambtha=1.):
         """Initialize a Poisson distribution instance.
