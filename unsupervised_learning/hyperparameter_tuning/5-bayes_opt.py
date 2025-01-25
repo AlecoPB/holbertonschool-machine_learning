@@ -22,13 +22,15 @@ class BayesianOptimization:
         - X_init: numpy.ndarray of shape (t, 1), initial sampled inputs.
         - Y_init: numpy.ndarray of shape (t, 1), outputs of the black-box
         function corresponding to each input.
-        - bounds: tuple of (min, max), defining the search space for the optimal
+        - bounds: tuple of (min, max), defining the search space for the
+        optimal
         point.
         - ac_samples: int, the number of samples for the acquisition function.
         - l: float, the length scale parameter for the kernel.
         - sigma_f: float, the standard deviation of the output.
         - xsi: float, the exploration-exploitation trade-off factor.
-        - minimize: bool, indicates whether to minimize or maximize the function.
+        - minimize: bool, indicates whether to minimize or maximize the
+        function.
         """
         self.f = f
         self.gp = GP(X_init=X_init, Y_init=Y_init, l=l, sigma_f=sigma_f)
@@ -57,7 +59,7 @@ class BayesianOptimization:
         # Predict the mean and variance for each point in X_s
         mu_s, sigma_s = self.gp.predict(self.X_s)
 
-        # Determine the best observed value based on minimization or maximization
+        # Determine the best observed value based on min-maxxing
         if self.minimize:
             Y_best = np.min(self.gp.Y)
             improvement = Y_best - mu_s - self.xsi
