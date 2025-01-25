@@ -18,13 +18,14 @@ class Poisson:
         for i in range(1, n + 1):
             result *= i
         return result
-    
+
     def __init__(self, data=None, lambtha=1.):
         """Initialize a Poisson distribution instance.
 
         Args:
             data (list, optional): Data used to estimate the distribution.
-            lambtha (float): Expected number of occurrences in a given time frame.
+            lambtha (float): Expected number of occurrences in a given time
+            frame.
 
         Raises:
             TypeError: If data is not a list.
