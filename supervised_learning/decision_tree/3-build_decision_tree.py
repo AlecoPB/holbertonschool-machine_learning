@@ -91,7 +91,6 @@ class Node:
             + self.right_child.get_leaves_below()
 
 
-
 class Leaf(Node):
     """
     A leaf on a tree
