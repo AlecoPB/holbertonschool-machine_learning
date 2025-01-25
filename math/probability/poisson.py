@@ -43,16 +43,8 @@ class Poisson:
         if k < 0:
             return 0
 
-        # Calculate e^(-lambtha) manually
-        e_neg_lambtha = 1
-        term = 1
-        for i in range(1, 101):  # Approximation with 100 terms of the series
-            term *= -self.lambtha / i
-            e_neg_lambtha += term
-
-        # Calculate factorial manually
-        factorial_k = 1
-        for i in range(1, k + 1):
-            factorial_k *= i
-
-        return (e_neg_lambtha * (self.lambtha ** k)) / factorial_k
+        e = Poisson.e
+        if k < 0:
+            return 0
+        # PMF formula, for Poisson distribution
+        return (e ** -self.lambtha) * (self.lambtha ** k) / self._factorial(k)
