@@ -422,7 +422,7 @@ class Decision_Tree():
                                 (np.sum(right_class_mask,
                                         axis=0)), axis=0) / (np.sum
                                                              (filter_right,
-                                                                    axis=0)
+                                                              axis=0)
                                                              * div)
 
         # Compute total Gini impurity
