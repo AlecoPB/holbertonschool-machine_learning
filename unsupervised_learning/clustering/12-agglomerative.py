@@ -15,8 +15,6 @@ def perform_agglomerative_clustering(data, max_distance):
     # Conduct hierarchical/agglomerative clustering using Ward's method
     linkage_matrix = scipy.cluster.hierarchy.linkage(data, method="ward")
 
-    plt.show()
-
     # Return cluster assignments based on the specified distance threshold
     return scipy.cluster.hierarchy.fcluster(Z=linkage_matrix,
                                             t=max_distance, criterion="distance")
