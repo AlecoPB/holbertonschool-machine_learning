@@ -63,8 +63,10 @@ class WGAN_GP(keras.Model):
         Retrieves a batch of real samples from the dataset.
         """
         size = size or self.batch_size
-        indices = tf.random.shuffle(tf.range\
-            (tf.shape(self.real_examples)[0]))[:size]
+        indices = tf.random.\
+            shuffle(tf.range
+                    (tf.shape
+                     (self.real_examples)[0]))[:size]
         return tf.gather(self.real_examples, indices)
 
     def get_interpolated_sample(self, real_sample, fake_sample):
@@ -110,7 +112,8 @@ class WGAN_GP(keras.Model):
                          self.discriminator.trainable_variables)
             self.discriminator.\
                 optimizer.apply_gradients(zip(disc_gradients,
-                                              self.discriminator.trainable_variables))
+                                              self.discriminator.\
+                                                  trainable_variables))
 
         with tf.GradientTape() as gen_tape:
             fake_batch = self.get_fake_sample(training=True)
