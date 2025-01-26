@@ -78,6 +78,6 @@ class Normal:
         Returns:
             float: The CDF value for x.
         """
-        z = (x - self.mean) / self.stddev
+        z = (x - self.mean) / (self.stddev * (2 ** 0.5))
         erf = (2 / (3.1415926536 ** 0.5)) * (z - (z ** 3) / 3 + (z ** 5) / 10 - (z ** 7) / 42 + (z ** 9) / 216)  # Approximation of erf
         return 0.5 * (1 + erf)
