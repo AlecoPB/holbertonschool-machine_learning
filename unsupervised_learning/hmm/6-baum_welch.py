@@ -113,8 +113,10 @@ def baum_welch(observations, transition_probs, emission_probs,
         # Perform forward and backward passes
         likelihood_f, forward_probs = forward_algorithm(observations, emission_probs,
                                                         transition_probs, initial_probs)
-        likelihood_b, backward_probs = backward_algorithm(observations, emission_probs,
-                                                          transition_probs, initial_probs)
+        likelihood_b, backward_probs = backward_algorithm(observations,
+                                                          emission_probs,
+                                                          transition_probs,
+                                                          initial_probs)
 
         # Initialize variables for xi and gamma
         xi = np.zeros((N, N, T-1))
@@ -122,9 +124,10 @@ def baum_welch(observations, transition_probs, emission_probs,
 
         for t in range(T-1):
             # Compute xi for all states
-            xi[:, :, t] = ((forward_probs[:, t, np.newaxis] * transition_probs *
-                           emission_probs[:, observations[t+1]]
-                           * backward_probs[:, t+1]) / likelihood_f)
+            xi[:, :, t] = ((forward_probs[:, t, np.newaxis]
+                            * transition_probs
+                            * emission_probs[:, observations[t+1]]
+                            * backward_probs[:, t+1]) / likelihood_f)
 
         gamma = np.sum(xi, axis=1)
 
