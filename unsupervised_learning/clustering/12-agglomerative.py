@@ -1,24 +1,22 @@
 #!/usr/bin/env python3
 """
-This is some documentation
+Agglomerative Clustering
 """
-import scipy.cluster.hierarchy as sch
+
+import scipy.cluster.hierarchy
 import matplotlib.pyplot as plt
 
 
-def agglomerative(X, dist):
+def perform_agglomerative_clustering(data, max_distance):
     """
-    Performs agglomerative clustering on a dataset.
+    Executes agglomerative clustering on a dataset and visualizes the resulting
+    dendrogram, with each cluster represented in a distinct color.
     """
-    # Perform hierarchical/agglomerative clustering using Ward linkage
-    Z = sch.linkage(X, method='ward')
+    # Conduct hierarchical/agglomerative clustering using Ward's method
+    linkage_matrix = scipy.cluster.hierarchy.linkage(data, method="ward")
 
-    # Create the dendrogram
-    plt.figure()
-    sch.dendrogram(Z, color_threshold=dist)
     plt.show()
 
-    # Form flat clusters
-    clss = sch.fcluster(Z, t=dist, criterion='distance') - 1
-
-    return clss
+    # Return cluster assignments based on the specified distance threshold
+    return scipy.cluster.hierarchy.fcluster(Z=linkage_matrix,
+                                            t=max_distance, criterion="distance")
