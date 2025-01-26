@@ -84,8 +84,8 @@ def backward_algorithm(observations, emission_probs,
             * backward_probs[:, t + 1], axis=1)
 
     # Calculate the likelihood of the observations given the model
-    likelihood = np.sum(initial_probs[:, 0] 
-                        * emission_probs[:, observations[0]] 
+    likelihood = np.sum(initial_probs[:, 0]
+                        * emission_probs[:, observations[0]]
                         * backward_probs[:, 0])
 
     return likelihood, backward_probs
@@ -96,7 +96,7 @@ def baum_welch(observations, transition_probs, emission_probs,
     """
     Executes the Baum-Welch algorithm for a hidden Markov model.
     """
-    if (not isinstance(observations, np.ndarray)or observations.ndim != 1 or
+    if (not isinstance(observations, np.ndarray) or observations.ndim != 1 or
             not isinstance(emission_probs, np.ndarray)
             or emission_probs.ndim != 2 or
             not isinstance(transition_probs, np.ndarray)
@@ -111,8 +111,10 @@ def baum_welch(observations, transition_probs, emission_probs,
 
     for _ in range(num_iterations):
         # Perform forward and backward passes
-        likelihood_f, forward_probs = forward_algorithm(observations, emission_probs,
-                                                        transition_probs, initial_probs)
+        likelihood_f, forward_probs = forward_algorithm(observations,
+                                                        emission_probs,
+                                                        transition_probs,
+                                                        initial_probs)
         likelihood_b, backward_probs = backward_algorithm(observations,
                                                           emission_probs,
                                                           transition_probs,
