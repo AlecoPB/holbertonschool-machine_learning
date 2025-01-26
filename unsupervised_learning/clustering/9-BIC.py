@@ -37,7 +37,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
 
     for k in range(kmin, kmax + 1):
         result = expectation_maximization(X, k, iterations, tol, verbose)
-        if result is None or any(part is None for part in result):
+        if pi is None or m is None or S is None or g is None:
             return None, None, None, None
 
         pi, m, S, g, li = result
