@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """
-This is some documentation
+Bayesian Information Criterion w/ GMMs
 """
+
+
 import numpy as np
 expectation_maximization = __import__('8-EM').expectation_maximization
 
 
 def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     """
-    Determines the optimal number of clusters for a Gaussian Mixture Model using the
+    Finds the best number of clusters for a Gaussian Mixture Model using the
     Bayesian Information Criterion (BIC).
     """
     if (
@@ -17,6 +19,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
         or kmax is not None and (not isinstance(kmax, int) or kmax < kmin)
         or not isinstance(iterations, int) or iterations <= 0
         or isinstance(kmax, int) and kmax <= kmin
+        or not isinstance(iterations, int) or iterations <= 0
         or not isinstance(tol, float) or tol < 0
         or not isinstance(verbose, bool)
     ):
@@ -24,38 +27,29 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
 
     n, d = X.shape
     if kmax is None:
-        # If kmax is not defined, set it to the maximum possible
         kmax = n
     if not isinstance(kmax, int) or kmax < 1 or kmax < kmin or kmax > n:
         return None, None, None, None
 
-    b = []
     likelihoods = []
+    b = []
+    best_bic, best_results, best_k = None, None, None
 
-    # Iterate over each cluster size from kmin to kmax
     for k in range(kmin, kmax + 1):
-        # Fit the GMM with the current cluster size k
-        pi, m, S, g, li = expectation_maximization(
-            X, k, iterations, tol, verbose)
-
-        if pi is None or m is None or S is None or g is None:
+        result = expectation_maximization(X, k, iterations, tol, verbose)
+        if result is None or any(part is None for part in result):
             return None, None, None, None
-        # Calculate the number of parameters: k * d for means,
-        # k * d * (d + 1) for covariance matrices, and k - 1 for priors
+
+        pi, m, S, g, li = result
         p = (k * d) + (k * d * (d + 1) // 2) + (k - 1)
         bic = p * np.log(n) - 2 * li
 
-        # Store log likelihood and BIC value for the current cluster size
         likelihoods.append(li)
         b.append(bic)
 
-        # Check if the current BIC is the best observed
-        if k == kmin or bic < best_bic:
-            # Update the best values
+        if best_bic is None or bic < best_bic:
             best_bic = bic
             best_results = (pi, m, S)
             best_k = k
 
-    likelihoods = np.array(likelihoods)
-    b = np.array(b)
-    return best_k, best_results, likelihoods, b
+    return best_k, best_results, np.array(likelihoods), np.array(b)
