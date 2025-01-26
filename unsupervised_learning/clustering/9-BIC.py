@@ -44,12 +44,17 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
         p = (k * d) + (k * d * (d + 1) // 2) + (k - 1)
         bic = p * np.log(n) - 2 * li
 
+        # Save log likelihood and BIC value with current cluster size
         likelihoods.append(li)
         b.append(bic)
 
-        if best_bic is None or bic < best_bic:
+        # Compare current BIC to best observed BIC
+        if k == kmin or bic < best_bic:
+            # Update the return values
             best_bic = bic
             best_results = (pi, m, S)
             best_k = k
 
-    return best_k, best_results, np.array(likelihoods), np.array(b)
+    likelihoods = np.array(likelihoods)
+    b = np.array(b)
+    return best_k, best_results, likelihoods, b
