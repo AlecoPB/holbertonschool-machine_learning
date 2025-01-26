@@ -7,12 +7,12 @@ from tensorflow import keras
 
 def convolutional_GenDiscr():
     """
-    Constructs a convolutional generator and discriminator using the functional API.
+    Constructs a convolutional generator and discriminator.
 
     Returns:
         - A generator model that converts a latent vector of shape (16) into an
         output of shape (16, 16, 1).
-        - A discriminator model that processes an input of shape (16, 16, 1) to yield
+        - A discriminator model that processes an input of shape to yield
         a single output (probability).
     """
 
@@ -29,7 +29,8 @@ def convolutional_GenDiscr():
             BatchNormalization, and Activation layers.
         """
         input_tensor = keras.layers.UpSampling2D()(input_tensor)
-        input_tensor = keras.layers.Conv2D(num_filters, (3, 3), padding='same')(input_tensor)
+        input_tensor = keras.layers.Conv2D(num_filters, (3, 3),
+                                           padding='same')(input_tensor)
         input_tensor = keras.layers.BatchNormalization()(input_tensor)
         input_tensor = keras.layers.Activation('tanh')(input_tensor)
         return input_tensor
@@ -46,7 +47,8 @@ def convolutional_GenDiscr():
             - The output tensor after applying Conv2D, MaxPooling2D,
             and Activation layers.
         """
-        input_tensor = keras.layers.Conv2D(num_filters, (3, 3), padding='same')(input_tensor)
+        input_tensor = keras.layers.Conv2D(num_filters, (3, 3),
+                                           padding='same')(input_tensor)
         input_tensor = keras.layers.MaxPooling2D()(input_tensor)
         input_tensor = keras.layers.Activation('tanh')(input_tensor)
         return input_tensor
@@ -85,7 +87,7 @@ def convolutional_GenDiscr():
         x = build_discr_block(x, 128)
         x = build_discr_block(x, 256)
 
-        # Flatten and apply a Dense layer with tanh activation for the final output
+        # Flatten and apply a Dense layer with tanh activation
         x = keras.layers.Flatten()(x)
         outputs = keras.layers.Dense(1, activation='tanh')(x)
 
