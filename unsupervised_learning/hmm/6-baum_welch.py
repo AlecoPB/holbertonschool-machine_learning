@@ -79,7 +79,7 @@ def backward_algorithm(observations, emission_probs, transition_probs, initial_p
     return likelihood, backward_probs
 
 
-def baum_welch_algorithm(observations, transition_probs, emission_probs, initial_probs, num_iterations=1000):
+def baum_welch(observations, transition_probs, emission_probs, initial_probs, num_iterations=1000):
     """
     Executes the Baum-Welch algorithm for a hidden Markov model.
     """
