@@ -7,6 +7,7 @@ This is some documentation
 class Normal:
     """Class that represents a normal distribution."""
 
+
     def __init__(self, data=None, mean=0., stddev=1.):
         """Initialize a Normal distribution instance.
 
@@ -65,9 +66,8 @@ class Normal:
         Returns:
             float: The PDF value for x.
         """
-        return ((1 / (self.stddev * (2 * 3.1415926536) ** 0.5))
-                * (2.7182818285 ** (-0.5 * ((x - self.mean)
-                                            / self.stddev) ** 2)))
+        return 1 / 2 * (1 + self.erf((x - self.mean)
+                        / (self.stddev * pow(2, 1/2))))
 
     def cdf(self, x):
         """Calculate the CDF for a given x-value.
@@ -78,8 +78,7 @@ class Normal:
         Returns:
             float: The CDF value for x.
         """
-        z = (x - self.mean) / self.stddev
-        erf = ((2 / (3.1415926536 ** 0.5))
-               * (z - (z ** 3) / 3 + (z ** 5)
-                  / 10 - (z ** 7) / 42 + (z ** 9) / 216))
-        return 0.5 * (1 + erf)
+        pi = 3.1415926536
+        return 2 / pow(pi, 1/2) * (x - (pow(x, 3) / 3)
+                                   + (pow(x, 5) / 10) - (pow(x, 7) / 42)
+                                   + (pow(x, 9) / 216))
