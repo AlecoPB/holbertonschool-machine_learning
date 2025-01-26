@@ -7,9 +7,10 @@ initialize = __import__('4-initialize').initialize
 expectation = __import__('6-expectation').expectation
 maximization = __import__('7-maximization').maximization
 
+
 def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     """
-    Performs the expectation maximization for a GMM.
+    not working yet
     """
     if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         return None, None, None, None, None
@@ -17,26 +18,31 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         return None, None, None, None, None
     if not isinstance(iterations, int) or iterations <= 0:
         return None, None, None, None, None
-    if not isinstance(tol, float) or tol < 0:
+    if not isinstance(tol, (int, float)) or tol < 0:
         return None, None, None, None, None
     if not isinstance(verbose, bool):
         return None, None, None, None, None
 
-    n, d = X.shape
+    # Initialize the parameters
     pi, m, S = initialize(X, k)
-    g, l = expectation(X, pi, m, S)
+    prev_L = 0
 
     for i in range(iterations):
-        pi, m, S = maximization(X, g)
-        g, new_l = expectation(X, pi, m, S)
+        # E-step: calculate the responsibilities and the log likelihood
+        g, L = expectation(X, pi, m, S)
 
+        # Verbose logging
         if verbose and (i % 10 == 0 or i == iterations - 1):
-            print(f"Log Likelihood after {i} iterations: {new_l:.5f}")
+            print(f"Log Likelihood after {i} iterations: {L:.5f}")
 
-        if abs(new_l - l) <= tol:
-            print(f"Log Likelihood after {i+1} iterations: {new_l:.5f}")
+        if abs(L - prev_L) < tol:
+            if verbose:
+                print(f"Log Likelihood after {i} iterations: {L:.5f}")
             break
+        # Update the previous log likelihood
+        prev_L = L
 
-        l = new_l
+        # M-step: update the parameters
+        pi, m, S = maximization(X, g)
 
-    return pi, m, S, g, l
+    return pi, m, S, g, L
