@@ -65,4 +65,5 @@ class Normal:
         Returns:
             float: The PDF value for x.
         """
-        return (1 / (self.stddev * (2 * 3.1415926536) ** 0.5)) * (2.7182818285 ** (-0.5 * ((x - self.mean) / self.stddev) ** 2))
+        return ((1 / (self.stddev * (2 * 3.1415926536) ** 0.5))
+                * (2.7182818285 ** (-0.5 * ((x - self.mean) / self.stddev) ** 2)))
