@@ -2,10 +2,9 @@
 """
 Bayesian Information Criterion w/ GMMs
 """
-
-
 import numpy as np
 expectation_maximization = __import__('8-EM').expectation_maximization
+
 
 def calculate_bic(data, min_clusters=1, max_clusters=None, max_iterations=1000, convergence_tolerance=1e-5, display=False):
     """
