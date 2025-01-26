@@ -25,24 +25,20 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
 
     n, d = X.shape
     if kmax is None:
-        # Undefined, set to maximum possible
         kmax = n
     if not isinstance(kmax, int) or kmax < 1 or kmax < kmin or kmax > n:
         return None, None, None, None
 
-    b = []
     likelihoods = []
+    b = []
+    best_bic, best_results, best_k = None, None, None
 
-    # With each cluster size from kmin to kmax
     for k in range(kmin, kmax + 1):
-        # Find the best fit with the GMM and current cluster size k
-        pi, m, S, g, li = expectation_maximization(
-            X, k, iterations, tol, verbose)
+        result = expectation_maximization(X, k, iterations, tol, verbose)
+        pi, m, S, g, li = result
 
         if pi is None or m is None or S is None or g is None:
             return None, None, None, None
-        # NOTE p is the number of parameters, so k * d with the means,
-        # k * d * (d + 1) with the covariance matrix, and k - 1 with the priors
         p = (k * d) + (k * d * (d + 1) // 2) + (k - 1)
         bic = p * np.log(n) - 2 * li
 
