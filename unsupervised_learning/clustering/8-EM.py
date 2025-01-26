@@ -10,39 +10,41 @@ maximization = __import__('7-maximization').maximization
 
 def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     """
-    not working yet
+    Executes the expectation-maximization (EM) algorithm for a Gaussian Mixture
+    Model (GMM) on a specified dataset.
     """
-    if not isinstance(X, np.ndarray) or len(X.shape) != 2:
-        return None, None, None, None, None
-    if not isinstance(k, int) or k <= 0:
-        return None, None, None, None, None
-    if not isinstance(iterations, int) or iterations <= 0:
-        return None, None, None, None, None
-    if not isinstance(tol, (int, float)) or tol < 0:
-        return None, None, None, None, None
-    if not isinstance(verbose, bool):
+    if (
+        not isinstance(X, np.ndarray) or X.ndim != 2
+        or not isinstance(k, int) or k <= 0
+        or not isinstance(iterations, int) or iterations <= 0
+        or not isinstance(tol, float) or tol < 0
+        or not isinstance(verbose, bool)
+    ):
         return None, None, None, None, None
 
-    # Initialize the parameters
+    # Initialize priors, means, and covariance matrices
     pi, m, S = initialize(X, k)
-    prev_L = 0
 
     for i in range(iterations):
-        # E-step: calculate the responsibilities and the log likelihood
-        g, L = expectation(X, pi, m, S)
+        # Calculate probabilities and likelihoods with current parameters
+        g, prev_li = expectation(X, pi, m, S)
 
-        # Verbose logging
-        if verbose and (i % 10 == 0 or i == iterations - 1):
-            print(f"Log Likelihood after {i} iterations: {L:.5f}")
+        # Print the likelihood every 10 iterations if verbose is enabled
+        if verbose and i % 10 == 0:
+            print(f"Log Likelihood after {i} iterations: {round(prev_li, 5)}")
 
-        if abs(L - prev_L) < tol:
-            if verbose:
-                print(f"Log Likelihood after {i} iterations: {L:.5f}")
-            break
-        # Update the previous log likelihood
-        prev_L = L
-
-        # M-step: update the parameters
+        # Update the parameters with the new estimates
         pi, m, S = maximization(X, g)
 
-    return pi, m, S, g, L
+        # Calculate the new log likelihood
+        g, li = expectation(X, pi, m, S)
+
+        # Stop if the change in likelihood is below the tolerance
+        if np.abs(li - prev_li) <= tol:
+            break
+
+    # Final verbose message with the current likelihood
+    if verbose:
+        # NOTE: i + 1 since it has been updated once more since the last print
+        print(f"Log Likelihood after {i + 1} iterations: {round(li, 5)}")
+    return pi, m, S, g, li
