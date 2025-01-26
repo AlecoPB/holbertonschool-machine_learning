@@ -65,3 +65,21 @@ class Binomial:
                        / (self._factorial(k)
                           * self._factorial(self.n - k)))
         return combination * (self.p ** k) * ((1 - self.p) ** (self.n - k))
+
+    def cdf(self, k):
+        """Calculate the CDF for a given number of successes k.
+
+        Args:
+            k (int): The number of successes.
+
+        Returns:
+            float: The CDF value for k.
+        """
+        k = int(k)  # Convert k to an integer if not already
+        if k < 0:
+            return 0
+
+        cdf_value = 0
+        for i in range(k + 1):
+            cdf_value += self.pmf(i)
+        return cdf_value
