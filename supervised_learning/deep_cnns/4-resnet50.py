@@ -18,11 +18,10 @@ def resnet50():
 
     # conv1 layer
     conv_layer1 = K.layers.Conv2D(filters=64,
-                                   kernel_size=(7, 7),
-                                   strides=(2, 2),
-                                   padding="same",
-                                   kernel_initializer=
-                                   initializer)(input_tensor)
+                                  kernel_size=(7, 7),
+                                  strides=(2, 2),
+                                  padding="same",
+                                  kernel_initializer=initializer)(input_tensor)
     batch_norm1 = K.layers.BatchNormalization(axis=3)(conv_layer1)
     activation1 = K.layers.Activation("relu")(batch_norm1)
 
@@ -58,8 +57,9 @@ def resnet50():
                                         strides=(1, 1))(identity4_c)
 
     # Fully Connected Layer, softmax
-    output_layer = K.layers.Dense(units=1000, activation='softmax',
-                                   kernel_initializer=
-                                   initializer)(avg_pool_layer)
+    output_layer =\
+        K.layers.Dense(units=1000,
+                       activation='softmax',
+                       kernel_initializer=initializer)(avg_pool_layer)
 
     return K.Model(inputs=input_tensor, outputs=output_layer)
