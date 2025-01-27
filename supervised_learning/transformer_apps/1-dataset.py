@@ -49,35 +49,31 @@ class Dataset:
 
     def encode(self, pt, en):
         """
-        Encodes a translation into tokens.
+        Translates a sentence into tokens, including tokens for
+        the start and end of the sentence.
 
-        Parameters:
-        - pt: tf.Tensor, the Portuguese sentence.
-        - en: tf.Tensor, the English sentence.
+        Args:
+            pt: `tf.Tensor` containing the Portuguese sentence.
+            en: `tf.Tensor` containing the corresponding English sentence.
 
-        Returns:
-        - pt_tokens: np.ndarray containing the Portuguese tokens.
-        - en_tokens: np.ndarray containing the English tokens.
+        Returns: pt_tokens, en_tokens:
         """
-    def encode(self, pt, en):
-        """
-        Instance method
-        """
-        if tf.is_tensor(pt):
-            pt = pt.numpy().decode('utf-8')
-        if tf.is_tensor(en):
-            en = en.numpy().decode('utf-8')
+        # Convert tf.Tensor to strings
+        pt_sentence = pt.numpy().decode('utf-8')
+        en_sentence = en.numpy().decode('utf-8')
 
-        # nouveaux indexs pour les tokens CLS et SEP
-        nouveau_cls_id = 8192
-        nouveau_sep_id = 8193
+        # Retrieve the vocabulary size from the tokenizers
+        vocab_size_pt = self.tokenizer_pt.vocab_size
+        vocab_size_en = self.tokenizer_en.vocab_size
 
-        # Exemple de tokenization manuelle avec vos propres IDs
-        pt_tokens = ([nouveau_cls_id] +
-                     self.tokenizer_pt.encode(pt, add_special_tokens=False) +
-                     [nouveau_sep_id])
-        en_tokens = ([nouveau_cls_id] +
-                     self.tokenizer_en.encode(en, add_special_tokens=False) +
-                     [nouveau_sep_id])
-        # print("encode en", self.tokenizer_en.encode(en))
+        # Tokenize the sentences without special tokens
+        pt_tokens = self.tokenizer_pt.encode(pt_sentence,
+                                             add_special_tokens=False)
+        en_tokens = self.tokenizer_en.encode(en_sentence,
+                                             add_special_tokens=False)
+
+        # Add start and end tokens for the sentences
+        pt_tokens = [vocab_size_pt] + pt_tokens + [vocab_size_pt + 1]
+        en_tokens = [vocab_size_en] + en_tokens + [vocab_size_en + 1]
+
         return pt_tokens, en_tokens
