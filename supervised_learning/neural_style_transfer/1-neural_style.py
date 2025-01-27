@@ -138,7 +138,8 @@ class NST:
                 layer.__class__ = tf.keras.layers.AveragePooling2D
 
         # Extract outputs for style and content layers
-        style_outputs = [vgg.get_layer(name).output for name in self.style_layers]
+        style_outputs = [vgg.get_layer(name).output
+                         for name in self.style_layers]
         content_output = vgg.get_layer(self.content_layer).output
 
         # Construct the model and set it as non-trainable
