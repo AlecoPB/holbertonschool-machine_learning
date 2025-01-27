@@ -201,7 +201,7 @@ class NST:
 
         - style_output - tf.Tensor of shape (1, h, w, c)
          that contains the layer style output of the generated image
-        - gram_target - tf.Tensor of shape (1, c, c) 
+        - gram_target - tf.Tensor of shape (1, c, c)
          representing the Gram matrix of the target style
          output for that layer
 
