@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-This is some documenation
+Neural Style Transfer
 """
+
 
 import numpy as np
 import tensorflow as tf
@@ -110,66 +111,71 @@ class NST:
             new_w = int((w * 512) / h)
 
         # Resize image (with bicubic interpolation)
-        resized_image = tf.image.resize(
+        image_resized = tf.image.resize(
             image, size=[new_h, new_w],
             method=tf.image.ResizeMethod.BICUBIC)
 
         # Normalize pixel values to the range [0, 1]
-        normalized_image = resized_image / 255
+        image_normalized = image_resized / 255
 
         # Clip values to ensure they are within [0, 1] range
-        clipped_image = tf.clip_by_value(normalized_image, 0, 1)
+        image_clipped = tf.clip_by_value(image_normalized, 0, 1)
 
-        # Add batch dimension and return
-        return tf.expand_dims(clipped_image, axis=0)
+        # Add batch dimension on axis 0 and return
+        return tf.expand_dims(image_clipped, axis=0)
 
     def load_model(self):
         """
-        Load the VGG19 model with AveragePooling2D instead of MaxPooling2D.
+        Load the VGG19 model with AveragePooling2D layers instead of
+        MaxPooling2D layers.
         """
-        # Load VGG19 model from Keras
-        vgg = tf.keras.applications.VGG19(
-            include_top=False, weights='imagenet')
+        # get VGG19 from Keras API
+        modelVGG19 = tf.keras.applications.VGG19(
+            include_top=False,
+            weights='imagenet'
+        )
 
-        vgg.trainable = False
+        modelVGG19.trainable = False
 
-        # Replace MaxPooling2D layers with AveragePooling2D layers
-        for layer in vgg.layers:
-            if isinstance(layer, tf.keras.layers.MaxPooling2D):
-                layer.__class__ = tf.keras.layers.AveragePooling2D
+        # Selected layers
+        selected_layers = self.style_layers + [self.content_layer]
 
-        # Extract outputs for style and content layers
-        style_outputs = [vgg.get_layer(name).output
-                         for name in self.style_layers]
-        content_output = vgg.get_layer(self.content_layer).output
+        outputs = [modelVGG19.get_layer(name).output for name
+                   in selected_layers]
 
-        # Construct the model and set it as non-trainable
-        self.model = tf.keras.models.Model(
-            inputs=vgg.input,
-            outputs=style_outputs + [content_output])
+        # Construct model
+        model = tf.keras.Model([modelVGG19.input], outputs)
+
+        # replace MaxPooling layers by AveragePooling layers
+        custom_objects = {'MaxPooling2D': tf.keras.layers.AveragePooling2D}
+        tf.keras.models.save_model(model, 'vgg_base.h5')
+        model_avg = tf.keras.models.load_model('vgg_base.h5',
+                                               custom_objects=custom_objects)
+
+        self.model = model_avg
 
     @staticmethod
     def gram_matrix(input_layer):
         """
-        Compute the Gram matrix for a specified tensor.
+        Calculate the Gram matrix of a given tensor.
 
         Args:
-        - input_layer: A tf.Tensor or tf.Variable with shape (1, h, w, c).
+        - input_layer: A tf.Tensor or tf.Variable of shape (1, h, w, c).
 
         Returns:
-        - A tf.Tensor with shape (1, c, c) that represents the Gram matrix of
+        - A tf.Tensor of shape (1, c, c) containing the Gram matrix of
             input_layer.
         """
-        # Check the rank and batch size of input_layer
+        # Calidate input_layer rank and batch size
         if (not isinstance(input_layer, (tf.Tensor, tf.Variable))
                 or len(input_layer.shape) != 4
                 or input_layer.shape[0] != 1):
             raise TypeError("input_layer must be a tensor of rank 4")
 
-        # compute gram matrix: (batch, height, width, channel)
+        # calculate gram matrix: (batch, height, width, channel)
         gram = tf.linalg.einsum('bijc,bijd->bcd', input_layer, input_layer)
 
-        # Normalize by the number of locations and return the gram tensor
+        # Normalize by number of locations (h * w) then return gram tensor
         input_shape = tf.shape(input_layer)
         nb_locations = tf.cast(input_shape[1] * input_shape[2], tf.float32)
         return gram / nb_locations
