@@ -1,65 +1,56 @@
 #!/usr/bin/env python3
 """
-Projection Block
+This is some documentation
 """
 from tensorflow import keras as K
 
 
 def projection_block(A_prev, filters, s=2):
     """
-    Builds a projection block as described in
-    'Deep Residual Learning for Image Recognition' (2015).
-
-    Parameters:
-        A_prev (tensor): The output seen in the previous layer.
-        filters (tuple or list): A tuple or list
-        containing F11, F3, F12, respectively:
-                    - F11: Number of
-                      filters in the first 1x1 convolution.
-                    - F3: Number of
-                      filters in the 3x3 convolution.
-                    - F12: Number of
-                      filters in the second 1x1 convolution
-                      as well as the 1x1 convolution in the
-                      shortcut connection.
-        s (int): The stride of the first convolution
-        in both the main path and the shortcut connection.
-
-    Returns:
-        tensor: The activated output of the projection block.
+    Constructs a projection block
     """
     F11, F3, F12 = filters
-    initializer = K.initializers.he_normal(seed=0)
 
-    # First component of main path
-    X = K.layers.Conv2D(filters=F11, kernel_size=(1, 1),
-                        strides=(s), padding='same',
-                        kernel_initializer=initializer)(A_prev)
-    X = K.layers.BatchNormalization(axis=3)(X)
-    X = K.layers.ReLU()(X)
+    # Initialize he_normal with seed 0
+    initializer = K.initializers.HeNormal(seed=0)
 
-    # Second component of main path
-    X = K.layers.Conv2D(filters=F3, kernel_size=(3, 3),
-                        strides=(1, 1), padding='same',
-                        kernel_initializer=initializer)(X)
-    X = K.layers.BatchNormalization(axis=3)(X)
-    X = K.layers.ReLU()(X)
+    # First layer of the left branch (with stride s)
+    layer1 = K.layers.Conv2D(filters=F11,
+                             kernel_size=(1, 1),
+                             strides=(s, s),
+                             padding="same",
+                             kernel_initializer=initializer)(A_prev)
 
-    # Third component of main path
-    X = K.layers.Conv2D(filters=F12, kernel_size=(1, 1),
-                        strides=(1, 1), padding='same',
-                        kernel_initializer=initializer)(X)
-    X = K.layers.BatchNormalization(axis=3)(X)
+    batch_norm1 = K.layers.BatchNormalization(axis=-1)(layer1)
+    activation1 = K.layers.Activation(activation="relu")(batch_norm1)
 
-    # Shortcut path
-    shortcut = K.layers.Conv2D(filters=F12, kernel_size=(1, 1),
-                               strides=(s), padding='same',
-                               kernel_initializer=initializer)(A_prev)
-    shortcut = K.layers.BatchNormalization(axis=3)(shortcut)
+    # Second layer of the left branch
+    layer2 = K.layers.Conv2D(filters=F3,
+                             kernel_size=(3, 3),
+                             strides=(1, 1),
+                             padding="same",
+                             kernel_initializer=initializer)(activation1)
+    batch_norm2 = K.layers.BatchNormalization(axis=-1)(layer2)
+    activation2 = K.layers.Activation(activation="relu")(batch_norm2)
 
-    # Final step: Add shortcut value to the main path,
-    # and pass it through a ReLU activation
-    X = K.layers.Add()([X, shortcut])
-    X = K.layers.ReLU()(X)
+    # Final layer of the left branch
+    layer3 = K.layers.Conv2D(filters=F12,
+                             kernel_size=(1, 1),
+                             strides=(1, 1),
+                             padding="same",
+                             kernel_initializer=initializer)(activation2)
+    batch_norm3 = K.layers.BatchNormalization(axis=-1)(layer3)
 
-    return X
+    # Right branch: convolve input using F12 with stride s followed by BatchNorm
+    conv_input = K.layers.Conv2D(filters=F12,
+                                 kernel_size=(1, 1),
+                                 strides=(s, s),
+                                 padding="same",
+                                 kernel_initializer=initializer)(A_prev)
+    batch_norm_input = K.layers.BatchNormalization(axis=-1)(conv_input)
+
+    # Combine outputs of the left and right branches
+    combined = K.layers.Add()([batch_norm3, batch_norm_input])
+
+    # Return the activated output of the combined layers using ReLU
+    return K.layers.Activation(activation="relu")(combined)
