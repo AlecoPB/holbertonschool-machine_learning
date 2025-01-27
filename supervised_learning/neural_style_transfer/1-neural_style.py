@@ -3,7 +3,6 @@
 Neural Style Transfer
 """
 
-
 import numpy as np
 import tensorflow as tf
 
@@ -110,39 +109,39 @@ class NST:
             new_w = int((w * 512) / h)
 
         # Resize image (with bicubic interpolation)
-        image_resized = tf.image.resize(
+        resized_image = tf.image.resize(
             image, size=[new_h, new_w],
             method=tf.image.ResizeMethod.BICUBIC)
 
         # Normalize pixel values to the range [0, 1]
-        image_normalized = image_resized / 255
+        normalized_image = resized_image / 255
 
         # Clip values to ensure they are within [0, 1] range
-        image_clipped = tf.clip_by_value(image_normalized, 0, 1)
+        clipped_image = tf.clip_by_value(normalized_image, 0, 1)
 
-        # Add batch dimension on axis 0 and return
-        return tf.expand_dims(image_clipped, axis=0)
+        # Add batch dimension and return
+        return tf.expand_dims(clipped_image, axis=0)
 
     def load_model(self):
         """
         Load the VGG19 model with AveragePooling2D instead of MaxPooling2D.
         """
-        # Load VGG19 model from Keras API
+        # Load VGG19 model from Keras
         vgg = tf.keras.applications.VGG19(
             include_top=False, weights='imagenet')
 
         vgg.trainable = False
+
         # Replace MaxPooling2D layers with AveragePooling2D layers
         for layer in vgg.layers:
             if isinstance(layer, tf.keras.layers.MaxPooling2D):
                 layer.__class__ = tf.keras.layers.AveragePooling2D
 
-        # get outputs of the style and content layers from modified VGG19
-        style_outputs = [vgg.get_layer(
-            name).output for name in self.style_layers]
+        # Extract outputs for style and content layers
+        style_outputs = [vgg.get_layer(name).output for name in self.style_layers]
         content_output = vgg.get_layer(self.content_layer).output
 
-        # Create the model, make it non-trainable and return it
+        # Construct the model and set it as non-trainable
         self.model = tf.keras.models.Model(
             inputs=vgg.input,
             outputs=style_outputs + [content_output])
