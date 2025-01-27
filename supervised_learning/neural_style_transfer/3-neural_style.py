@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """
-Neural Style Transfer
+This is some documenation
 """
-
 
 import numpy as np
 import tensorflow as tf
@@ -111,95 +110,86 @@ class NST:
             new_w = int((w * 512) / h)
 
         # Resize image (with bicubic interpolation)
-        image_resized = tf.image.resize(
+        resized_image = tf.image.resize(
             image, size=[new_h, new_w],
             method=tf.image.ResizeMethod.BICUBIC)
 
         # Normalize pixel values to the range [0, 1]
-        image_normalized = image_resized / 255
+        normalized_image = resized_image / 255
 
         # Clip values to ensure they are within [0, 1] range
-        image_clipped = tf.clip_by_value(image_normalized, 0, 1)
+        clipped_image = tf.clip_by_value(normalized_image, 0, 1)
 
-        # Add batch dimension on axis 0 and return
-        return tf.expand_dims(image_clipped, axis=0)
+        # Add batch dimension and return
+        return tf.expand_dims(clipped_image, axis=0)
 
     def load_model(self):
         """
-        Load the VGG19 model with AveragePooling2D layers instead of
-        MaxPooling2D layers.
+        Load the VGG19 model with AveragePooling2D instead of MaxPooling2D.
         """
-        # get VGG19 from Keras API
-        modelVGG19 = tf.keras.applications.VGG19(
-            include_top=False,
-            weights='imagenet'
-        )
+        # Load VGG19 model from Keras
+        vgg = tf.keras.applications.VGG19(
+            include_top=False, weights='imagenet')
 
-        modelVGG19.trainable = False
+        vgg.trainable = False
 
-        # Selected layers
-        selected_layers = self.style_layers + [self.content_layer]
+        # Replace MaxPooling2D layers with AveragePooling2D layers
+        for layer in vgg.layers:
+            if isinstance(layer, tf.keras.layers.MaxPooling2D):
+                layer.__class__ = tf.keras.layers.AveragePooling2D
 
-        outputs = [modelVGG19.get_layer(name).output for name
-                   in selected_layers]
+        # Extract outputs for style and content layers
+        style_outputs = [vgg.get_layer(name).output
+                         for name in self.style_layers]
+        content_output = vgg.get_layer(self.content_layer).output
 
-        # Construct model
-        model = tf.keras.Model([modelVGG19.input], outputs)
-
-        # replace MaxPooling layers by AveragePooling layers
-        custom_objects = {'MaxPooling2D': tf.keras.layers.AveragePooling2D}
-        tf.keras.models.save_model(model, 'vgg_base.h5')
-        model_avg = tf.keras.models.load_model('vgg_base.h5',
-                                               custom_objects=custom_objects)
-
-        self.model = model_avg
+        # Construct the model and set it as non-trainable
+        self.model = tf.keras.models.Model(
+            inputs=vgg.input,
+            outputs=style_outputs + [content_output])
 
     @staticmethod
     def gram_matrix(input_layer):
         """
-        Calculate the Gram matrix of a given tensor.
+        Compute the Gram matrix for a specified tensor.
 
         Args:
-        - input_layer: A tf.Tensor or tf.Variable of shape (1, h, w, c).
+        - input_layer: A tf.Tensor or tf.Variable with shape (1, h, w, c).
 
         Returns:
-        - A tf.Tensor of shape (1, c, c) containing the Gram matrix of
+        - A tf.Tensor with shape (1, c, c) that represents the Gram matrix of
             input_layer.
         """
-        # Calidate input_layer rank and batch size
+        # Check the rank and batch size of input_layer
         if (not isinstance(input_layer, (tf.Tensor, tf.Variable))
                 or len(input_layer.shape) != 4
                 or input_layer.shape[0] != 1):
             raise TypeError("input_layer must be a tensor of rank 4")
 
-        # calculate gram matrix: (batch, height, width, channel)
+        # compute gram matrix: (batch, height, width, channel)
         gram = tf.linalg.einsum('bijc,bijd->bcd', input_layer, input_layer)
 
-        # Normalize by number of locations (h * w) then return gram tensor
+        # Normalize by the number of locations and return the gram tensor
         input_shape = tf.shape(input_layer)
         nb_locations = tf.cast(input_shape[1] * input_shape[2], tf.float32)
         return gram / nb_locations
 
     def generate_features(self):
         """
-        Extract the features used to calculate neural style cost.
-        Sets the public instance attributes:
-            - gram_style_features - a list of gram matrices calculated from the
-                style layer outputs of the style image
-            - content_feature - the content layer output of the content image
+        Extract the features necessary for calculating the neural style cost.
         """
-        # Ensure the images are preprocessed correctly
+        # Ensure the images are properly preprocessed
         preprocessed_style = tf.keras.applications.vgg19.preprocess_input(
             self.style_image * 255)
         preprocessed_content = tf.keras.applications.vgg19.preprocess_input(
             self.content_image * 255)
 
-        # Get the outputs from the model with preprocessed images as input
+        # Obtain the outputs from the model using the preprocessed images as input
         style_outputs = self.model(preprocessed_style)[:-1]
 
-        # Set content_feature, no further processing required
+        # Assign content_feature, no additional processing needed
         self.content_feature = self.model(preprocessed_content)[-1]
 
-        # Compute and set Gram matrices for the style layers outputs
+        # Calculate and assign Gram matrices for the style layer outputs
         self.gram_style_features = [self.gram_matrix(
             output) for output in style_outputs]
