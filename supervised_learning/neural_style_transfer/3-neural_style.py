@@ -186,8 +186,6 @@ class NST:
             self.style_image * 255)
         preprocessed_content = tf.keras.applications.vgg19.preprocess_input(
             self.content_image * 255)
-
-        # Obtain the outputs from the model using the preprocessed images as input
         style_outputs = self.model(preprocessed_style)[:-1]
 
         # Assign content_feature, no additional processing needed
