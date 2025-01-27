@@ -127,26 +127,29 @@ class NST:
         """
         Load the VGG19 model with AveragePooling2D instead of MaxPooling2D.
         """
-        # Load VGG19 model from Keras
-        vgg = tf.keras.applications.VGG19(
-            include_top=False, weights='imagenet')
+        modelVGG19 = tf.keras.applications.VGG19(
+            include_top=False,
+            weights='imagenet'
+        )
 
-        vgg.trainable = False
+        modelVGG19.trainable = False
 
-        # Replace MaxPooling2D layers with AveragePooling2D layers
-        for layer in vgg.layers:
-            if isinstance(layer, tf.keras.layers.MaxPooling2D):
-                layer.__class__ = tf.keras.layers.AveragePooling2D
+        # Selected layers
+        selected_layers = self.style_layers + [self.content_layer]
 
-        # Extract outputs for style and content layers
-        style_outputs = [vgg.get_layer(name).output
-                         for name in self.style_layers]
-        content_output = vgg.get_layer(self.content_layer).output
+        outputs = [modelVGG19.get_layer(name).output for name
+                   in selected_layers]
 
-        # Construct the model and set it as non-trainable
-        self.model = tf.keras.models.Model(
-            inputs=vgg.input,
-            outputs=style_outputs + [content_output])
+        # Construct model
+        model = tf.keras.Model([modelVGG19.input], outputs)
+
+        # replace MaxPooling layers by AveragePooling layers
+        custom_objects = {'MaxPooling2D': tf.keras.layers.AveragePooling2D}
+        tf.keras.models.save_model(model, 'vgg_base.h5')
+        model_avg = tf.keras.models.load_model('vgg_base.h5',
+                                               custom_objects=custom_objects)
+
+        self.model = model_avg
 
     @staticmethod
     def gram_matrix(input_layer):
