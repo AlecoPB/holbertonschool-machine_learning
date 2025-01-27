@@ -27,7 +27,7 @@ def resnet50():
 
     # conv2_x layer
     maxpool_layer1 = K.layers.MaxPool2D(pool_size=(3, 3), strides=(2, 2),
-                                         padding="same")(activation1)
+                                        padding="same")(activation1)
 
     identity1_a = projection_block(maxpool_layer1, [64, 64, 256], s=1)
     identity1_b = identity_block(identity1_a, [64, 64, 256])
