@@ -199,10 +199,11 @@ class NST:
         """
         Computes the style cost for a specific layer.
 
-        - style_output - tf.Tensor of shape (1, h, w, c) that contains the layer
-            style output of the generated image
-        - gram_target - tf.Tensor of shape (1, c, c) representing the Gram matrix of the
-            target style output for that layer
+        - style_output - tf.Tensor of shape (1, h, w, c)
+         that contains the layer style output of the generated image
+        - gram_target - tf.Tensor of shape (1, c, c) 
+         representing the Gram matrix of the target style
+         output for that layer
 
         Returns: the style cost for the layer
         """
@@ -220,5 +221,4 @@ class NST:
         # Compute the Gram matrix of style_output
         gram_style_output = self.gram_matrix(style_output)
 
-        # Return the squared mean of the difference between the two Gram matrices
         return tf.reduce_mean(tf.square(gram_style_output - gram_target))
