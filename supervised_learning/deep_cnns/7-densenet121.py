@@ -9,61 +9,47 @@ transition_layer = __import__('6-transition_layer').transition_layer
 
 def densenet121(growth_rate=32, compression=1.0):
     """
-    Builds the DenseNet-121 architecture as described in
-    'Densely Connected Convolutional Networks'.
-
-    Parameters:
-        growth_rate (int): The growth rate.
-        compression (float): The compression factor.
-
-    Returns:
-        keras.Model: The Keras model of the DenseNet-121 architecture.
+    Constructs the DenseNet-121 architecture as detailed in
+    'Densely Connected Convolutional Networks (2018)'.
     """
-    initializer = K.initializers.he_normal(seed=0)
-    input_shape = (224, 224, 3)
-    inputs = K.layers.Input(shape=input_shape)
+    # Initialize he_normal with seed 0
+    initializer = K.initializers.HeNormal(seed=0)
 
-    # Initial Convolution and Pooling
-    X = K.layers.Conv2D(64, (7, 7), strides=(2, 2),
-                        padding='same',
-                        kernel_initializer=initializer)(inputs)
-    X = K.layers.BatchNormalization(axis=3)(X)
-    X = K.layers.ReLU()(X)
-    X = K.layers.MaxPooling2D((3, 3), strides=(2, 2), padding='same')(X)
+    # Input tensor (assuming the given shape of data)
+    input_tensor = K.Input(shape=(224, 224, 3))
 
-    # Dense Block 1
-    X, nb_filters = dense_block(X, nb_filters=64,
-                                growth_rate=growth_rate, layers_count=6)
+    # First BN-ReLU-Conv, with double the growth rate for the initial filter count
+    nb_filters = growth_rate * 2
+    batch_norm = K.layers.BatchNormalization()(input_tensor)
+    relu_activation = K.layers.Activation(activation="relu")(batch_norm)
+    conv_layer = K.layers.Conv2D(filters=nb_filters,
+                                  kernel_size=(7, 7),
+                                  strides=(2, 2),
+                                  padding="same",
+                                  kernel_initializer=initializer)(relu_activation)
 
-    # Transition Layer 1
-    X, nb_filters = transition_layer(X, nb_filters, compression)
+    max_pool_layer = K.layers.MaxPool2D(pool_size=(3, 3),
+                                         strides=(2, 2),
+                                         padding="same")(conv_layer)
 
-    # Dense Block 2
-    X, nb_filters = dense_block(X, nb_filters, growth_rate,
-                                layers_count=12)
+    # Dense block 1, transition layer 1, and so forth until block 4
+    # NOTE: nb_filters is updated (halved) by transition_layer
+    block1, nb_filters = dense_block(max_pool_layer, nb_filters, growth_rate, 6)
+    trans1, nb_filters = transition_layer(block1, nb_filters, compression)
 
-    # Transition Layer 2
-    X, nb_filters = transition_layer(X, nb_filters, compression)
+    block2, nb_filters = dense_block(trans1, nb_filters, growth_rate, 12)
+    trans2, nb_filters = transition_layer(block2, nb_filters, compression)
 
-    # Dense Block 3
-    X, nb_filters = dense_block(X, nb_filters, growth_rate,
-                                layers_count=24)
+    block3, nb_filters = dense_block(trans2, nb_filters, growth_rate, 24)
+    trans3, nb_filters = transition_layer(block3, nb_filters, compression)
 
-    # Transition Layer 3
-    X, nb_filters = transition_layer(X, nb_filters, compression)
+    block4, nb_filters = dense_block(trans3, nb_filters, growth_rate, 16)
 
-    # Dense Block 4
-    X, nb_filters = dense_block(X, nb_filters, growth_rate,
-                                layers_count=16)
+    # Average Pooling (7x7 global)
+    avg_pool_layer = K.layers.AvgPool2D(pool_size=(7, 7), strides=(1, 1))(block4)
 
-    # Classification Layer
-    X = K.layers.BatchNormalization(axis=3)(X)
-    X = K.layers.ReLU()(X)
-    X = K.layers.GlobalAveragePooling2D()(X)
-    X = K.layers.Dense(1000, activation='softmax',
-                       kernel_initializer=initializer)(X)
+    # Fully Connected Layer, softmax
+    output_layer = K.layers.Dense(units=1000, activation='softmax',
+                                   kernel_initializer=initializer)(avg_pool_layer)
 
-    # Create model
-    model = K.models.Model(inputs=inputs, outputs=X)
-
-    return model
+    return K.Model(inputs=input_tensor, outputs=output_layer)
