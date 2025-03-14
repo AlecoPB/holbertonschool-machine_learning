@@ -104,7 +104,8 @@ class Yolo:
                 sorted_indices = sorted_indices[1:][ious < self.nms_threshold]
 
         selected_indices = np.array(selected_indices)
-        return boxes[selected_indices], classes[selected_indices], scores[selected_indices]
+        return (boxes[selected_indices], classes[selected_indices],
+                scores[selected_indices])
 
 
 def IoU(box1, box2):
