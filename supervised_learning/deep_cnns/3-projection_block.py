@@ -41,7 +41,7 @@ def projection_block(A_prev, filters, s=2):
                              kernel_initializer=initializer)(activation2)
     batch_norm3 = K.layers.BatchNormalization(axis=-1)(layer3)
 
-    # Right branch: convolve input using F12 with stride s followed by BatchNorm
+    # Right branch: convolve input using F12
     conv_input = K.layers.Conv2D(filters=F12,
                                  kernel_size=(1, 1),
                                  strides=(s, s),
