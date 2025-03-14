@@ -11,7 +11,8 @@ class Yolo:
     YOLO Object Detection Model
     """
 
-    def __init__(self, model_path, classes_path, class_threshold, nms_threshold, anchors):
+    def __init__(self, model_path, classes_path,
+                 class_threshold, nms_threshold, anchors):
         """
         Initialize YOLO with model, classes, and thresholds.
         """
@@ -30,7 +31,7 @@ class Yolo:
 
     def process_outputs(self, outputs, image_size):
         """
-        Process raw model outputs into bounding boxes, confidences, and class probabilities.
+        Process raw model outputs into bounding boxes
         """
         image_height, image_width = image_size
         boxes, confidences, class_probs = [], [], []
@@ -39,15 +40,20 @@ class Yolo:
             grid_height, grid_width, anchor_boxes, _ = output.shape
 
             # Generate grid coordinates
-            grid_x, grid_y = np.meshgrid(np.arange(grid_width), np.arange(grid_height))
+            grid_x, grid_y = np.meshgrid(np.arange(grid_width),
+                                         np.arange(grid_height))
             grid_x = grid_x.reshape(1, grid_height, grid_width, 1)
             grid_y = grid_y.reshape(1, grid_height, grid_width, 1)
 
             # Decode bounding box predictions
-            center_x = (1 / (1 + np.exp(-output[..., 0])) + grid_x) / grid_width * image_width
-            center_y = (1 / (1 + np.exp(-output[..., 1])) + grid_y) / grid_height * image_height
-            width = self.anchors[i][:, 0] * np.exp(output[..., 2]) / self.model.input.shape[1] * image_width
-            height = self.anchors[i][:, 1] * np.exp(output[..., 3]) / self.model.input.shape[2] * image_height
+            center_x = ((1 / (1 + np.exp(-output[..., 0])) + grid_x)
+                        / grid_width * image_width)
+            center_y = ((1 / (1 + np.exp(-output[..., 1])) + grid_y)
+                        / grid_height * image_height)
+            width = (self.anchors[i][:, 0] * np.exp(output[..., 2])
+                     / self.model.input.shape[1] * image_width)
+            height = (self.anchors[i][:, 1] * np.exp(output[..., 3])
+                      / self.model.input.shape[2] * image_height)
 
             x1, y1 = center_x - width / 2, center_y - height / 2
             x2, y2 = center_x + width / 2, center_y + height / 2
@@ -73,7 +79,8 @@ class Yolo:
             box_scores.extend(max_scores[valid_indices])
             box_classes.extend(scores[valid_indices].argmax(axis=-1))
 
-        return np.concatenate(filtered_boxes), np.array(box_classes), np.array(box_scores)
+        return (np.concatenate(filtered_boxes), np.array(box_classes),
+                np.array(box_scores))
 
     def non_max_suppression(self, boxes, classes, scores):
         """
@@ -92,7 +99,8 @@ class Yolo:
                 if len(sorted_indices) == 1:
                     break
 
-                ious = np.array([IoU(boxes[current], boxes[i]) for i in sorted_indices[1:]])
+                ious = np.array([IoU(boxes[current],
+                                     boxes[i]) for i in sorted_indices[1:]])
                 sorted_indices = sorted_indices[1:][ious < self.nms_threshold]
 
         selected_indices = np.array(selected_indices)
